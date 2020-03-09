@@ -180,6 +180,11 @@
     font-weight: bold;
     font-size: 14px;
     color: #b5b5b5;
+    cursor: pointer;
+}
+
+.hfs_lang > div:hover {
+    color: #666666;
 }
 
 .hfs_lang > div:first-child:after {
@@ -369,6 +374,10 @@
     margin-right: 10px;
 }
 
+.ccn_container > span {
+    font-size: 20px;
+    margin-left: 5px;
+}
 
 /*************************************
            CONTENTS LIST
@@ -432,8 +441,9 @@
 
 .cli_descContainer {
     margin-top: 5px;
-    height: 35px;
+    height: 75px;
     font-size: 12px;
+    position: relative;
 }
 
 /*************************************

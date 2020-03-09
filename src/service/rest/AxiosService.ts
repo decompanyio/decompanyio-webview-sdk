@@ -9,7 +9,7 @@ export default {
   DEBUG: () => false,
 
   getRootUrlWithApi: () => APP_CONFIG.domain().api + '/api/',
-  getRootUrlWithWallet: () => APP_CONFIG.domain().wallet + '/api/',
+  getSearchUrlWithApi: () => APP_CONFIG.domain().search + '/api/',
   _request: function(
     url: string,
     type: string,
@@ -38,6 +38,7 @@ export default {
             '성공\nurl: ' + url + '\nres:\n' + JSON.stringify(response.data)
           )
         }
+
         if (response.data.success && response.data.success === true) {
           success(response.data)
         }
@@ -82,6 +83,24 @@ export default {
     let params = data ? '?' + qs.stringify(data) : ''
     this._request(
       this.getRootUrlWithApi() + url + params,
+      type,
+      '',
+      success,
+      failure,
+      false
+    )
+  },
+  _requestWithSearchUrlPram: function(
+    url: string,
+    type: string,
+    data: any,
+    success: any,
+    failure: any
+  ) {
+    data = data || {}
+    let params = data ? '?' + qs.stringify(data) : ''
+    this._request(
+      this.getSearchUrlWithApi() + url + params,
       type,
       '',
       success,

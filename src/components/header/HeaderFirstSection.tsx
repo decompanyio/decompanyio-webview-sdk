@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import common from '../../util/common'
 import { Link } from 'react-router-dom'
 import { Lang, psGetLang, psSetLang } from '../../util/localization'
@@ -6,10 +6,6 @@ import { Lang, psGetLang, psSetLang } from '../../util/localization'
 export default function() {
   let path = ''
   let isMobile = false
-
-  useEffect(() => {
-    console.log(psGetLang())
-  }, [])
 
   return (
     <div className="hfs_container d-flex col-5 mt-1 pl-0">

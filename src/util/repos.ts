@@ -3,6 +3,8 @@ import DocumentList from '../service/model/DocumentList'
 import DocumentDownload from '../service/model/DocumentDownload'
 import UserInfo from '../service/model/UserInfo'
 import testData from './testData'
+import CustomService from '../service/rest/CustomService'
+import SearchDocuments from '../service/model/SearchDocuments'
 
 let instance: any
 
@@ -115,6 +117,13 @@ export const repos = {
             })
           }
         })
+  },
+  Custom: {
+    getSearchDocuments(data: any) {
+      return CustomService.GET.searchDocument(data)
+        .then((result: any) => new SearchDocuments(result))
+        .catch((err: any) => err)
+    }
   }
 }
 

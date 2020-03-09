@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import SearchBtn from '../common/button/SearchBtn'
+import history from '../../util/history'
 
 export default function() {
   const [showSearchBar, setShowSearchBar] = useState(-1)
@@ -11,10 +12,23 @@ export default function() {
     ) as HTMLInputElement
 
     if (showSearchBar === 1) {
+      if (searchInputEle.value) {
+        history.push({
+          pathname: '/search',
+          state: { searchValue: searchInputEle.value }
+        })
+      }
+
       searchInputEle.value = ''
     }
 
     setShowSearchBar(showSearchBar === 1 ? 0 : 1)
+  }
+
+  const handleKeyup = (e: any) => {
+    if (e.keyCode === 13) {
+      handleSearchBtnClick()
+    }
   }
 
   return (
@@ -30,7 +44,11 @@ export default function() {
         }
         id="headerSearchBar"
       >
-        <input type="text" id="headerSearchInput" />
+        <input
+          type="text"
+          id="headerSearchInput"
+          onKeyUp={e => handleKeyup(e)}
+        />
       </div>
       <SearchBtn click={handleSearchBtnClick} />
     </div>

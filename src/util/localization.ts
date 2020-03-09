@@ -1,4 +1,12 @@
 const strings = new Map([
+  // Search
+  [
+    'search-result',
+    {
+      KOR: '검색 결과',
+      ENG: 'Search Result'
+    }
+  ],
   // Modal
   [
     'common-modal-title',
