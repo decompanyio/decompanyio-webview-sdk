@@ -2,28 +2,48 @@ import React, { useState } from 'react'
 import Avatar from '../common/avatar/Avatar'
 import HeaderSearch from './HeaderSearch'
 import ProfileCard from '../common/card/ProfileCard'
+import { AUTH_APIS } from '../../util/auth'
+import LoginBtn from '../common/button/LoginBtn'
+import UserInfo from '../../service/model/UserInfo'
 
-export default function() {
+interface HeaderSecondSectionProps {
+  userInfo: UserInfo
+}
+
+export default function({ userInfo }: HeaderSecondSectionProps) {
   const [profileCardShow, setProfileCardShow] = useState(false)
 
-  // 프로필 카드 클릭 관리
   const handleProfileCardClick = () => {
     if (profileCardShow) setProfileCardShow(false)
   }
-
-  // 아바타 클릭 관리
   const handleAvatarClick = () => setProfileCardShow(!profileCardShow)
+
+  const handleCloseBtnClick = () => {
+    console.log('close')
+  }
 
   return (
     <div className="hss_container d-flex col-7 pr-0">
       <HeaderSearch />
-      <Avatar
-        size={34}
-        picture={''}
-        croppedArea={[]}
-        click={handleAvatarClick}
-      />
-      {profileCardShow && <ProfileCard click={handleProfileCardClick} />}
+      {AUTH_APIS.isAuthenticated() ? (
+        <Avatar
+          size={34}
+          picture={userInfo.picture}
+          croppedArea={userInfo.croppedArea}
+          click={handleAvatarClick}
+        />
+      ) : (
+        <LoginBtn />
+      )}
+      {profileCardShow && (
+        <ProfileCard click={handleProfileCardClick} userInfo={userInfo} />
+      )}
+      <div
+        className="hss_cancelWrapper ml-3"
+        onClick={() => handleCloseBtnClick()}
+      >
+        <i className={'material-icons'}>close</i>
+      </div>
     </div>
   )
 }

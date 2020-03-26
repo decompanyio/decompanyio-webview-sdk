@@ -3,6 +3,8 @@ import AxiosService from './AxiosService'
 let getDocumentUrl = 'document/info'
 let getDocumentListUrl = 'document/list'
 let documentDownloadUrl = 'document/download'
+let getDocumentsUrl = 'account/documents'
+let updateDocumentUrl = 'document/update'
 
 export default {
   GET: {
@@ -17,6 +19,16 @@ export default {
         )
       })
     },
+    documents: (data: any) =>
+      new Promise((resolve, reject) => {
+        AxiosService._requestGetWithHeader(
+          getDocumentsUrl,
+          'GET',
+          data,
+          (data: any) => resolve(data),
+          (err: any) => reject(err)
+        )
+      }),
     documentList: (data: any) => {
       return new Promise((resolve, reject) => {
         AxiosService._requestWithUrlPram(
@@ -39,5 +51,17 @@ export default {
         )
       })
     }
+  },
+  POST: {
+    updateDocument: (data: any) =>
+      new Promise((resolve, reject) => {
+        AxiosService._requestWithHeaderBody(
+          updateDocumentUrl,
+          'POST',
+          data,
+          (data: any) => resolve(data),
+          (err: any) => reject(err)
+        )
+      })
   }
 }

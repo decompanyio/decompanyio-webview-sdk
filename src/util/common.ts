@@ -42,5 +42,12 @@ export default {
     document.body.style.overflow = ''
     document.body.style.paddingRight = ''
     return Promise.resolve(true)
+  },
+
+  // 오늘 기준 몇일 전
+  dateAgo: (timestamp: number): number => {
+    let currentDate = Number(new Date())
+    let lastDate = Number(new Date(timestamp))
+    return Math.floor((currentDate - lastDate) / (60 * 60 * 24 * 1000))
   }
 }

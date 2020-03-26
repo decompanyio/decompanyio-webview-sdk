@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 // @ts-ignore
-import { ThreeBounce } from 'better-react-spinkit'
+import { FadingCircle } from 'better-react-spinkit'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ContentsCategoryName from './ContentsCategoryName'
 import ContentsListItem from './ContentsListItem'
 import { repos } from '../../../util/repos'
-import testData from '../../../util/testData'
 import { psString } from '../../../util/localization'
+import DocumentListMock from '../../common/mock/DocumentListMock'
+import InfoFromPo from '../../../service/model/InfoFromPo'
+import NoData from '../../common/NoData'
 
 // document list GET API, parameter SET
 const setParams = (pageNo: number) =>
@@ -28,7 +30,11 @@ const setResultList = (listData: any, resultList: any) =>
     resolve(data)
   })
 
-export default function() {
+interface ContentsListProps {
+  poInfo: InfoFromPo
+}
+
+export default function({ poInfo }: ContentsListProps) {
   const [state, setState] = useState({
     list: [],
     endPage: false
@@ -37,7 +43,7 @@ export default function() {
 
   const params = {
     pageNo: 1,
-    tag: 'template',
+    tag: poInfo.tag,
     path: 'latest'
   }
 
@@ -49,10 +55,6 @@ export default function() {
         endPage: res.resultList.length < 10
       })
     )
-
-  // TODO po로 부터 태그 GET 필요
-  // category GET
-  const getCategory = () => testData.tag || 'template'
 
   // 무한 스크롤 추가 데이터 GET
   const fetchData = async () =>
@@ -71,30 +73,34 @@ export default function() {
 
   return (
     <div className="container">
-      <ContentsCategoryName category={psString('tag-' + getCategory())} />
+      <ContentsCategoryName category={psString('tag-' + poInfo.tag)} />
 
-      {state.list && state.list.length > 0 && (
+      {state.list && state.list.length > 0 ? (
         <InfiniteScroll
           dataLength={state.list.length}
           next={fetchData}
           hasMore={!state.endPage}
           loader={
             <div className="cl_spinner mb-4 d-flex">
-              <ThreeBounce color="#3681fe" name="ball-pulse-sync" />
+              <FadingCircle color="#3681fe" size={30} />
             </div>
           }
         >
           <div className="cl_contentsList mt-3 row">
-            {state.list.map((result: any) => (
+            {state.list.map((result: any, idx) => (
               <div
                 className="col-12 col-md-6 col-lg-4 mb-4"
                 key={result.documentId + result.accountId}
               >
-                <ContentsListItem documentData={result} />
+                <ContentsListItem documentData={result} idx={idx} />
               </div>
             ))}
           </div>
         </InfiniteScroll>
+      ) : state.endPage ? (
+        <NoData />
+      ) : (
+        <DocumentListMock />
       )}
     </div>
   )

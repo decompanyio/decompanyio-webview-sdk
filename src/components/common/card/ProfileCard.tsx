@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '../avatar/Avatar'
 import { psString } from '../../../util/localization'
 import common from '../../../util/common'
-import { repos } from '../../../util/repos'
 import UserInfo from '../../../service/model/UserInfo'
+import { AUTH_APIS } from '../../../util/auth'
 
-type Type = {
+interface ProfileCardProps {
   click: any
+  userInfo: UserInfo
 }
 
-function ProfileCard({ click }: Type) {
-  const [userInfo, setUserInfo] = useState(new UserInfo(null))
-
+function ProfileCard({ click, userInfo }: ProfileCardProps) {
   // 클릭 관리
   const handleClick = (e: any) => {
     const targetElement = e.target
@@ -29,14 +28,8 @@ function ProfileCard({ click }: Type) {
     click()
   }
 
-  // 유저 정보 GET
-  const getUserInfo = () =>
-    repos.Auth.getUserInfo().then((res: any) => setUserInfo(res))
-
   useEffect(() => {
     window.addEventListener('click', handleClick)
-
-    void getUserInfo()
 
     return () => {
       window.removeEventListener('click', handleClick)
@@ -54,7 +47,7 @@ function ProfileCard({ click }: Type) {
         <div className="pc_accountBtn d-flex" data-id={userInfo.email}>
           {psString('profile-card-my-page')}
         </div>
-        <div className="pc_logoutBtn d-flex">
+        <div className="pc_logoutBtn d-flex" onClick={() => AUTH_APIS.logout()}>
           {psString('profile-card-logout')}
         </div>
       </Link>

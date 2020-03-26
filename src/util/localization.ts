@@ -7,6 +7,13 @@ const strings = new Map([
       ENG: 'Search Result'
     }
   ],
+  [
+    'search',
+    {
+      KOR: '검색',
+      ENG: 'Search'
+    }
+  ],
   // Modal
   [
     'common-modal-title',
@@ -41,6 +48,13 @@ const strings = new Map([
     }
   ],
   [
+    'common-delete',
+    {
+      KOR: '삭제',
+      ENG: 'Delete'
+    }
+  ],
+  [
     'common-modal-cancel',
     {
       KOR: '취소',
@@ -52,6 +66,13 @@ const strings = new Map([
     {
       KOR: '업로드',
       ENG: 'Upload'
+    }
+  ],
+  [
+    'common-no-data',
+    {
+      KOR: '데이터가 없습니다',
+      ENG: 'No Data'
     }
   ],
 
@@ -75,15 +96,17 @@ const strings = new Map([
   [
     'profile-list-subject',
     {
-      KOR: '내가 올린 문서',
-      ENG: 'My list'
+      KOR: '님이 올린 문서',
+      ENG: 'List of '
     }
   ],
+
+  // Header
   [
-    '',
+    'header-login',
     {
-      KOR: '',
-      ENG: ''
+      KOR: '로그인',
+      ENG: 'Login'
     }
   ],
   [

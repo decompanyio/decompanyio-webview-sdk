@@ -1,10 +1,10 @@
 import React from 'react'
 
-type Type = {
+interface SearchBtnProps {
   click?: any
 }
 
-export default function({ click }: Type) {
+export default function({ click }: SearchBtnProps) {
   const handleSearchBtnClick = () => {
     click()
   }

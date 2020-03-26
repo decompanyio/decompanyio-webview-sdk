@@ -11,14 +11,14 @@ const getImgInfo = (picture: string) =>
     img.onload = () => resolve(Boolean(img.height > img.width))
   })
 
-type Type = {
+interface AvatarProps {
   croppedArea: any
   size: number
   picture: string
   click?: any
 }
 
-export default function({ size, picture, croppedArea, click }: Type) {
+export default function({ size, picture, croppedArea, click }: AvatarProps) {
   const [imgStyle, setImgStyle] = useState({
     width: '100%',
     height: 'auto',

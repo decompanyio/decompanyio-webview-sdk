@@ -6,50 +6,88 @@ import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC'
 import ToolBtn from '../../common/button/ToolBtn'
 import { psString } from '../../../util/localization'
 import { APP_CONFIG } from '../../../util/app.config'
+import common from '../../../util/common'
+import { repos } from '../../../util/repos'
 
-type Type = {
+interface SearchListItemProps {
   documentData: any
+  idx: number
 }
 
 // ellipsis 반응형 설정
 const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis)
 
-export default function({ documentData }: Type) {
+export default function({ documentData, idx }: SearchListItemProps) {
   const [imgUrl, setImgUrl] = useState('')
+  const [isLandscape, setIsLandscape] = useState(false)
 
-  // 썸네일 url 설정
-  const setImg = () => {
-    let _imgUrl: string
-    try {
-      _imgUrl = documentData.pagemap.matatags[0]['twitter:image']
-    } catch (e) {
-      _imgUrl = ''
-    }
-    setImgUrl(_imgUrl)
+  const getThumbnailRatio = () => {
+    const ele = document.getElementById(
+      'sliThumbnailContainer_' + idx
+    ) as HTMLElement
+
+    let eleRatio = ele.offsetWidth / ele.offsetHeight
+    let documentRatio =
+      documentData.dimensions.width / documentData.dimensions.height
+
+    setIsLandscape(eleRatio >= documentRatio)
   }
 
-  const handleDownloadClick = () => {
-    // download
-  }
+  const handleDownloadClick = () =>
+    repos.Document.getDocumentDownloadUrl({
+      documentId: documentData.documentId
+    })
+      .then(result => {
+        const a = document.createElement('a')
+
+        a.style.display = 'none'
+        document.body.appendChild(a)
+        a.href = result.downloadUrl
+        a.setAttribute('download', documentData.documentName)
+        a.click()
+
+        window.URL.revokeObjectURL(a.href)
+        document.body.removeChild(a)
+      })
+      .catch(err => console.error(err))
 
   useEffect(() => {
-    setImg()
+    let _imgUrl = documentData.pagemap.metatags[0]['twitter:image']
+    setImgUrl(_imgUrl)
+    getThumbnailRatio()
   }, [])
 
   return (
-    <div className="cli_container d-flex">
-      <div className="cli_thumbnailContainer">
-        <img
-          src={imgUrl}
-          alt={documentData.title}
-          onError={e => {
-            let element = e.target as HTMLImageElement
-            element.src = APP_CONFIG.domain().static + '/image/logo-cut.png'
-          }}
-        />
+    <div className="sli_container d-flex">
+      <div className="sli_thumbnailContainer" id={"sliThumbnailContainer_" + idx}>
+        <p
+          data-tip={
+            "<img src='" +
+            common.getThumbnail(
+              documentData.documentId,
+              640,
+              1,
+              documentData.documentName
+            ) +
+            "' alt='thumbnail' >"
+          }
+          className={isLandscape ? 'sli_imgLandscape' : 'sli_thumbnail'}
+          data-html={true}
+          data-background-color="none"
+          data-arrow-color="#4d4d4d00"
+        >
+          <img
+            src={imgUrl}
+            alt={documentData.title}
+            onError={e => {
+              let element = e.target as HTMLImageElement
+              element.src = APP_CONFIG.domain().static + '/image/logo-cut.png'
+            }}
+          />
+        </p>
       </div>
-      <div className="cli_infoContainer">
-        <div className="cli_title">
+      <div className="sli_infoContainer">
+        <div className="sli_title">
           <ResponsiveEllipsis
             text={
               documentData.title
@@ -62,7 +100,7 @@ export default function({ documentData }: Type) {
             basedOn="words"
           />
         </div>
-        <div className="cli_descContainer">
+        <div className="sli_descContainer">
           <ResponsiveEllipsis
             text={documentData.snippet}
             maxLine={2}

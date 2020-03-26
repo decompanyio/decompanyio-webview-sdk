@@ -1,15 +1,19 @@
 import React from 'react'
 import HeaderFirstSection from './HeaderFirstSection'
 import HeaderSecondSection from './HeaderSecondSection'
+import UserInfo from '../../service/model/UserInfo'
 
-export default function() {
+interface HeaderProps {
+  userInfo: UserInfo
+}
 
+export default function({ userInfo }: HeaderProps) {
   return (
     <header>
       <nav id="headerMainNav" className="h_fixed d-flex">
         <div className="h_container container d-flex">
           <HeaderFirstSection />
-          <HeaderSecondSection />
+          <HeaderSecondSection userInfo={userInfo} />
         </div>
       </nav>
     </header>

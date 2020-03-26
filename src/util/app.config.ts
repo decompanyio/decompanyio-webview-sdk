@@ -13,7 +13,7 @@ export const APP_CONFIG = {
   },
   local: {
     domain: {
-      mainHost: 'http://localhost',
+      mainHost: 'http://127.0.0.1:3000',
       image: 'https://res.share.decompany.io/thumb',
       profile: 'https://res.share.decompany.io/profile/',
       static: 'https://res.share.decompany.io/static',
@@ -25,9 +25,7 @@ export const APP_CONFIG = {
       viewer: 'https://viewer.share.decompany.io/',
       bounty: 'https://api.share.decompany.io/bounty/',
       graphql: 'https://api.share.decompany.io/graphql/',
-      auth: 'https://auth.share.decompany.io',
-      authTest:
-        'https://td7tx2gu25.execute-api.us-west-1.amazonaws.com/authtest/api/account/get/'
+      auth: 'https://auth.share.decompany.io/dev'
     }
   },
   dev: {
@@ -44,9 +42,7 @@ export const APP_CONFIG = {
       viewer: 'https://viewer.share.decompany.io/',
       bounty: 'https://api.share.decompany.io/bounty/',
       graphql: 'https://api.share.decompany.io/graphql/',
-      auth: 'https://auth.share.decompany.io',
-      authTest:
-        'https://td7tx2gu25.execute-api.us-west-1.amazonaws.com/authtest/api/account/get/'
+      auth: 'https://auth.share.decompany.io/dev'
     }
   },
   production: {
@@ -62,9 +58,7 @@ export const APP_CONFIG = {
       viewer: 'https://viewer.polarishare.com/',
       embed: 'https://embed.polarishare.com/',
       graphql: 'https://api.polarishare.com/graphql/',
-      auth: 'https://auth.share.decompany.io',
-      authTest:
-        'https://td7tx2gu25.execute-api.us-west-1.amazonaws.com/authtest/api/account/get/'
+      auth: 'https://auth.share.decompany.io'
     }
   }
 }

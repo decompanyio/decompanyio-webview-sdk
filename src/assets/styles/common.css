@@ -1,3 +1,34 @@
+/*Poppins font*/
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 300;
+    src: url('https://res.polarishare.com/static/font/poppins/Poppins-Light.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    src: url('https://res.polarishare.com/static/font/poppins/Poppins-Medium.otf') format('opentype')
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    src: url('https://res.polarishare.com/static/font/poppins/Poppins-SemiBold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    src: url('https://res.polarishare.com/static/font/poppins/Poppins-Bold.otf') format('opentype');
+}
+
+
 *,
 *::before,
 *::after {

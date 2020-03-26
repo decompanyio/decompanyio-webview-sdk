@@ -1,11 +1,11 @@
 import React from 'react'
 
-type Type = {
+interface ContentsCategoryNameProps {
   category: string
   subCategory?: string
 }
 
-export default function({ category, subCategory }: Type) {
+export default function({ category, subCategory }: ContentsCategoryNameProps) {
   return (
     <div className="ccn_container">
       {category}

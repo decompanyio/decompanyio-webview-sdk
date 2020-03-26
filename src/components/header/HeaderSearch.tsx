@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import SearchBtn from '../common/button/SearchBtn'
 import history from '../../util/history'
+import { psString } from '../../util/localization'
 
 export default function() {
   const [showSearchBar, setShowSearchBar] = useState(-1)
@@ -47,6 +48,7 @@ export default function() {
         <input
           type="text"
           id="headerSearchInput"
+          placeholder={psString('search')}
           onKeyUp={e => handleKeyup(e)}
         />
       </div>

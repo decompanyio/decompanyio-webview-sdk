@@ -1,12 +1,15 @@
+import ReactGA from 'react-ga'
 import DocService from '../service/rest/DocService'
 import DocumentList from '../service/model/DocumentList'
 import DocumentDownload from '../service/model/DocumentDownload'
 import UserInfo from '../service/model/UserInfo'
-import testData from './testData'
 import CustomService from '../service/rest/CustomService'
 import SearchDocuments from '../service/model/SearchDocuments'
+import { AUTH_APIS } from './auth'
+import AuthService from '../service/rest/AuthService'
+import AccountInfo from '../service/model/AccountInfo'
 
-let instance: any
+// let instance: any
 
 export const init = () => {
   repos.ref()
@@ -16,38 +19,71 @@ export const init = () => {
 export const repos = {
   ref() {
     // 자기 참조
-    instance = this
+    // instance = this
   },
   init() {
+    let gaId =
+      process.env.NODE_ENV_SUB === 'production'
+        ? 'UA-140503497-1'
+        : 'UA-129300994-1'
+    if (
+      process.env.NODE_ENV_SUB === 'production' ||
+      process.env.NODE_ENV_SUB === 'development'
+    ) {
+      ReactGA.initialize(gaId, {
+        debug: false
+      })
+    }
+
+    ReactGA.pageview(window.location.pathname + window.location.search)
+
+    // 로그인 체크
+    if (AUTH_APIS.isAuthenticated()) void AUTH_APIS.scheduleRenewal()
+    else AUTH_APIS.clearSession()
+
     return Promise.resolve(true)
   },
   Auth: {
-    getUserInfo() {
-      return new Promise((resolve, _reject) => {
-        let userData = new UserInfo(testData.userInfo)
+    async getUserInfo(at?: string) {
+      let authorizationToken =
+        at || (await AUTH_APIS.scheduleRenewal().then(res => res))
+      const _data = {
+        header: {
+          Authorization: authorizationToken
+        }
+      }
 
-        resolve(userData)
-      })
+      return AuthService.GET.userInfo(_data)
+        .then((result: any): UserInfo => new UserInfo(result.user))
+        .catch(err => {
+          console.log(err)
+          return err
+        })
     }
   },
   Document: {
-    // async getDocuments(data: any) {
-    //   const params = {
-    //     header: {
-    //       Authorization: `Bearer ${await AUTH_APIS.renewSessionPromise().then(
-    //         (res: any) => res.idToken
-    //       )}`
-    //     },
-    //     params: {
-    //       pageSize: data.pageSize,
-    //       pageNo: data.pageNo
-    //     }
-    //   }
-    //
-    //   return DocService.GET.documents(params)
-    //     .then((result: any) => new DocumentList(result))
-    //     .catch((err: any) => err)
-    // },
+    async getDocuments(data: any) {
+      const params = {
+        header: {
+          Authorization: await AUTH_APIS.scheduleRenewal().then(
+            (res: any) => res
+          )
+        },
+        params: {
+          pageSize: data.pageSize,
+          pageNo: data.pageNo
+        }
+      }
+
+      return DocService.GET.documents(params)
+        .then((result: any): DocumentList => new DocumentList(result))
+        .catch(
+          (err: any): DocumentList => {
+            console.log(err)
+            return new DocumentList(null)
+          }
+        )
+    },
     async getDocumentList(params: any) {
       return DocService.GET.documentList(params)
         .then((result: any) => new DocumentList(result))
@@ -57,72 +93,72 @@ export const repos = {
       return DocService.GET.documentDownload(params)
         .then((result: any) => new DocumentDownload(result))
         .catch((err: any) => err)
-    } /*
+    },
     async deleteDocument(data: any) {
       const _data = {
         header: {
-          Authorization: `Bearer ${await AUTH_APIS.renewSessionPromise().then(
-            (res: any) => res.idToken
-          )}`
+          Authorization: await AUTH_APIS.scheduleRenewal().then(res => res)
         },
         data: data
       }
       return DocService.POST.updateDocument(_data)
-        .then((rst: any) => new DocumentInfo(rst.result))
-        .catch((err: any) => console.error(err))
-    },*/,
-    getMyList: async (data: any) =>
-      instance.Query.getMyListFindMany(data)
-        .then((res: any) => instance.Common.checkNone(res))
-        .then((res: any) => res.map((v: any) => '"' + v.documentId + '"'))
-        .then((res: any) => instance.Query.getDocumentListByIds(res))
-        .then((res: any) => {
-          let resultData = res
-          resultData.Document.findByIds = res.Document.findByIds.filter(
-            (l: any) => {
-              let latestArr = res.DocumentFeatured.findByIds.filter(
-                (f: any) => f._id === l._id
-              )[0]
-              return latestArr
-                ? (l.latestVoteAmount = latestArr.latestVoteAmount)
-                : true
-            }
-          )
-          return resultData
-        })
-        .then((res: any) => {
-          let resultData = res
-          resultData.Document.findByIds = res.Document.findByIds.filter(
-            (l: any) => {
-              let latestArr = res.DocumentPopular.findByIds.filter(
-                (p: any) => p._id === l._id
-              )[0]
-              return latestArr
-                ? (l.latestPageview = latestArr.latestPageview)
-                : true
-            }
-          )
-          return resultData.Document.findByIds
-        })
-        .then(async (res: any) => {
-          let ids = res.map((v: any) => '"' + v.accountId + '"')
-          let userData = await instance.Query.getUserByIds(ids)
-          return {
-            resultList: res.filter((v: any) => {
-              let idx = -1
-              userData.map((u: any, i: any) =>
-                idx === -1 && u._id === v.accountId ? (idx = i) : -1
-              )
-              return idx !== -1 ? (v.author = userData[idx]) : v
-            })
-          }
-        })
+    }
   },
   Custom: {
     getSearchDocuments(data: any) {
       return CustomService.GET.searchDocument(data)
         .then((result: any) => new SearchDocuments(result))
         .catch((err: any) => err)
+    }
+  },
+  Account: {
+    async getAccountInfo() {
+      const data = {
+        header: {
+          Authorization: await AUTH_APIS.scheduleRenewal().then(res => res)
+        }
+      }
+
+      return AuthService.GET.accountInfo(data)
+        .then((result): AccountInfo => new AccountInfo(result))
+        .catch(
+          (err): AccountInfo => {
+            console.log(err)
+            AUTH_APIS.logout()
+            return new AccountInfo(null)
+          }
+        )
+    },
+    async getUserInfo(at?: string) {
+      let authorizationToken =
+        at || (await AUTH_APIS.scheduleRenewal().then((res: any) => res))
+      const _data = {
+        header: {
+          Authorization: authorizationToken
+        }
+      }
+
+      return AuthService.GET.userInfo(_data).then(
+        (result: any): UserInfo => new UserInfo(result.user)
+      )
+    },
+    async syncAuthAndRest(ui: UserInfo, at?: string) {
+      let authorizationToken =
+        at ||
+        (await AUTH_APIS.scheduleRenewal()
+          .then((res: any) => res)
+          .catch(err => {
+            console.log(err)
+            return false
+          }))
+      const _data = {
+        header: {
+          Authorization: authorizationToken
+        },
+        data: ui
+      }
+
+      return AuthService.POST.syncAuthAndRest(_data).then(result => result)
     }
   }
 }

@@ -2,11 +2,11 @@ import React from 'react'
 // @ts-ignore
 import { Circle } from 'better-react-spinkit'
 
-type Type = {
+interface UploadProgressModalProps {
   percentage: number
 }
 
-export default function({ percentage }: Type) {
+export default function({ percentage }: UploadProgressModalProps) {
   return (
     <div>
       <div className="upm_progressWrapper" id="progressWrapper" />

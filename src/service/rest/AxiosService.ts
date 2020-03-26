@@ -10,6 +10,7 @@ export default {
 
   getRootUrlWithApi: () => APP_CONFIG.domain().api + '/api/',
   getSearchUrlWithApi: () => APP_CONFIG.domain().search + '/api/',
+  getRootUrlWithAuth: (): string => APP_CONFIG.domain().auth + '/',
   _request: function(
     url: string,
     type: string,
@@ -106,6 +107,79 @@ export default {
       success,
       failure,
       false
+    )
+  },
+  _requestWithHeader: function(
+    url: string,
+    type: string,
+    data: any,
+    success: any,
+    failure: any
+  ): void {
+    const _header = data.header || {}
+    const _data = data.data || {}
+    this._request(
+      this.getRootUrlWithApi() + url,
+      type,
+      _data,
+      success,
+      failure,
+      _header
+    )
+  },
+  _requestWithUrlPramForAuth: function(
+    url: string,
+    type: string,
+    data: any,
+    success: any,
+    failure: any
+  ): void {
+    const _header = data.header || {}
+    const _data = data.data || {}
+    this._request(
+      this.getRootUrlWithAuth() + url,
+      type,
+      _data,
+      success,
+      failure,
+      _header
+    )
+  },
+  _requestGetWithHeader: function(
+    url: string,
+    type: string,
+    data: any,
+    success: any,
+    failure: any
+  ): void {
+    const _header = data.header || {}
+    let _params = data.params ? '?' + qs.stringify(data.params) : ''
+
+    this._request(
+      this.getRootUrlWithApi() + url + _params,
+      type,
+      null,
+      success,
+      failure,
+      _header
+    )
+  },
+  _requestWithHeaderBody: function(
+    url: string,
+    type: string,
+    data: any,
+    success: any,
+    failure: any
+  ): void {
+    const _header = data.header || {}
+    const _data = data.data || {}
+    this._request(
+      this.getRootUrlWithApi() + url,
+      type,
+      JSON.stringify(_data),
+      success,
+      failure,
+      _header
     )
   }
 }

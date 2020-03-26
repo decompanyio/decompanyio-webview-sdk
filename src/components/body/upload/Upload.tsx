@@ -22,13 +22,11 @@ export default function() {
   // 설명 수정 관리
   const handleDescChange = (e: any) => setDesc(e.target.value)
 
-  // 닫기 버튼 관리
-  const handleClickClose = () => {
+  const handleCloseBtnClick = () => {
     console.log('close')
   }
 
-  // 업로드 버튼 관리
-  const handleUploadBtn = () => {
+  const handleUploadBtnClick = () => {
     console.log('upload')
   }
 
@@ -57,10 +55,10 @@ export default function() {
       />
 
       <div className="u_btnWrapper d-flex">
-        <div onClick={() => handleClickClose()} className="common_cancelBtn">
+        <div onClick={() => handleCloseBtnClick()} className="common_cancelBtn">
           {psString('common-modal-cancel')}
         </div>
-        <div onClick={() => handleUploadBtn()} className="common_okBtn">
+        <div onClick={() => handleUploadBtnClick()} className="common_okBtn">
           {psString('common-modal-upload')}
         </div>
       </div>
