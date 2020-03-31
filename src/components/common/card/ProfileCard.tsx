@@ -7,7 +7,7 @@ import UserInfo from '../../../service/model/UserInfo'
 import { AUTH_APIS } from '../../../util/auth'
 
 interface ProfileCardProps {
-  click: any
+  click?: any
   userInfo: UserInfo
 }
 

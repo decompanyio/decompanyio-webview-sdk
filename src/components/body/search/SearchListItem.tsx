@@ -63,7 +63,10 @@ export default function({ documentData, idx }: SearchListItemProps) {
 
   return (
     <div className="sli_container d-flex">
-      <div className="sli_thumbnailContainer" id={"sliThumbnailContainer_" + idx}>
+      <div
+        className="sli_thumbnailContainer"
+        id={'sliThumbnailContainer_' + idx}
+      >
         <p
           data-tip={
             "<img src='" +
@@ -73,7 +76,7 @@ export default function({ documentData, idx }: SearchListItemProps) {
               1,
               documentData.documentName
             ) +
-            "' alt='thumbnail' >"
+            "' alt='hoverThumbnail' >"
           }
           className={isLandscape ? 'sli_imgLandscape' : 'sli_thumbnail'}
           data-html={true}
@@ -82,7 +85,7 @@ export default function({ documentData, idx }: SearchListItemProps) {
         >
           <img
             src={imgUrl}
-            alt={documentData.title}
+            alt="thumbnail"
             onError={e => {
               let element = e.target as HTMLImageElement
               element.src = APP_CONFIG.domain().static + '/image/logo-cut.png'

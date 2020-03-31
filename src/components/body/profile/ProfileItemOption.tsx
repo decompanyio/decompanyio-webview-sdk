@@ -43,12 +43,10 @@ export default function({
       documentId: documentData.documentId
     })
       .then((): Promise<boolean> => handleDeleteAfter())
-      .catch(
-        (err: any): void => {
-          setLoading(false)
-          console.log(err)
-        }
-      )
+      .catch((err: any): void => {
+        setLoading(false)
+        console.log(err)
+      })
   }
 
   return (

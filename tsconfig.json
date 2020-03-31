@@ -34,8 +34,7 @@
     "types": [
       "node",
       "jest",
-      "@types/jest",
-      "@types/react-test-renderer"
+      "@types/jest"
     ],
     "allowSyntheticDefaultImports": true,
     "sourceRoot": "./src",

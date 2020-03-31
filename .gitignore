@@ -26,3 +26,13 @@ yarn-error.log*
 .history
 .vscode
 !/.idea/
+.idea/.gitignore
+.idea/codeStyles/
+.idea/decompanyio-webview-sdk.iml
+.idea/dictionaries/
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+package-lock.json
+src/__test__/common/card/__snapshots__/

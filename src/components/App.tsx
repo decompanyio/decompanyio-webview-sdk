@@ -15,7 +15,6 @@ import UserInfo from '../service/model/UserInfo'
 import InfoFromPo from '../service/model/InfoFromPo'
 import Callback from './Callback'
 import Login from './body/auth/Login'
-import { APP_CONFIG } from '../util/app.config'
 
 export default function() {
   const [init, setInit] = useState(false)
@@ -57,8 +56,6 @@ export default function() {
   }
 
   useEffect(() => {
-    console.log(APP_CONFIG.env)
-
     if (pathName() !== 'callback')
       repos
         .init()

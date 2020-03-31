@@ -12,7 +12,7 @@ import ProfileItemOption from './ProfileItemOption'
 interface ProfileListItemPrpos {
   documentData: any
   idx: number
-  handleDeleteAfter: any
+  handleDeleteAfter?: any
 }
 
 // ellipsis 반응형 설정
@@ -70,7 +70,7 @@ export default function({
                   1,
                   documentData.documentName
                 ) +
-                "' alt='thumbnail'>"
+                "' alt='hoverThumbnail'>"
             }
             className={isLandscape ? 'pli_imgLandscape' : 'pli_thumbnail'}
             data-html={true}
@@ -84,7 +84,7 @@ export default function({
                 1,
                 documentData.documentName
               )}
-              alt={documentData.title}
+              alt="thumbnail"
             />
           </p>
         </div>

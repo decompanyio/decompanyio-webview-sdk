@@ -17,7 +17,7 @@ export default function() {
           />
         </div>
         <div className="l_btnWrapper">
-          <AuthBtn platform="google" />
+          <AuthBtn provider="google" />
         </div>
       </div>
     </div>

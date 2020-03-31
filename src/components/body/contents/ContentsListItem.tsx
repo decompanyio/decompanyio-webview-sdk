@@ -32,10 +32,6 @@ export default function({
         'cliThumbnailContainer_' + idx
       ) as HTMLElement
 
-      console.log(document.getElementById('cliTestDom'))
-      console.log('idx', idx)
-      console.log(ele)
-
       let eleRatio = ele.offsetWidth / ele.offsetHeight
       let documentRatio =
         documentData.dimensions.width / documentData.dimensions.height
@@ -81,7 +77,7 @@ export default function({
               1,
               documentData.documentName
             ) +
-            "' alt='thumbnail' >"
+            "' alt='hover thumbnail' >"
           }
           className={isLandscape ? 'cli_imgLandscape' : 'cli_thumbnail'}
           data-html={true}
@@ -95,7 +91,7 @@ export default function({
               1,
               documentData.documentName
             )}
-            alt={documentData.title}
+            alt="thumbnail"
           />
         </p>
       </div>

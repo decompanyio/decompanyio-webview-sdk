@@ -1050,7 +1050,7 @@
   background: #3062b2;
 }
 
-.ab_platformName {
+.ab_providerName {
   color: white;
   width: 100%;
   text-transform: uppercase;
@@ -1063,7 +1063,7 @@
   border-radius: 0 3px 3px 0;
 }
 
-.ab_platformName_google {
+.ab_providerName_google {
   background: #4286f4;
 }
 
