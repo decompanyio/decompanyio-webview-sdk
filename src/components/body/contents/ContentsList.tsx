@@ -9,6 +9,7 @@ import { psString } from '../../../util/localization'
 import DocumentListMock from '../../common/mock/DocumentListMock'
 import InfoFromPo from '../../../service/model/InfoFromPo'
 import NoData from '../../common/NoData'
+import DocumentInfo from '../../../service/model/DocumentInfo'
 
 // document list GET API, parameter SET
 const setParams = (pageNo: number) =>
@@ -87,7 +88,7 @@ export default function({ poInfo }: ContentsListProps) {
           }
         >
           <div className="cl_contentsList mt-3 row">
-            {state.list.map((result: any, idx) => (
+            {state.list.map((result: DocumentInfo, idx) => (
               <div
                 className="col-12 col-md-6 col-lg-4 mb-4"
                 key={result.documentId + result.accountId}

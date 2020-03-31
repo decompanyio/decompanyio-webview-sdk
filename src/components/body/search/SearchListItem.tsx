@@ -22,15 +22,19 @@ export default function({ documentData, idx }: SearchListItemProps) {
   const [isLandscape, setIsLandscape] = useState(false)
 
   const getThumbnailRatio = () => {
-    const ele = document.getElementById(
-      'sliThumbnailContainer_' + idx
-    ) as HTMLElement
+    if (!documentData.dimensions) {
+      setIsLandscape(true)
+    } else {
+      const ele = document.getElementById(
+        'sliThumbnailContainer_' + idx
+      ) as HTMLElement
 
-    let eleRatio = ele.offsetWidth / ele.offsetHeight
-    let documentRatio =
-      documentData.dimensions.width / documentData.dimensions.height
+      let eleRatio = ele.offsetWidth / ele.offsetHeight
+      let documentRatio =
+        documentData.dimensions.width / documentData.dimensions.height
 
-    setIsLandscape(eleRatio >= documentRatio)
+      setIsLandscape(eleRatio >= documentRatio)
+    }
   }
 
   const handleDownloadClick = () =>

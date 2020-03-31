@@ -2,7 +2,8 @@ export default {
   // PO 정보
   infoFromPO: {
     extension: 'pptx',
-    tag: 'template'
+    tag: 'template',
+    lang: 'kr'
   },
 
   // 기본 로그인 플랫폼

@@ -2,6 +2,8 @@ import ContentsList from '../components/body/contents/ContentsList'
 import ProfileList from '../components/body/profile/ProfileList'
 import Upload from '../components/body/upload/Upload'
 import SearchList from '../components/body/search/SearchList'
+import Login from '../components/body/auth/Login'
+import Callback from '../components/Callback'
 
 export default [
   {
@@ -23,6 +25,16 @@ export default [
     path: '/search',
     name: 'SearchList',
     component: SearchList
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/callback',
+    name: 'Callback',
+    component: Callback
   },
   {
     path: '*',

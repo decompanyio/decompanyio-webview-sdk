@@ -1,7 +1,7 @@
 export const APP_CONFIG = {
   // debug 모드 이용시, true 로 변경
   debug: false,
-  env: !process.env.NODE_ENV_SUB ? 'local' : process.env.NODE_ENV_SUB,
+  env: !process.env.REACT_APP_ENV_SUB ? 'local' : process.env.REACT_APP_ENV_SUB,
   domain: function() {
     if (this.env === 'production') {
       return APP_CONFIG.production.domain
@@ -30,7 +30,7 @@ export const APP_CONFIG = {
   },
   dev: {
     domain: {
-      mainHost: 'https://share.decompany.io',
+      mainHost: 'http://sdkwebview.share.decompany.io',
       image: 'https://res.share.decompany.io/thumb',
       profile: 'https://res.share.decompany.io/profile/',
       static: 'https://res.share.decompany.io/static',

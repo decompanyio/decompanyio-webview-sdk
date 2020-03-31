@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 // @ts-ignore
 import LinesEllipsis from 'react-lines-ellipsis'
 // @ts-ignore
@@ -18,19 +18,30 @@ interface ContentsListItemProps {
 // ellipsis 반응형 설정
 const ResponsiveEllipsis = responsiveHOC()(LinesEllipsis)
 
-export default function({ documentData, idx }: ContentsListItemProps) {
+export default function({
+  documentData,
+  idx
+}: ContentsListItemProps): ReactElement {
   const [isLandscape, setIsLandscape] = useState(false)
 
   const getThumbnailRatio = () => {
-    const ele = document.getElementById(
-      'cliThumbnailContainer_' + idx
-    ) as HTMLElement
+    if (!documentData.dimensions) {
+      setIsLandscape(true)
+    } else {
+      const ele = document.getElementById(
+        'cliThumbnailContainer_' + idx
+      ) as HTMLElement
 
-    let eleRatio = ele.offsetWidth / ele.offsetHeight
-    let documentRatio =
-      documentData.dimensions.width / documentData.dimensions.height
+      console.log(document.getElementById('cliTestDom'))
+      console.log('idx', idx)
+      console.log(ele)
 
-    setIsLandscape(eleRatio >= documentRatio)
+      let eleRatio = ele.offsetWidth / ele.offsetHeight
+      let documentRatio =
+        documentData.dimensions.width / documentData.dimensions.height
+
+      setIsLandscape(eleRatio >= documentRatio)
+    }
   }
 
   const handleDownloadClick = () =>
@@ -56,7 +67,7 @@ export default function({ documentData, idx }: ContentsListItemProps) {
   }, [])
 
   return (
-    <div className="cli_container d-flex">
+    <div className="cli_container d-flex" id={'cliTestDom'}>
       <div
         className="cli_thumbnailContainer"
         id={'cliThumbnailContainer_' + idx}

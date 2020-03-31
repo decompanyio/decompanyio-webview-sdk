@@ -23,22 +23,23 @@ export const repos = {
   },
   init() {
     let gaId =
-      process.env.NODE_ENV_SUB === 'production'
+      process.env.REACT_APP_ENV_SUB === 'production'
         ? 'UA-140503497-1'
         : 'UA-129300994-1'
+
     if (
-      process.env.NODE_ENV_SUB === 'production' ||
-      process.env.NODE_ENV_SUB === 'development'
+      process.env.REACT_APP_ENV_SUB === 'production' ||
+      process.env.REACT_APP_ENV_SUB === 'development'
     ) {
       ReactGA.initialize(gaId, {
         debug: false
       })
+
+      ReactGA.pageview(window.location.pathname + window.location.search)
     }
 
-    ReactGA.pageview(window.location.pathname + window.location.search)
-
     // 로그인 체크
-    if (AUTH_APIS.isAuthenticated()) void AUTH_APIS.scheduleRenewal()
+    if (AUTH_APIS.isLogin()) void AUTH_APIS.scheduleRenewal()
     else AUTH_APIS.clearSession()
 
     return Promise.resolve(true)

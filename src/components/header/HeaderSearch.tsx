@@ -3,7 +3,11 @@ import SearchBtn from '../common/button/SearchBtn'
 import history from '../../util/history'
 import { psString } from '../../util/localization'
 
-export default function() {
+interface HeaderSearchProps {
+  searchBarOn: Function
+}
+
+export default function({ searchBarOn }: HeaderSearchProps) {
   const [showSearchBar, setShowSearchBar] = useState(-1)
 
   // 검색버튼 관리
@@ -24,6 +28,7 @@ export default function() {
     }
 
     setShowSearchBar(showSearchBar === 1 ? 0 : 1)
+    searchBarOn(showSearchBar === 1 ? 0 : 1)
   }
 
   const handleKeyup = (e: any) => {

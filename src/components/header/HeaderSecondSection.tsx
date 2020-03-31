@@ -12,6 +12,9 @@ interface HeaderSecondSectionProps {
 
 export default function({ userInfo }: HeaderSecondSectionProps) {
   const [profileCardShow, setProfileCardShow] = useState(false)
+  const [avatarShow, setAvatarShow] = useState(true)
+
+  const searchBarOn = (on: boolean) => setAvatarShow(!on)
 
   const handleProfileCardClick = () => {
     if (profileCardShow) setProfileCardShow(false)
@@ -23,27 +26,36 @@ export default function({ userInfo }: HeaderSecondSectionProps) {
   }
 
   return (
-    <div className="hss_container d-flex col-7 pr-0">
-      <HeaderSearch />
-      {AUTH_APIS.isAuthenticated() ? (
-        <Avatar
-          size={34}
-          picture={userInfo.picture}
-          croppedArea={userInfo.croppedArea}
-          click={handleAvatarClick}
-        />
-      ) : (
-        <LoginBtn />
+    <div className="hss_container d-flex col-7 col-sm-6 pr-0">
+      <HeaderSearch searchBarOn={searchBarOn} />
+
+      {avatarShow && (
+        <div className="ml-2">
+          {AUTH_APIS.isLogin() ? (
+            <Avatar
+              size={34}
+              picture={userInfo.picture}
+              croppedArea={userInfo.croppedArea}
+              click={handleAvatarClick}
+            />
+          ) : (
+            <LoginBtn />
+          )}
+        </div>
       )}
-      {profileCardShow && (
+
+      {avatarShow && profileCardShow && (
         <ProfileCard click={handleProfileCardClick} userInfo={userInfo} />
       )}
-      <div
-        className="hss_cancelWrapper ml-3"
-        onClick={() => handleCloseBtnClick()}
-      >
-        <i className={'material-icons'}>close</i>
-      </div>
+
+      {avatarShow && (
+        <div
+          className="hss_cancelWrapper ml-3"
+          onClick={() => handleCloseBtnClick()}
+        >
+          <i className={'material-icons'}>close</i>
+        </div>
+      )}
     </div>
   )
 }

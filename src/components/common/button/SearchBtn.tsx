@@ -10,7 +10,7 @@ export default function({ click }: SearchBtnProps) {
   }
 
   return (
-    <div className="sb_wrapper ml-1 mr-2 d-flex">
+    <div className="sb_wrapper ml-1 d-flex">
       <div className="sb_searchBtn" onClick={() => handleSearchBtnClick()} />
     </div>
   )

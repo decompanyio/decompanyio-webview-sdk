@@ -274,41 +274,6 @@
          HEADER FIRST SECTION
 **************************************/
 
-.hfs_lang {
-  display: flex;
-  align-items: center;
-}
-
-.hfs_lang .hfs_selected {
-  font-weight: bold;
-  color: #666666;
-}
-
-.hfs_lang > div {
-  margin: 3px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #b5b5b5;
-  cursor: pointer;
-}
-
-.hfs_lang > div:hover {
-  color: #666666;
-}
-
-.hfs_lang > div:first-child:after {
-  content: '';
-  display: inline-block;
-  width: 2px;
-  position: relative;
-  height: 12px;
-  margin-left: 5px;
-  top: -1px;
-  background-color: #555555;
-  vertical-align: middle;
-  color: #666666 !important;
-}
-
 .hfs_logo {
   width: 183px;
   background-image: url('https://res.share.decompany.io/static/image/logo.png');
@@ -320,6 +285,15 @@
   font-size: 1.125rem;
   line-height: 30px;
   cursor: pointer;
+}
+
+.hfs_logoCut {
+  background-image: url('https://res.share.decompany.io/static/image/logo.png');
+  background-repeat: no-repeat;
+  background-position-y: 9px;
+  cursor: pointer;
+  height: 50px;
+  width: 25px;
 }
 
 /*************************************
@@ -349,6 +323,7 @@
 **************************************/
 
 .lb_loginBtn {
+  min-width: 37px;
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -572,13 +547,19 @@
 
 .cli_infoContainer {
   width: 70%;
-  padding: 10px;
+  padding: 15px;
   position: relative;
 }
 
 .cli_title {
   font-weight: bold;
   font-size: 16px;
+}
+
+@media (max-width: 575px) {
+  .cli_title {
+    font-size: 14px;
+  }
 }
 
 .cli_authContainer {
@@ -632,18 +613,16 @@
   align-items: center;
 }
 
+.pli_imgLandscape {
+  height: 100%;
+}
+
 .pli_thumbnail > img {
   width: 100%;
 }
 
 .pli_imgLandscape > img {
   height: 100%;
-}
-
-.pli_imgLandscape {
-  height: 100%;
-  left: -50%;
-  position: absolute;
 }
 
 @media (max-width: 575px) {
@@ -656,13 +635,19 @@
 
 .pli_infoContainer {
   width: 70%;
-  padding: 10px;
+  padding: 15px;
   position: relative;
 }
 
 .pli_title {
   font-weight: bold;
   font-size: 16px;
+}
+
+@media (max-width: 575px) {
+  .pli_title {
+    font-size: 14px;
+  }
 }
 
 .pli_authContainer {
@@ -721,8 +706,8 @@
 
 .plio_optionBtn {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
 }
 
 @media (min-width: 576px) {
@@ -761,6 +746,12 @@
   margin-left: 5px;
 }
 
+@media (max-width: 575px) {
+  .pn_container {
+    font-size: 18px;
+  }
+}
+
 /*************************************
              TOOL BUTTON
 **************************************/
@@ -777,7 +768,7 @@
   -webkit-transition: 0.2s all ease-in-out;
   transition: 0.2s all ease-in-out;
   position: absolute;
-  width: calc(100% - 20px);
+  width: calc(100% - 30px);
   bottom: 10px;
 }
 
@@ -1227,7 +1218,7 @@
 }
 
 @media (max-width: 575px) {
-  .pli_imgLandscape {
+  .sli_imgLandscape {
     left: 0 !important;
     position: relative !important;
     width: 100%;
@@ -1236,13 +1227,19 @@
 
 .sli_infoContainer {
   width: 70%;
-  padding: 10px;
+  padding: 15px;
   position: relative;
 }
 
 .sli_title {
   font-weight: bold;
   font-size: 16px;
+}
+
+@media (max-width: 575px) {
+  .sli_title {
+    font-size: 14px;
+  }
 }
 
 .cli_authContainer {

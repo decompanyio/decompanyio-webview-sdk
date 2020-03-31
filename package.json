@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@types/history": "^4.7.5",
-    "@types/jest": "24.0.9",
     "@types/node": "11.10.4",
     "@types/qs": "^6.9.1",
     "@types/react": "16.8.6",
@@ -15,6 +14,7 @@
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
     "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
     "better-react-spinkit": "^2.0.4",
     "eslint": "5.12.0",
     "history": "^4.10.1",
@@ -33,11 +33,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "invaildate": "aws cloudfront create-invalidation --distribution-id E31ZKBIJTZLU --paths /* /*",
+    "deploy": "cp ./.env.dev ./.env && npm run build && aws s3 sync build/ s3://sdkwebview.share.decompany.io --cache-control max-age=60 --acl public-read",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": [
     ">0.2%",
@@ -46,6 +45,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@testing-library/react": "^10.0.1",
+    "@types/jest": "^24.0.9",
+    "@types/react-test-renderer": "^16.9.2",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-import-resolver-typescript": "^1.1.1",
@@ -53,6 +55,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
-    "prettier": "^1.16.4"
+    "prettier": "^1.16.4",
+    "react-test-renderer": "^16.13.1"
   }
 }

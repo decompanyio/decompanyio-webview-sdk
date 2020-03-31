@@ -9,10 +9,11 @@ import history from '../util/history'
 import { repos } from '../util/repos'
 import LoadingModal from './common/modal/LoadingModal'
 import { AUTH_APIS } from '../util/auth'
-import Login from './body/auth/Login'
 import UserInfo from '../service/model/UserInfo'
-import Callback from './Callback'
 import InfoFromPo from '../service/model/InfoFromPo'
+import Callback from './Callback'
+import Login from './body/auth/Login'
+import { APP_CONFIG } from '../util/app.config'
 
 export default function() {
   const [init, setInit] = useState(false)
@@ -24,7 +25,7 @@ export default function() {
 
   // 나의 정보를 userInfo Hooks state 에 저장 합니다.
   const setMyInfo = () => {
-    if (AUTH_APIS.isAuthenticated() && userInfo.email.length === 0) {
+    if (AUTH_APIS.isLogin() && userInfo.email.length === 0) {
       return repos.Account.getAccountInfo().then(result => {
         let res = new UserInfo(result.user)
         if (!res.username || res.username === '') res.username = res.email
@@ -54,6 +55,8 @@ export default function() {
   }
 
   useEffect(() => {
+    console.log(APP_CONFIG.env)
+
     if (pathName() !== 'callback')
       repos
         .init()
@@ -66,35 +69,43 @@ export default function() {
 
   const getMainComponent = () => {
     if (pathName() === 'callback') return <Callback history={history} />
-    if (!AUTH_APIS.isAuthenticated()) return <Login />
-    if (!init) return <LoadingModal />
+    if (!AUTH_APIS.isLogin()) {
+      history.push('/')
+      return <Login />
+    }
 
     return (
       <div className="App">
-        <Header userInfo={userInfo} />
+        {init && <Header userInfo={userInfo} />}
 
-        <div id="container" data-parallax="true">
-          <Switch>
-            {routerList.map((result, idx) => {
-              let flag = false
-              if (idx === 0) flag = true
-              return (
-                <Route
-                  exact={flag}
-                  key={result.name}
-                  path={result.path}
-                  render={(props: any) => (
-                    <result.component
-                      {...props}
-                      userInfo={userInfo}
-                      poInfo={poInfo}
-                    />
-                  )}
-                />
-              )
-            })}
-          </Switch>
-        </div>
+        <div id="callbackIframeContainer" />
+
+        {init ? (
+          <div id="container" data-parallax="true">
+            <Switch>
+              {routerList.map((result, idx) => {
+                let flag = false
+                if (idx === 0) flag = true
+                return (
+                  <Route
+                    exact={flag}
+                    key={result.name}
+                    path={result.path}
+                    render={(props: any) => (
+                      <result.component
+                        {...props}
+                        userInfo={userInfo}
+                        poInfo={poInfo}
+                      />
+                    )}
+                  />
+                )
+              })}
+            </Switch>
+          </div>
+        ) : (
+          <LoadingModal />
+        )}
 
         <ReactTooltip />
       </div>

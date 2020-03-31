@@ -26,15 +26,19 @@ export default function({
   const [isLandscape, setIsLandscape] = useState(false)
 
   const getThumbnailRatio = () => {
-    const ele = document.getElementById(
-      'pliThumbnailContainer_' + idx
-    ) as HTMLElement
+    if (!documentData.dimensions) {
+      setIsLandscape(true)
+    } else {
+      const ele = document.getElementById(
+        'pliThumbnailContainer_' + idx
+      ) as HTMLElement
 
-    let eleRatio = ele.offsetWidth / ele.offsetHeight
-    let documentRatio =
-      documentData.dimensions.width / documentData.dimensions.height
+      let eleRatio = ele.offsetWidth / ele.offsetHeight
+      let documentRatio =
+        documentData.dimensions.width / documentData.dimensions.height
 
-    setIsLandscape(eleRatio >= documentRatio)
+      setIsLandscape(eleRatio >= documentRatio)
+    }
   }
 
   useEffect(() => {
@@ -68,7 +72,7 @@ export default function({
                 ) +
                 "' alt='thumbnail'>"
             }
-            className={isLandscape ? 'sli_imgLandscape' : 'sli_thumbnail'}
+            className={isLandscape ? 'pli_imgLandscape' : 'pli_thumbnail'}
             data-html={true}
             data-background-color="none"
             data-arrow-color="#4d4d4d00"

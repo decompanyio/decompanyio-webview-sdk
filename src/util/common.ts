@@ -49,5 +49,51 @@ export default {
     let currentDate = Number(new Date())
     let lastDate = Number(new Date(timestamp))
     return Math.floor((currentDate - lastDate) / (60 * 60 * 24 * 1000))
+  },
+
+  getIsMobile: (): boolean => {
+    if (typeof window === 'undefined') return false
+    return document.documentElement.clientWidth < 576
+  },
+
+  // change Timestamp to Datetime
+  timestampToDateTime: (timestamp: number): string => {
+    let date = new Date(timestamp)
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec'
+    ]
+    let year = date.getFullYear()
+    let month = months[date.getMonth()]
+    let day = date.getDate()
+    let hour = date.getHours()
+    let min = date.getMinutes()
+    let sec = date.getSeconds()
+    return (
+      day +
+      ' ' +
+      month +
+      ' ' +
+      year +
+      ' ' +
+      (hour < 10 ? '0' : '') +
+      hour +
+      ':' +
+      (min < 10 ? '0' : '') +
+      min +
+      ':' +
+      (sec < 10 ? '0' : '') +
+      sec
+    )
   }
 }
