@@ -14,12 +14,10 @@ export default function({ history }: any): ReactElement {
         .then(() => {
           window.location.assign(APP_CONFIG.domain().mainHost + '/profile')
         })
-        .catch(
-          (err): void => {
-            console.log('err: ', err)
-            history.push('/')
-          }
-        )
+        .catch((err): void => {
+          console.log('err: ', err)
+          history.push('/')
+        })
     }
 
     return () => {
