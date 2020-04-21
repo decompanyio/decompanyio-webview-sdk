@@ -8,7 +8,7 @@
 }
 
 .container {
-    padding: 0 15px;
+    padding: 01rem;
     margin-right: auto;
     margin-left: auto;
     position: relative;
@@ -70,7 +70,7 @@
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 0;
-    font-size: 14px;
+    font-size: 1rem;
     color: #4d4d4d;
     width: 100%;
     background-image: linear-gradient(
@@ -94,7 +94,7 @@
 }
 
 .common_input::placeholder {
-    font-size: 14px;
+    font-size: 1rem;
     color: #a5a5a5;
     font-weight: 100;
 }
@@ -124,7 +124,7 @@
     cursor: pointer;
     padding: 6px 20px;
     transition: 0.2s all ease-in-out;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 400;
 }
 
@@ -141,7 +141,7 @@
     border: 1px solid #3681fe;
     padding: 6px 20px;
     transition: 0.2s all ease-in-out;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 400;
     -ms-user-select: none;
     -webkit-user-select: none;
@@ -163,7 +163,7 @@
     border: 1px solid red;
     padding: 6px 20px;
     transition: 0.2s all ease-in-out;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 400;
     -ms-user-select: none;
     -webkit-user-select: none;
@@ -208,7 +208,7 @@
     min-width: 150px;
     cursor: pointer;
     background: white;
-    font-size: 15px;
+    font-size: 1rem;
     font-weight: 400;
     overflow: hidden;
     white-space: nowrap;
@@ -365,7 +365,7 @@
     align-items: center;
     justify-content: center;
     height: 34px;
-    font-size: 14px;
+    font-size: 1rem;
     -webkit-transition: 0.2s all ease-in-out;
     transition: 0.2s all ease-in-out;
     color: #666666;
@@ -584,7 +584,7 @@
 
 .cli_infoContainer {
     width: 70%;
-    padding: 15px;
+    padding: 1rem;
     position: relative;
 }
 
@@ -595,7 +595,7 @@
 
 @media (max-width: 575px) {
     .cli_title {
-        font-size: 14px;
+        font-size: 1rem;
     }
 }
 
@@ -672,7 +672,7 @@
 
 .pli_infoContainer {
     width: 70%;
-    padding: 15px;
+    padding: 1rem;
     position: relative;
 }
 
@@ -683,7 +683,7 @@
 
 @media (max-width: 575px) {
     .pli_title {
-        font-size: 14px;
+        font-size: 1rem;
     }
 }
 
@@ -856,7 +856,7 @@
 
 .pc_username {
     color: #4d4d4d;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 600;
 }
 
@@ -866,7 +866,7 @@
     font-weight: 400;
     color: #666666;
     border: solid 1px #666666;
-    font-size: 14px;
+    font-size: 1rem;
     letter-spacing: -0.3px;
     cursor: pointer;
     width: 134px;
@@ -887,7 +887,7 @@
     border-radius: 2px;
     font-weight: 400;
     color: #999999;
-    font-size: 14px;
+    font-size: 1rem;
     letter-spacing: -0.3px;
     cursor: pointer;
     width: 134px;
@@ -1298,7 +1298,7 @@
 
 .sli_infoContainer {
     width: 70%;
-    padding: 15px;
+    padding: 1rem;
     position: relative;
 }
 
@@ -1309,7 +1309,7 @@
 
 @media (max-width: 575px) {
     .sli_title {
-        font-size: 14px;
+        font-size: 1rem;
     }
 }
 
