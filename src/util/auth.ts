@@ -1,8 +1,8 @@
-import { APP_CONFIG } from './app.config'
-import commonData from './commonData'
-import { repos } from './repos'
+import repos from './repos'
 import { GetTokenProps, GetQueryParams } from './types'
 import UserInfo from '../service/model/UserInfo'
+import commonData from './commonData'
+import { APP_CONFIG } from './app.config'
 
 export const AUTH_APIS = {
   login: (provider?: string, returnUrl?: string) => {
@@ -19,7 +19,7 @@ export const AUTH_APIS = {
     }/authentication/signin/${provider ||
       commonData.defaultLoginPlatform}?prompt=none&login_hint=${email}&redirectUrl=${
       APP_CONFIG.domain().mainHost
-    }/callback`
+    }/callback&returnUrl=silent`
   },
   logout: (): void => {
     AUTH_APIS.clearSession()
@@ -116,6 +116,8 @@ export const AUTH_APIS = {
         const ea = query.expired_at || ''
         const ru = query.return_url || ''
 
+        // console.log('쿼리 token : ', at)
+
         AUTH_APIS.setTokens(at, ea, ru).then((userInfo: any) =>
           AUTH_APIS.syncAuthAndRest(userInfo, at).then(() =>
             resolve(userInfo.email)
@@ -131,12 +133,10 @@ export const AUTH_APIS = {
             localStorage.setItem('user_sync', JSON.stringify(res))
             resolve()
           })
-          .catch(
-            (): void => {
-              console.error('Login failed because user sync failed.')
-              AUTH_APIS.logout()
-            }
-          )
+          .catch((): void => {
+            console.error('Login failed because user sync failed.')
+            AUTH_APIS.logout()
+          })
       } else {
         console.log('session is not init...')
         AUTH_APIS.logout()
@@ -160,9 +160,12 @@ export const AUTH_APIS = {
       let at = localStorage.getItem('ps_at') || ''
       let timeout = expiresAt - Date.now() // mms
 
+      //console.log('timeout : ', timeout)
+
       const _renewSession = () =>
         AUTH_APIS.renewSession()
           .then(at => {
+            // console.log('_renewSession', at)
             resolve(at)
           })
           .catch(err => {
@@ -178,45 +181,44 @@ export const AUTH_APIS = {
         'callbackIframeContainer'
       ) as HTMLElement
 
-      console.log(callbackIframeContainer)
-
       if (!callbackIframeContainer) reject()
 
-      const iframeEle = document.createElement('iframe')
-      iframeEle.id = 'authIframe'
-      iframeEle.style.display = 'none'
-      iframeEle.src = `${
-        APP_CONFIG.domain().auth
-      }/authentication/signin/${provider ||
+      let src = `${APP_CONFIG.domain().auth}/authentication/signin/${provider ||
         commonData.defaultLoginPlatform}?prompt=none&login_hint=${
         AUTH_APIS.getMyInfo().email
-      }&redirectUrl=${APP_CONFIG.domain().mainHost}/callback`
+      }&redirectUrl=${APP_CONFIG.domain().mainHost}/callback&returnUrl=silent`
 
-      if (
-        callbackIframeContainer &&
-        callbackIframeContainer.children.length !== 0
-      )
-        callbackIframeContainer.innerHTML = ''
+      let randomNumber = Math.random()
+
+      const iframeEle = document.createElement('iframe')
+      iframeEle.id = 'authIframe' + randomNumber
+      iframeEle.style.display = 'none'
+      iframeEle.src = src
 
       callbackIframeContainer.appendChild(iframeEle)
 
       // TODO IE, 표준 방법도 추가
       // iframeEle.onload = AUTH_APIS.iframeEventListener(iframeEle.id)
-      iframeEle.addEventListener('load', function(_e): void {
-        AUTH_APIS.iframeEventListener(iframeEle.id)
-          .then(at => resolve(at))
-          .catch(err => reject(err))
-      })
+      iframeEle.addEventListener(
+        'load',
+        async _e =>
+          await AUTH_APIS.iframeEventListener(iframeEle.id)
+            .then(at => resolve(at))
+            .catch(err => reject(err))
+      )
     }),
   iframeEventListener: (id: string) =>
     new Promise((resolve, reject) => {
-      const callbackIframeContainer = document.getElementById(
-        'callbackIframeContainer'
-      ) as HTMLElement
       const iframeEle = document.getElementById(id) as HTMLIFrameElement
+      const deleteEle = () => {
+        iframeEle.removeAttribute('onload')
+        iframeEle.remove()
+      }
 
       if (iframeEle && iframeEle.contentWindow) {
         const urlFromIframe = iframeEle.contentWindow.location.href
+        // iframe은 쓸모가 없어졌으니, 삭제해줍니다.
+        deleteEle()
 
         if (urlFromIframe && urlFromIframe !== 'about:blank') {
           let url = new URL(urlFromIframe)
@@ -225,13 +227,13 @@ export const AUTH_APIS = {
             Number(url.searchParams.get('expired'))
           )
           AUTH_APIS.setTokens(at, ea, '')
-          iframeEle.removeAttribute('onload')
-          callbackIframeContainer.innerHTML = ''
-          resolve(at)
+
+          if (at) resolve(at)
+          else reject('Authorize Token does not exist.')
         }
       } else {
-        let err = 'iframe does not exist.'
-        reject(err)
+        deleteEle()
+        reject('iframe does not exist.')
       }
     })
 }

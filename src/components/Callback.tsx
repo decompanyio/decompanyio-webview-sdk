@@ -8,16 +8,23 @@ export default function({ history }: any): ReactElement {
     common.setBodyStyleLock()
 
     if (typeof window !== 'undefined') {
-      if (AUTH_APIS.isLogin()) history.push('/')
+      let url = new URL(document.location.href)
+      let returnUrl = url.searchParams.get('return_url') || ''
 
-      AUTH_APIS.handleAuthentication(window.location)
-        .then(() => {
-          window.location.assign(APP_CONFIG.domain().mainHost + '/profile')
-        })
-        .catch((err): void => {
-          console.log('err: ', err)
-          history.push('/')
-        })
+      if (returnUrl && returnUrl === 'silent') {
+        // console.log('This page is made for Silent Login.')
+      } else {
+        if (AUTH_APIS.isLogin()) history.push('/upload')
+
+        AUTH_APIS.handleAuthentication(window.location)
+          .then(() => {
+            window.location.assign(APP_CONFIG.domain().mainHost + '/upload')
+          })
+          .catch((err): void => {
+            console.log('err: ', err)
+            history.push('/upload')
+          })
+      }
     }
 
     return () => {

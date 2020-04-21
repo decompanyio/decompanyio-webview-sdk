@@ -63,6 +63,41 @@ export const repos = {
     }
   },
   Document: {
+    async registerDocument(data: any) {
+      let fileInfo = data.fileInfo
+      let user = data.userInfo
+      let tags = data.tags
+      let title = data.title
+      let desc = data.desc
+      let useTracking = data.useTracking
+      let forceTracking = data.forceTracking
+      let isDownload = data.isDownload
+      let cc = data.cc
+
+      const params = {
+        header: {
+          Authorization: await AUTH_APIS.scheduleRenewal().then(res => res)
+        },
+        data: {
+          filename: fileInfo.file.name,
+          size: fileInfo.file.size,
+          username: user.userName,
+          sub: user.id,
+          title: title,
+          desc: desc,
+          tags: tags,
+          useTracking: useTracking,
+          forceTracking: forceTracking,
+          isDownload: isDownload,
+          isPublic: false,
+          cc: cc
+        }
+      }
+
+      DocService.POST.registerDocument(params)
+        .then(res => res)
+        .catch(err => err)
+    },
     async getDocuments(data: any) {
       const params = {
         header: {

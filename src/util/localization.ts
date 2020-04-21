@@ -1,4 +1,11 @@
 const strings = new Map([
+  [
+    'brand',
+    {
+      KOR: '폴라리스 쉐어',
+      ENG: 'Polaris Share'
+    }
+  ],
   // Search
   [
     'search-result',
@@ -15,6 +22,13 @@ const strings = new Map([
     }
   ],
   // Modal
+  [
+    'upload-doc-subj',
+    {
+      KOR: '문서 업로드',
+      ENG: 'Document Upload'
+    }
+  ],
   [
     'common-modal-title',
     {
@@ -75,6 +89,13 @@ const strings = new Map([
       ENG: 'No Data'
     }
   ],
+  [
+    'common-logout',
+    {
+      KOR: '로그아웃',
+      ENG: 'Sign out'
+    }
+  ],
 
   // ProfileCard
   [
@@ -82,13 +103,6 @@ const strings = new Map([
     {
       KOR: '마이 페이지',
       ENG: 'My page'
-    }
-  ],
-  [
-    'profile-card-logout',
-    {
-      KOR: '로그아웃',
-      ENG: 'Sign out'
     }
   ],
 
@@ -107,6 +121,15 @@ const strings = new Map([
     {
       KOR: '로그인',
       ENG: 'Login'
+    }
+  ],
+
+  // Upload
+  [
+    'upload-doc-error-1',
+    {
+      KOR: '제목은 한 글자 보다 길어야 합니다.',
+      ENG: 'Title must be longer than 1 character.'
     }
   ],
   [

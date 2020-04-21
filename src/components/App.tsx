@@ -5,7 +5,6 @@ import ReactTooltip from 'react-tooltip'
 import { Route, Router, Switch } from 'react-router-dom'
 import '../assets/styles/app.css'
 import '../assets/styles/common.css'
-import Header from './header/Header'
 import routerList from '../util/routerList'
 import history from '../util/history'
 import { repos } from '../util/repos'
@@ -75,10 +74,8 @@ export default function() {
 
     return (
       <div className="App">
-        {init && <Header userInfo={userInfo} />}
-
+        {/*init && <Header userInfo={userInfo} />*/}
         <div id="callbackIframeContainer" />
-
         {init ? (
           <div id="container" data-parallax="true">
             <Switch>
@@ -105,7 +102,6 @@ export default function() {
         ) : (
           <LoadingModal />
         )}
-
         <ReactTooltip />
       </div>
     )

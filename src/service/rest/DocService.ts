@@ -5,6 +5,7 @@ let getDocumentListUrl = 'document/list'
 let documentDownloadUrl = 'document/download'
 let getDocumentsUrl = 'account/documents'
 let updateDocumentUrl = 'document/update'
+let registerDocumentInfoUrl = 'document/regist'
 
 export default {
   GET: {
@@ -57,6 +58,16 @@ export default {
       new Promise((resolve, reject) => {
         AxiosService._requestWithHeaderBody(
           updateDocumentUrl,
+          'POST',
+          data,
+          (data: any) => resolve(data),
+          (err: any) => reject(err)
+        )
+      }),
+    registerDocument: (data: any) =>
+      new Promise((resolve, reject) => {
+        AxiosService._requestWithHeaderBody(
+          registerDocumentInfoUrl,
           'POST',
           data,
           (data: any) => resolve(data),

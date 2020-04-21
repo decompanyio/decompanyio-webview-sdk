@@ -5,9 +5,6 @@ export default function() {
   return (
     <div className="l_container">
       <div className="l_component">
-        <div className="l_cancelWrapper">
-          <i className={'material-icons'}>close</i>
-        </div>
         <div className="l_logoWrapper">
           <a
             className="l_logo"

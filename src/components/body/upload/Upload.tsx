@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { psString } from '../../../util/localization'
 import UploadProgressModal from '../../common/modal/UploadProgressModal'
+import { AUTH_APIS } from '../../../util/auth'
+import { repos } from '../../../util/repos'
 
-export default function() {
+export default function({ history, userInfo }: any) {
   const [titleError, setTitleError] = useState('')
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
@@ -10,7 +12,7 @@ export default function() {
 
   // 제목 유효성 체크
   const validateTitle = (value: string) => {
-    setTitleError(value.length > 0 ? '' : psString('edit-doc-error-1'))
+    setTitleError(value.length > 0 ? '' : psString('upload-doc-error-1'))
     return value.length > 0
   }
 
@@ -19,23 +21,63 @@ export default function() {
     if (validateTitle(e.target.value)) setTitle(e.target.value)
   }
 
-  // 설명 수정 관리
   const handleDescChange = (e: any) => setDesc(e.target.value)
 
+  const handleSignOutBtnClick = () => AUTH_APIS.logout()
+
   const handleCloseBtnClick = () => {
-    console.log('close')
+    console.log('[Close button clicked]')
+    console.log('=> POST "Close Event" to Polaris Office Native')
   }
 
-  const handleUploadBtnClick = () => {
-    console.log('upload')
+  const handleUpload = (): void => {
+    let data = {
+      fileInfo: null,
+      user: userInfo,
+      tags: null,
+      title: title,
+      desc: desc,
+      useTracking: true,
+      forceTracking: false,
+      isDownload: true,
+      cc: []
+    }
+
+    // 문서 등록 API
+    repos.Document.registerDocument(data)
+      .then((res: any) => {
+        console.log('[Complete Document Upload]')
+        console.log('=> result', res)
+        console.log('=> POST "Document Id" to Polaris Office Native')
+        console.log('=> Close Window')
+      })
+      .catch((err: any) => {
+        console.error(err)
+      })
+  }
+
+  const handleUploadBtnClick = (): void => {
+    console.log('[Upload button clicked]')
+    console.log('Title : ' + title + '\nDescription : ' + desc)
+    console.log('=> POST "Upload Event" to PS SERVER')
+
+    if (validateTitle(title)) handleUpload()
   }
 
   useEffect(() => {
-    console.log(title, desc)
+    if (!AUTH_APIS.isLogin()) {
+      history.push('/login')
+    }
   }, [])
 
   return (
-    <div className="container">
+    <div className="u_container">
+      <div className="common_modal_title">
+        <h3>
+          {psString('brand')} {psString('upload-doc-subj')}
+        </h3>
+      </div>
+
       <input
         type="text"
         placeholder={psString('common-modal-title')}
@@ -55,6 +97,12 @@ export default function() {
       />
 
       <div className="u_btnWrapper d-flex">
+        <div
+          onClick={() => handleSignOutBtnClick()}
+          className="common_signOutBtn  u_signOutBtnWrapper"
+        >
+          {psString('common-logout')}
+        </div>
         <div onClick={() => handleCloseBtnClick()} className="common_cancelBtn">
           {psString('common-modal-cancel')}
         </div>

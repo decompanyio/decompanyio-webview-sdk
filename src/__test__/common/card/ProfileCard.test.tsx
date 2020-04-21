@@ -16,6 +16,6 @@ describe('<ProfileCard />', () => {
     )
     utils.getByText('test@test.com')
     utils.getByText(psString('profile-card-my-page'))
-    utils.getByText(psString('profile-card-logout'))
+    utils.getByText(psString('common-logout'))
   })
 })

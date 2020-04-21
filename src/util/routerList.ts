@@ -1,4 +1,3 @@
-import ContentsList from '../components/body/contents/ContentsList'
 import ProfileList from '../components/body/profile/ProfileList'
 import Upload from '../components/body/upload/Upload'
 import SearchList from '../components/body/search/SearchList'
@@ -8,9 +7,14 @@ import Callback from '../components/Callback'
 export default [
   {
     path: '/',
+    name: 'Upload',
+    component: Upload
+  } /*
+  {
+    path: '/',
     name: 'ContentsList',
     component: ContentsList
-  },
+  },*/,
   {
     path: '/profile',
     name: 'ProfileList',

@@ -48,7 +48,7 @@ function ProfileCard({ click, userInfo }: ProfileCardProps) {
           {psString('profile-card-my-page')}
         </div>
         <div className="pc_logoutBtn d-flex" onClick={() => AUTH_APIS.logout()}>
-          {psString('profile-card-logout')}
+          {psString('common-logout')}
         </div>
       </Link>
     </div>

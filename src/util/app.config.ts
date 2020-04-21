@@ -19,29 +19,23 @@ export const APP_CONFIG = {
       static: 'https://res.share.decompany.io/static',
       api: 'https://api.share.decompany.io/rest',
       wallet: 'https://api.share.decompany.io/wallet',
-      email: 'https://api.share.decompany.io/ve',
-      search: 'https://api.share.decompany.io/search',
       embed: 'https://embed.share.decompany.io/',
-      viewer: 'https://viewer.share.decompany.io/',
-      bounty: 'https://api.share.decompany.io/bounty/',
       graphql: 'https://api.share.decompany.io/graphql/',
+      search: 'https://api.share.decompany.io/search',
       auth: 'https://auth.share.decompany.io/dev'
     }
   },
   dev: {
     domain: {
-      mainHost: 'http://sdkwebview.share.decompany.io',
+      mainHost: 'https://share.decompany.io',
       image: 'https://res.share.decompany.io/thumb',
       profile: 'https://res.share.decompany.io/profile/',
       static: 'https://res.share.decompany.io/static',
       api: 'https://api.share.decompany.io/rest',
       wallet: 'https://api.share.decompany.io/wallet',
-      email: 'https://api.share.decompany.io/ve',
-      search: 'https://api.share.decompany.io/search',
       embed: 'https://embed.share.decompany.io/',
-      viewer: 'https://viewer.share.decompany.io/',
-      bounty: 'https://api.share.decompany.io/bounty/',
       graphql: 'https://api.share.decompany.io/graphql/',
+      search: 'https://api.share.decompany.io/search',
       auth: 'https://auth.share.decompany.io/dev'
     }
   },
@@ -53,12 +47,10 @@ export const APP_CONFIG = {
       static: 'https://res.polarishare.com/static',
       api: 'https://api.polarishare.com/rest',
       wallet: 'https://api.polarishare.com/wallet',
-      email: 'https://api.polarishare.com/ve',
-      search: 'https://api.polarishare.com/search',
-      viewer: 'https://viewer.polarishare.com/',
       embed: 'https://embed.polarishare.com/',
       graphql: 'https://api.polarishare.com/graphql/',
-      auth: 'https://auth.share.decompany.io'
+      search: 'https://api.polarishare.com/search',
+      auth: 'https://auth.polarishare.com/asem'
     }
   }
 }
