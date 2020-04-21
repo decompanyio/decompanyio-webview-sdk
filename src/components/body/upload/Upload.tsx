@@ -49,7 +49,7 @@ export default function({ history, userInfo }: any) {
         console.log('[Complete Document Upload]')
         console.log('=> result', res)
         console.log('=> POST "Document Id" to Polaris Office Native')
-        console.log('=> Close Window')
+        console.log('=> POST "Close Event" to Polaris Office Native')
       })
       .catch((err: any) => {
         console.error(err)
