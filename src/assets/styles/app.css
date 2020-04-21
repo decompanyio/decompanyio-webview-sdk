@@ -914,11 +914,20 @@
     margin: auto;
 }
 
+.u_container > .common_modal_title {
+    display: flex;
+}
+
+.u_container > .common_modal_title > h3 {
+    margin: 0.9rem 0 1rem 1rem !important;
+    font-size: 1.2rem;
+}
+
 .u_textarea {
     background: white;
     border: 1px solid #d2d2d2;
     width: 100%;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 400;
     padding: 10px;
     min-height: 120px !important;
@@ -927,7 +936,7 @@
 }
 
 .u_textarea::placeholder {
-    font-size: 14px;
+    font-size: 1rem;
     color: #a5a5a5 !important;
     font-weight: 100;
 }
@@ -941,7 +950,7 @@
     align-items: center;
     justify-content: flex-end;
     margin: 0;
-    padding: 15px 0 15px 24px;
+    padding: 1rem 0 1rem 24px;
     text-align: center;
     flex: 0 0 auto;
     margin-top: 1rem !important;
@@ -952,6 +961,17 @@
 .u_signOutBtnWrapper {
     position: absolute;
     left: 0;
+}
+
+.u_logo {
+    width: 183px;
+    background-image: url('https://res.share.decompany.io/static/image/logo.png');
+    background-repeat: no-repeat;
+    background-position-y: 9px;
+    position: relative;
+    height: 50px;
+    cursor: pointer;
+    display: inline-block;
 }
 
 /*************************************

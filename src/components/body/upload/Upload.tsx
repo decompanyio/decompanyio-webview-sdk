@@ -73,9 +73,13 @@ export default function({ history, userInfo }: any) {
   return (
     <div className="u_container">
       <div className="common_modal_title">
-        <h3>
-          {psString('brand')} {psString('upload-doc-subj')}
-        </h3>
+        <a
+          className="u_logo"
+          href="https://polarishare.com"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        />
+        <h3>{psString('upload-doc-subj')}</h3>
       </div>
 
       <input
