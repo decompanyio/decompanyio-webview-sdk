@@ -1,13 +1,12 @@
-import ReactGA from 'react-ga'
 import DocService from '../service/rest/DocService'
-import DocumentList from '../service/model/DocumentList'
-import DocumentDownload from '../service/model/DocumentDownload'
 import UserInfo from '../service/model/UserInfo'
 import CustomService from '../service/rest/CustomService'
 import SearchDocuments from '../service/model/SearchDocuments'
 import { AUTH_APIS } from './auth'
 import AuthService from '../service/rest/AuthService'
 import AccountInfo from '../service/model/AccountInfo'
+import Register from '../service/model/Register'
+import history from './history'
 
 // let instance: any
 
@@ -21,33 +20,33 @@ export const repos = {
     // 자기 참조
     // instance = this
   },
-  init() {
-    let gaId =
-      process.env.REACT_APP_ENV_SUB === 'production'
-        ? 'UA-140503497-1'
-        : 'UA-129300994-1'
-
-    if (
-      process.env.REACT_APP_ENV_SUB === 'production' ||
-      process.env.REACT_APP_ENV_SUB === 'development'
-    ) {
-      ReactGA.initialize(gaId, {
-        debug: false
-      })
-
-      ReactGA.pageview(window.location.pathname + window.location.search)
-    }
-
+  async init() {
     // 로그인 체크
-    if (AUTH_APIS.isLogin()) void AUTH_APIS.scheduleRenewal()
-    else AUTH_APIS.clearSession()
+    if (AUTH_APIS.isLogin())
+      await AUTH_APIS.refreshLogin(AUTH_APIS.getTokens().refresh_token)
+    else {
+      const {
+        authorization_token,
+        refresh_token
+      } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(
+        document.location.href
+      )
+
+      // PO 에게 auth token 을 URL parameters 로 전달 받았을 시, refresh login 을 시도 합니다.
+      if (authorization_token && refresh_token) {
+        await AUTH_APIS.refreshLogin(refresh_token)
+        history.push('/')
+      } else {
+        AUTH_APIS.clearSession()
+      }
+    }
 
     return Promise.resolve(true)
   },
   Auth: {
-    async getUserInfo(at?: string) {
+    async getUserInfo(at: string, rt: string) {
       let authorizationToken =
-        at || (await AUTH_APIS.scheduleRenewal().then(res => res))
+        at || (await AUTH_APIS.refreshLogin(rt).then(res => res))
       const _data = {
         header: {
           Authorization: authorizationToken
@@ -65,7 +64,7 @@ export const repos = {
   Document: {
     async registerDocument(data: any) {
       let fileInfo = data.fileInfo
-      let user = data.userInfo
+      let user = data.user
       let tags = data.tags
       let title = data.title
       let desc = data.desc
@@ -76,12 +75,14 @@ export const repos = {
 
       const params = {
         header: {
-          Authorization: await AUTH_APIS.scheduleRenewal().then(res => res)
+          Authorization: await AUTH_APIS.refreshLogin(
+            AUTH_APIS.getTokens().refresh_token
+          ).then(res => res)
         },
         data: {
           filename: fileInfo.file.name,
           size: fileInfo.file.size,
-          username: user.userName,
+          username: user.username,
           sub: user.id,
           title: title,
           desc: desc,
@@ -94,50 +95,9 @@ export const repos = {
         }
       }
 
-      DocService.POST.registerDocument(params)
-        .then(res => res)
+      return DocService.POST.registerDocument(params)
+        .then((res): Register => new Register(res))
         .catch(err => err)
-    },
-    async getDocuments(data: any) {
-      const params = {
-        header: {
-          Authorization: await AUTH_APIS.scheduleRenewal().then(
-            (res: any) => res
-          )
-        },
-        params: {
-          pageSize: data.pageSize,
-          pageNo: data.pageNo
-        }
-      }
-
-      return DocService.GET.documents(params)
-        .then((result: any): DocumentList => new DocumentList(result))
-        .catch(
-          (err: any): DocumentList => {
-            console.log(err)
-            return new DocumentList(null)
-          }
-        )
-    },
-    async getDocumentList(params: any) {
-      return DocService.GET.documentList(params)
-        .then((result: any) => new DocumentList(result))
-        .catch((err: any) => err)
-    },
-    getDocumentDownloadUrl(params: any) {
-      return DocService.GET.documentDownload(params)
-        .then((result: any) => new DocumentDownload(result))
-        .catch((err: any) => err)
-    },
-    async deleteDocument(data: any) {
-      const _data = {
-        header: {
-          Authorization: await AUTH_APIS.scheduleRenewal().then(res => res)
-        },
-        data: data
-      }
-      return DocService.POST.updateDocument(_data)
     }
   },
   Custom: {
@@ -151,7 +111,9 @@ export const repos = {
     async getAccountInfo() {
       const data = {
         header: {
-          Authorization: await AUTH_APIS.scheduleRenewal().then(res => res)
+          Authorization: await AUTH_APIS.refreshLogin(
+            AUTH_APIS.getTokens().refresh_token
+          ).then(res => res)
         }
       }
 
@@ -165,9 +127,9 @@ export const repos = {
           }
         )
     },
-    async getUserInfo(at?: string) {
+    async getUserInfo(at: string, rt: string) {
       let authorizationToken =
-        at || (await AUTH_APIS.scheduleRenewal().then((res: any) => res))
+        at || (await AUTH_APIS.refreshLogin(rt).then(res => res))
       const _data = {
         header: {
           Authorization: authorizationToken
@@ -181,8 +143,8 @@ export const repos = {
     async syncAuthAndRest(ui: UserInfo, at?: string) {
       let authorizationToken =
         at ||
-        (await AUTH_APIS.scheduleRenewal()
-          .then((res: any) => res)
+        (await AUTH_APIS.refreshLogin(AUTH_APIS.getTokens().refresh_token)
+          .then(res => res)
           .catch(err => {
             console.log(err)
             return false

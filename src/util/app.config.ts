@@ -1,7 +1,7 @@
 export const APP_CONFIG = {
   // debug 모드 이용시, true 로 변경
   debug: false,
-  env: !process.env.REACT_APP_ENV_SUB ? 'local' : process.env.REACT_APP_ENV_SUB,
+  env: 'development',
   domain: function() {
     if (this.env === 'production') {
       return APP_CONFIG.production.domain
@@ -27,7 +27,7 @@ export const APP_CONFIG = {
   },
   dev: {
     domain: {
-      mainHost: 'https://share.decompany.io',
+      mainHost: 'http://sdkwebview.share.decompany.io',
       image: 'https://res.share.decompany.io/thumb',
       profile: 'https://res.share.decompany.io/profile/',
       static: 'https://res.share.decompany.io/static',
@@ -41,7 +41,7 @@ export const APP_CONFIG = {
   },
   production: {
     domain: {
-      mainHost: 'https://www.polarishare.com',
+      mainHost: 'https://sdkwebview.polarishare.com',
       image: 'https://res.polarishare.com/thumb',
       profile: 'https://res.polarishare.com/profile/',
       static: 'https://res.polarishare.com/static',

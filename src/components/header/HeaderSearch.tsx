@@ -9,8 +9,6 @@ interface HeaderSearchProps {
 
 export default function({ searchBarOn }: HeaderSearchProps) {
   const [showSearchBar, setShowSearchBar] = useState(-1)
-
-  // 검색버튼 관리
   const handleSearchBtnClick = () => {
     let searchInputEle = document.getElementById(
       'headerSearchInput'

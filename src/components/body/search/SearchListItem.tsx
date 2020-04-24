@@ -3,11 +3,8 @@ import React, { useEffect, useState } from 'react'
 import LinesEllipsis from 'react-lines-ellipsis'
 // @ts-ignore
 import responsiveHOC from 'react-lines-ellipsis/lib/responsiveHOC'
-import ToolBtn from '../../common/button/ToolBtn'
-import { psString } from '../../../util/localization'
 import { APP_CONFIG } from '../../../util/app.config'
 import common from '../../../util/common'
-import { repos } from '../../../util/repos'
 
 interface SearchListItemProps {
   documentData: any
@@ -36,24 +33,6 @@ export default function({ documentData, idx }: SearchListItemProps) {
       setIsLandscape(eleRatio >= documentRatio)
     }
   }
-
-  const handleDownloadClick = () =>
-    repos.Document.getDocumentDownloadUrl({
-      documentId: documentData.documentId
-    })
-      .then(result => {
-        const a = document.createElement('a')
-
-        a.style.display = 'none'
-        document.body.appendChild(a)
-        a.href = result.downloadUrl
-        a.setAttribute('download', documentData.documentName)
-        a.click()
-
-        window.URL.revokeObjectURL(a.href)
-        document.body.removeChild(a)
-      })
-      .catch(err => console.error(err))
 
   useEffect(() => {
     let _imgUrl = documentData.pagemap.metatags[0]['twitter:image']
@@ -116,10 +95,6 @@ export default function({ documentData, idx }: SearchListItemProps) {
             basedOn="words"
           />
         </div>
-        <ToolBtn
-          name={psString('common-download')}
-          click={handleDownloadClick()}
-        />
       </div>
     </div>
   )

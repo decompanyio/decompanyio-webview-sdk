@@ -3,6 +3,7 @@ import { psString } from '../../../util/localization'
 import UploadProgressModal from '../../common/modal/UploadProgressModal'
 import { AUTH_APIS } from '../../../util/auth'
 import { repos } from '../../../util/repos'
+import { commonNative } from '../../../util/commonNative'
 
 export default function({ history, userInfo }: any) {
   const [titleError, setTitleError] = useState('')
@@ -25,14 +26,18 @@ export default function({ history, userInfo }: any) {
 
   const handleSignOutBtnClick = () => AUTH_APIS.logout()
 
-  const handleCloseBtnClick = () => {
-    console.log('[Close button clicked]')
-    console.log('=> POST "Close Event" to Polaris Office Native')
-  }
+  const handleCloseBtnClick = () =>
+    document.getElementById('closeWebView')!.click()
 
   const handleUpload = (): void => {
     let data = {
-      fileInfo: null,
+      fileInfo: {
+        file: {
+          // TODO PO 측에서 정보를 받아야 합니다.
+          name: 'test.ppt',
+          size: 1000
+        }
+      },
       user: userInfo,
       tags: null,
       title: title,
@@ -45,22 +50,17 @@ export default function({ history, userInfo }: any) {
 
     // 문서 등록 API
     repos.Document.registerDocument(data)
-      .then((res: any) => {
-        console.log('[Complete Document Upload]')
-        console.log('=> result', res)
-        console.log('=> POST "Document Id" to Polaris Office Native')
-        console.log('=> POST "Close Event" to Polaris Office Native')
+      .then(res => {
+        commonNative.setSignedUrl(res.signedUrl)
+        document.getElementById('getUploadUrl')!.click()
       })
       .catch((err: any) => {
+        console.log('=> 문서 등록 실패 시 예외 처리 필요 합니다.')
         console.error(err)
       })
   }
 
   const handleUploadBtnClick = (): void => {
-    console.log('[Upload button clicked]')
-    console.log('Title : ' + title + '\nDescription : ' + desc)
-    console.log('=> POST "Upload Event" to PS SERVER')
-
     if (validateTitle(title)) handleUpload()
   }
 

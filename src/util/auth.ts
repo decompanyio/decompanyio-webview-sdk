@@ -1,8 +1,9 @@
 import repos from './repos'
-import { GetTokenProps, GetQueryParams } from './types'
+import { GetQueryParams, GetTokenProps } from './types'
 import UserInfo from '../service/model/UserInfo'
 import commonData from './commonData'
 import { APP_CONFIG } from './app.config'
+import AuthService from '../service/rest/AuthService'
 
 export const AUTH_APIS = {
   login: (provider?: string, returnUrl?: string) => {
@@ -21,8 +22,28 @@ export const AUTH_APIS = {
       APP_CONFIG.domain().mainHost
     }/callback&returnUrl=silent`
   },
+  refreshLogin: (rt: string) =>
+    new Promise((resolve, reject) => {
+      AuthService.GET.refreshToken(rt).then((res: any) => {
+        const at = res.authorization_token || ''
+        const rt = res.refresh_token || ''
+        const ea = res.expired_at || ''
+        const ru = res.return_url || ''
+
+        AUTH_APIS.setTokens(at, rt, ea, ru)
+          .then((userInfo: any) =>
+            AUTH_APIS.syncAuthAndRest(userInfo, at).then(() => resolve(at))
+          )
+          .catch(err => {
+            console.error(err)
+            AUTH_APIS.clearSession()
+            reject()
+          })
+      })
+    }),
   logout: (): void => {
     AUTH_APIS.clearSession()
+    document.getElementById('deleteToken')!.click()
     window.location.href = '/'
   },
   isAuthenticated: (): boolean => {
@@ -37,11 +58,34 @@ export const AUTH_APIS = {
     const loginInfo = AUTH_APIS.getTokens()
 
     return (
-      loginInfo.authorization_token !== '' &&
-      loginInfo.expiredAt !== '' &&
-      loginInfo.userInfo !== ''
+      loginInfo.authorization_token !== '' && loginInfo.refresh_token !== ''
     )
   },
+  // callback, URL 쿼리 -> 파라미터
+  getParamsFromAuthUrlQueryForCode: (qs: string): any =>
+    new Promise(resolve => {
+      const _qs = qs.split('+').join(' ')
+      const re = /[?&]?([^=]+)=([^&]*)/g
+      let params = {
+        error: '',
+        code: ''
+      }
+      let tokens
+
+      while ((tokens = re.exec(_qs))) {
+        // @ts-ignore
+        params['code'] = decodeURIComponent(tokens[2])
+      }
+
+      if (params.code) resolve(JSON.parse(window.atob(params.code)))
+      else
+        resolve({
+          error: '',
+          authorization_token: '',
+          refresh_token: '',
+          expired_at: 0
+        })
+    }),
   // URL 쿼리 -> 파라미터
   getParamsFromAuthUrlQuery: (qs: string): GetQueryParams => {
     const _qs = qs.split('+').join(' ')
@@ -49,6 +93,7 @@ export const AUTH_APIS = {
     let params = {
       error: '',
       authorization_token: '',
+      refresh_token: '',
       return_url: '',
       expired_at: 0
     }
@@ -61,24 +106,26 @@ export const AUTH_APIS = {
     return params
   },
   getMyInfo(): UserInfo {
-    let userInfo = localStorage.getItem('ps_ui')
+    let userInfo = sessionStorage.getItem('ps_ui')
+    let refreshToken = sessionStorage.getItem('ps_rt') || ''
     let userInfoWithJson = userInfo ? JSON.parse(userInfo) : ''
     if (!userInfoWithJson && AUTH_APIS.isLogin()) {
-      AUTH_APIS.scheduleRenewal()
+      AUTH_APIS.refreshLogin(refreshToken)
       return new UserInfo(null)
     }
     return new UserInfo(userInfoWithJson)
   },
   // 계정 관련 토큰 로컬스토리지 저장
-  setTokens: (at: string, ea: any, ru: string) =>
+  setTokens: (at: string, rt: string, ea: any, ru: string) =>
     new Promise(resolve => {
-      if (at) localStorage.setItem('ps_at', at)
-      if (ea) localStorage.setItem('ps_ea', AUTH_APIS.getExpiredAt(ea))
-      if (ru) localStorage.setItem('ps_ru', ru)
+      if (at) sessionStorage.setItem('ps_at', at)
+      if (rt) sessionStorage.setItem('ps_rt', rt)
+      if (ea) sessionStorage.setItem('ps_ea', AUTH_APIS.getExpiredAt(ea))
+      if (ru) sessionStorage.setItem('ps_ru', ru)
 
-      repos.Account.getUserInfo(at)
+      repos.Account.getUserInfo(at, rt)
         .then(res => {
-          localStorage.setItem('ps_ui', JSON.stringify(res))
+          sessionStorage.setItem('ps_ui', JSON.stringify(res))
           resolve(res)
         })
         .catch((err: any) => {
@@ -86,23 +133,22 @@ export const AUTH_APIS = {
         })
     }),
   getTokens: (): GetTokenProps => ({
-    authorization_token: localStorage.getItem('ps_at') || '',
-    expiredAt: localStorage.getItem('ps_ea') || '',
-    returnUrl: localStorage.getItem('ps_ru') || '',
-    userInfo: localStorage.getItem('ps_ui') || ''
+    authorization_token: sessionStorage.getItem('ps_at') || '',
+    refresh_token: sessionStorage.getItem('ps_rt') || '',
+    expiredAt: sessionStorage.getItem('ps_ea') || '',
+    returnUrl: sessionStorage.getItem('ps_ru') || '',
+    userInfo: sessionStorage.getItem('ps_ui') || ''
   }),
   getExpiredAt: (ea: number): string => JSON.stringify(ea * 1000),
   clearSession(): void {
-    localStorage.removeItem('ps_at')
-    localStorage.removeItem('ps_ea')
-    localStorage.removeItem('ps_ru')
-    localStorage.removeItem('ps_ui')
+    sessionStorage.removeItem('ps_at')
+    sessionStorage.removeItem('ps_rt')
+    sessionStorage.removeItem('ps_ea')
+    sessionStorage.removeItem('ps_ru')
+    sessionStorage.removeItem('ps_ui')
 
     // Tracking API
-    localStorage.removeItem('tracking_info')
-
-    // Content Editor
-    localStorage.removeItem('content')
+    sessionStorage.removeItem('tracking_info')
   },
   handleAuthentication: (location: any) =>
     new Promise((resolve, reject) => {
@@ -113,15 +159,17 @@ export const AUTH_APIS = {
         reject()
       } else {
         const at = query.authorization_token || ''
+        const rt = query.refresh_token || ''
         const ea = query.expired_at || ''
         const ru = query.return_url || ''
 
         // console.log('쿼리 token : ', at)
 
-        AUTH_APIS.setTokens(at, ea, ru).then((userInfo: any) =>
-          AUTH_APIS.syncAuthAndRest(userInfo, at).then(() =>
+        AUTH_APIS.setTokens(at, rt, ea, ru).then((userInfo: any) =>
+          AUTH_APIS.syncAuthAndRest(userInfo, at).then(() => {
+            console.log(at, rt, ea, ru)
             resolve(userInfo.email)
-          )
+          })
         )
       }
     }),
@@ -130,7 +178,7 @@ export const AUTH_APIS = {
       if (at) {
         repos.Account.syncAuthAndRest(ui, at)
           .then((res: any) => {
-            localStorage.setItem('user_sync', JSON.stringify(res))
+            sessionStorage.setItem('user_sync', JSON.stringify(res))
             resolve()
           })
           .catch((): void => {
@@ -140,100 +188,6 @@ export const AUTH_APIS = {
       } else {
         console.log('session is not init...')
         AUTH_APIS.logout()
-      }
-    }),
-  renewSession: (): Promise<string> =>
-    new Promise((resolve, reject) => {
-      AUTH_APIS.iframeHandler()
-        .then((at: any) => {
-          resolve(at)
-        })
-        .catch(err => {
-          AUTH_APIS.clearSession()
-          console.log('renewSession error')
-          reject(err)
-        })
-    }),
-  scheduleRenewal: () =>
-    new Promise((resolve, reject) => {
-      let expiresAt = JSON.parse(localStorage.getItem('ps_ea') || '{}')
-      let at = localStorage.getItem('ps_at') || ''
-      let timeout = expiresAt - Date.now() // mms
-
-      //console.log('timeout : ', timeout)
-
-      const _renewSession = () =>
-        AUTH_APIS.renewSession()
-          .then(at => {
-            // console.log('_renewSession', at)
-            resolve(at)
-          })
-          .catch(err => {
-            console.log(err)
-            reject(err)
-          })
-
-      return timeout > 0 ? resolve(at) : _renewSession()
-    }),
-  iframeHandler: (provider?: string) =>
-    new Promise((resolve, reject) => {
-      const callbackIframeContainer = document.getElementById(
-        'callbackIframeContainer'
-      ) as HTMLElement
-
-      if (!callbackIframeContainer) reject()
-
-      let src = `${APP_CONFIG.domain().auth}/authentication/signin/${provider ||
-        commonData.defaultLoginPlatform}?prompt=none&login_hint=${
-        AUTH_APIS.getMyInfo().email
-      }&redirectUrl=${APP_CONFIG.domain().mainHost}/callback&returnUrl=silent`
-
-      let randomNumber = Math.random()
-
-      const iframeEle = document.createElement('iframe')
-      iframeEle.id = 'authIframe' + randomNumber
-      iframeEle.style.display = 'none'
-      iframeEle.src = src
-
-      callbackIframeContainer.appendChild(iframeEle)
-
-      // TODO IE, 표준 방법도 추가
-      // iframeEle.onload = AUTH_APIS.iframeEventListener(iframeEle.id)
-      iframeEle.addEventListener(
-        'load',
-        async _e =>
-          await AUTH_APIS.iframeEventListener(iframeEle.id)
-            .then(at => resolve(at))
-            .catch(err => reject(err))
-      )
-    }),
-  iframeEventListener: (id: string) =>
-    new Promise((resolve, reject) => {
-      const iframeEle = document.getElementById(id) as HTMLIFrameElement
-      const deleteEle = () => {
-        iframeEle.removeAttribute('onload')
-        iframeEle.remove()
-      }
-
-      if (iframeEle && iframeEle.contentWindow) {
-        const urlFromIframe = iframeEle.contentWindow.location.href
-        // iframe은 쓸모가 없어졌으니, 삭제해줍니다.
-        deleteEle()
-
-        if (urlFromIframe && urlFromIframe !== 'about:blank') {
-          let url = new URL(urlFromIframe)
-          let at = url.searchParams.get('authorization_token') || ''
-          let ea = AUTH_APIS.getExpiredAt(
-            Number(url.searchParams.get('expired'))
-          )
-          AUTH_APIS.setTokens(at, ea, '')
-
-          if (at) resolve(at)
-          else reject('Authorize Token does not exist.')
-        }
-      } else {
-        deleteEle()
-        reject('iframe does not exist.')
       }
     })
 }

@@ -6,9 +6,19 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 
+declare global {
+  interface Window {
+    ourComponent: any
+  }
+}
+
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <App
+      callMethods={(methods: any) => {
+        window.ourComponent = methods
+      }}
+    />
   </BrowserRouter>,
   document.getElementById('root')
 )

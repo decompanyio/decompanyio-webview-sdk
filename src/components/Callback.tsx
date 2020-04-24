@@ -18,11 +18,12 @@ export default function({ history }: any): ReactElement {
 
         AUTH_APIS.handleAuthentication(window.location)
           .then(() => {
+            console.log('login success')
             window.location.assign(APP_CONFIG.domain().mainHost + '/upload')
           })
           .catch((err): void => {
             console.log('err: ', err)
-            history.push('/upload')
+            history.push('/login')
           })
       }
     }

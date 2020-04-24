@@ -3,12 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 // @ts-ignore
 import { ThreeBounce } from 'better-react-spinkit'
 import { repos } from '../../../util/repos'
-import ContentsCategoryName from '../contents/ContentsCategoryName'
-import { psString } from '../../../util/localization'
 import SearchListItem from './SearchListItem'
-import InfoFromPo from '../../../service/model/InfoFromPo'
-import DocumentListMock from '../../common/mock/DocumentListMock'
-import NoData from '../../common/NoData'
 
 // GET 한 문서 데이터 set
 const setResultList = (listData: any, resultList: any) =>
@@ -44,7 +39,7 @@ export default function(props: any) {
   // @ts-ignore
   const getSpecificSearchOption = (): string => {
     let option = ''
-    let poInfo = props.poInfo || new InfoFromPo(null)
+    let poInfo = props.poInfo
 
     if (poInfo.tag) option = getCommonSearchQuery('tag') + poInfo.tag
 
@@ -82,36 +77,25 @@ export default function(props: any) {
 
   return (
     <div className="container">
-      <ContentsCategoryName
-        category={psString('search-result')}
-        subCategory={' #' + searchValue}
-      />
-
-      {state.list && state.list.length > 0 ? (
-        <InfiniteScroll
-          dataLength={state.list.length}
-          next={fetchData}
-          hasMore={!state.endPage}
-          loader={
-            <div className="sl_spinner mb-4 d-flex">
-              <ThreeBounce color="#3681fe" name="ball-pulse-sync" />
-            </div>
-          }
-        >
-          <div className="sl_contentsList mt-3 row">
-            {state.list.length > 0 &&
-              state.list.map((result: any, idx) => (
-                <div className="col-12 col-md-6 col-lg-4 mb-4" key={idx}>
-                  <SearchListItem documentData={result} idx={idx} />
-                </div>
-              ))}
+      <InfiniteScroll
+        dataLength={state.list.length}
+        next={fetchData}
+        hasMore={!state.endPage}
+        loader={
+          <div className="sl_spinner mb-4 d-flex">
+            <ThreeBounce color="#3681fe" name="ball-pulse-sync" />
           </div>
-        </InfiniteScroll>
-      ) : state.endPage ? (
-        <NoData />
-      ) : (
-        <DocumentListMock />
-      )}
+        }
+      >
+        <div className="sl_contentsList mt-3 row">
+          {state.list.length > 0 &&
+            state.list.map((result: any, idx) => (
+              <div className="col-12 col-md-6 col-lg-4 mb-4" key={idx}>
+                <SearchListItem documentData={result} idx={idx} />
+              </div>
+            ))}
+        </div>
+      </InfiniteScroll>
     </div>
   )
 }

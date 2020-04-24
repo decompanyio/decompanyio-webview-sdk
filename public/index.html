@@ -16,6 +16,17 @@
     />
     <title>Polaris Share</title>
   </head>
+  <script>
+    // AUTH TOKEN 호출 함수
+    function loadToken() {
+      return window.ourComponent.loadToken()
+    }
+
+    // UPLOAD URL 호출 함수
+    function getUploadUrl() {
+      return window.ourComponent.signedUrl
+    }
+  </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>

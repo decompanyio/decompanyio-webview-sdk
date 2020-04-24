@@ -26,6 +26,8 @@ export default {
     if (type !== 'GET') _header = { 'Content-Type': 'application/json' }
     if (header) _header = Object.assign(header, _header)
 
+    let tempUrl = url.split('/')[5]
+
     // @ts-ignore
     axios({
       method: type,
@@ -40,7 +42,10 @@ export default {
           )
         }
 
-        if (response.data.success && response.data.success === true) {
+        if (
+          (response.data.success && response.data.success === true) ||
+          tempUrl === 'refresh'
+        ) {
           success(response.data)
         }
         // 성공 alert
@@ -143,6 +148,21 @@ export default {
       success,
       failure,
       _header
+    )
+  },
+  _requestWithUrlParamForRefresh: function(
+    url: string,
+    type: string,
+    data: any,
+    success: any,
+    failure: any
+  ): void {
+    this._request(
+      this.getRootUrlWithAuth() + url + '/' + data,
+      type,
+      null,
+      success,
+      failure
     )
   },
   _requestGetWithHeader: function(
