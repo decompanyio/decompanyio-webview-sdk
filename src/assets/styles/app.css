@@ -467,10 +467,9 @@
 }
 
 .l_logo {
-    width: 183px;
     background-image: url('https://res.share.decompany.io/static/image/logo.png');
     background-repeat: no-repeat;
-    background-position-y: 9px;
+    background-position-x: 23px;
     position: relative;
     height: 50px;
     cursor: pointer;
