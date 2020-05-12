@@ -69,7 +69,7 @@ export default function({ history, userInfo }: any) {
         setTempResult(title + ' upload success!')
       })
       .catch((err: any) => {
-        setTempResult(title + ' upload failed!')
+        setTempResult(title + ' upload fail!')
         console.log('=> 문서 등록 실패 시 예외 처리 필요 합니다.')
         console.error(err)
       })
@@ -99,8 +99,6 @@ export default function({ history, userInfo }: any) {
         />
         <h3>{psString('upload-doc-subj')}</h3>
       </div>
-
-      <div>{tempResult}</div>
 
       <input
         type="text"
@@ -152,6 +150,8 @@ export default function({ history, userInfo }: any) {
       </div>
 
       <UploadProgressModal percentage={percentage} />
+
+      <div>{tempResult}</div>
     </div>
   )
 }
