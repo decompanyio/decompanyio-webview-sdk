@@ -10,24 +10,25 @@
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
+      rel="stylesheet"
+      type="text/css"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
     />
     <title>Polaris Share</title>
   </head>
-  <script>
-    // AUTH TOKEN 호출 함수
-    function loadToken() {
-      return window.ourComponent.loadToken()
-    }
 
-    // UPLOAD URL 호출 함수
-    function getUploadUrl() {
-      return window.ourComponent.signedUrl
-    }
-  </script>
   <body>
+    <script>
+      // AUTH TOKEN 호출 함수
+      function loadToken() {
+        return window.ourComponent.loadToken()
+      }
+
+      // UPLOAD URL 호출 함수
+      function getUploadUrl() {
+        return window.ourComponent.signedUrl
+      }
+    </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>

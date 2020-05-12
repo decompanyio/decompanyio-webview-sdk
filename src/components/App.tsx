@@ -1,5 +1,3 @@
-import 'babel-polyfill'
-import 'es6-promise/auto'
 import React, { useEffect, useState } from 'react'
 import ReactTooltip from 'react-tooltip'
 import { Route, Router, Switch } from 'react-router-dom'
