@@ -39,7 +39,7 @@
 
 .common_modal_title {
     position: relative;
-    margin: 25px 0;
+    margin: 0 0 25px 0;
     flex: 0 0 auto;
 }
 
@@ -124,7 +124,7 @@
     cursor: pointer;
     padding: 6px 20px;
     transition: 0.2s all ease-in-out;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 400;
 }
 
@@ -141,7 +141,7 @@
     border: 1px solid #3681fe;
     padding: 6px 20px;
     transition: 0.2s all ease-in-out;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 400;
     -ms-user-select: none;
     -webkit-user-select: none;
@@ -160,20 +160,14 @@
     color: red;
     cursor: pointer;
     border-radius: 2px;
-    border: 1px solid red;
     padding: 6px 20px;
     transition: 0.2s all ease-in-out;
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 400;
     -ms-user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-}
-
-.common_signOutBtn:hover {
-    background: red;
-    color: white;
 }
 
 .common_font {
@@ -367,10 +361,11 @@
 .u_signOutBtnWrapper {
     position: absolute;
     left: 0;
+    top: 16px;
 }
 
 .u_logo {
-    width: 260px;
+    width: 250px;
     background-image: url('https://res.share.decompany.io/static/image/logo.png');
     background-repeat: no-repeat;
     background-position-x: -25px;
