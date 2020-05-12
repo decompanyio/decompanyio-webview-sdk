@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+// @ts-ignore
+import { FadingCircle } from 'better-react-spinkit'
 import { psString } from '../../../util/localization'
 import UploadProgressModal from '../../common/modal/UploadProgressModal'
 import { AUTH_APIS } from '../../../util/auth'
@@ -10,11 +12,20 @@ export default function({ history, userInfo }: any) {
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
   const [percentage] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [tempResult, setTempResult] = useState('')
 
   // 제목 유효성 체크
   const validateTitle = (value: string) => {
     setTitleError(value.length > 0 ? '' : psString('upload-doc-error-1'))
     return value.length > 0
+  }
+
+  const clearInputValue = () => {
+    const titleEle = document.getElementById('docTitle') as HTMLInputElement
+    const descEle = document.getElementById('docDesc') as HTMLInputElement
+    titleEle.value = ''
+    descEle.value = ''
   }
 
   // 제목 변경 관리
@@ -51,17 +62,24 @@ export default function({ history, userInfo }: any) {
     // 문서 등록 API
     repos.Document.registerDocument(data)
       .then(res => {
+        setLoading(false)
+        clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
+        setTempResult(title + ' upload success!')
       })
       .catch((err: any) => {
+        setTempResult(title + ' upload failed!')
         console.log('=> 문서 등록 실패 시 예외 처리 필요 합니다.')
         console.error(err)
       })
   }
 
   const handleUploadBtnClick = (): void => {
-    if (validateTitle(title)) handleUpload()
+    if (validateTitle(title)) {
+      setLoading(true)
+      handleUpload()
+    }
   }
 
   useEffect(() => {
@@ -81,6 +99,8 @@ export default function({ history, userInfo }: any) {
         />
         <h3>{psString('upload-doc-subj')}</h3>
       </div>
+
+      <div>{tempResult}</div>
 
       <input
         type="text"
@@ -103,14 +123,30 @@ export default function({ history, userInfo }: any) {
       <div className="u_btnWrapper d-flex">
         <div
           onClick={() => handleSignOutBtnClick()}
-          className="common_signOutBtn  u_signOutBtnWrapper"
+          className={
+            'common_signOutBtn  u_signOutBtnWrapper ' +
+            (loading ? 'common_disabledBtn' : '')
+          }
         >
           {psString('common-logout')}
         </div>
-        <div onClick={() => handleCloseBtnClick()} className="common_cancelBtn">
+        <div
+          onClick={() => handleCloseBtnClick()}
+          className={
+            'common_cancelBtn ' + (loading ? 'common_disabledBtn' : '')
+          }
+        >
           {psString('common-modal-cancel')}
         </div>
-        <div onClick={() => handleUploadBtnClick()} className="common_okBtn">
+        <div
+          onClick={() => handleUploadBtnClick()}
+          className={'common_okBtn ' + (loading ? 'common_disabledBtn' : '')}
+        >
+          {loading && (
+            <div className="common_loadingWrapper">
+              <FadingCircle color="#3681fe" size={17} />
+            </div>
+          )}
           {psString('common-modal-upload')}
         </div>
       </div>

@@ -228,6 +228,29 @@
     opacity: 0;
 }
 
+.common_loadingWrapper {
+    position: absolute;
+    background: white;
+    width: 100%;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    top: 0;
+}
+
+.common_disabledBtn {
+    border-color: #d2d2d2 !important;
+    color: #d2d2d2 !important;
+    cursor: default !important;
+    pointer-events: none;
+}
+
+.common_disabledBtn:hover {
+    background: white !important;
+}
+
 
 /*************************************
            COMMON ANIMATION
