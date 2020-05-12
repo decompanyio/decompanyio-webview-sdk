@@ -299,7 +299,8 @@
     position: absolute;
     z-index: 1;
     max-width: 55px;
-    left: calc(50% - 28px)
+    left: calc(50% - 28px);
+    top: calc(50% - 26px);
 }
 
 
