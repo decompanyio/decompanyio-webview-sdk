@@ -1,0 +1,38 @@
+version: 0.2
+env:
+  variables:
+    AWS_ACCOUNT_ID: "197966029048"
+    AWS_DEFAULT_REGION: "ap-northeast-2"
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10 # 런타임 nodejs10으로 설정
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)  # AWS ECR 로그인
+      - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/polarishare/dev/ps-sdk  # REPOSITORY_URI 설정
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7) # COMMIT_HASH 설정
+      - IMAGE_TAG=${COMMIT_HASH:=latest}  # IMAGE_TAG 설정
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - npm install && npm run build
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image imageDetail file...
+      - printf '[{"name":"ps-sdk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imageDetail.json
+artifacts:
+  files:
+    - imageDetail.json
+    - appspec.yaml
+    - taskdef.json
+  discard-paths: yes
