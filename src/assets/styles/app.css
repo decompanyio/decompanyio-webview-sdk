@@ -373,7 +373,8 @@
     width: 183px;
     background-image: url('https://res.share.decompany.io/static/image/logo.png');
     background-repeat: no-repeat;
-    background-position-y: 9px;
+    background-position-x: -25px;
+    background-position-y: -8px;
     position: relative;
     height: 50px;
     cursor: pointer;
