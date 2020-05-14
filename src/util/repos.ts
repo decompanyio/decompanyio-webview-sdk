@@ -21,17 +21,22 @@ export const repos = {
     // instance = this
   },
   async init() {
+    // PO로 부터 문서 정보 GET 했는지 확인 합니다.
+    const {
+      authorization_token,
+      refresh_token,
+      errMsg
+    } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(
+      decodeURIComponent(document.location.href)
+    )
+
+    // TODO 작업 필요!
+    if (errMsg) return Promise.resolve(false)
+
     // 로그인 체크
     if (AUTH_APIS.isLogin())
       await AUTH_APIS.refreshLogin(AUTH_APIS.getTokens().refresh_token)
     else {
-      const {
-        authorization_token,
-        refresh_token
-      } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(
-        document.location.href
-      )
-
       // PO 에게 auth token 을 URL parameters 로 전달 받았을 시, refresh login 을 시도 합니다.
       if (authorization_token && refresh_token) {
         await AUTH_APIS.refreshLogin(refresh_token)

@@ -41,12 +41,22 @@ export default function({ history, userInfo }: any) {
     document.getElementById('closeWebView')!.click()
 
   const handleUpload = (): void => {
+    const {
+      documentName,
+      ext,
+      locale,
+      revision,
+      size
+    } = AUTH_APIS.getDocumentInfo()
+
     let data = {
       fileInfo: {
         file: {
-          // TODO PO 측에서 정보를 받아야 합니다.
-          name: 'test.ppt',
-          size: 1000
+          name: documentName,
+          size,
+          ext,
+          locale,
+          revision
         }
       },
       user: userInfo,
@@ -86,6 +96,11 @@ export default function({ history, userInfo }: any) {
     if (!AUTH_APIS.isLogin()) {
       history.push('/login')
     }
+
+    const { documentName } = AUTH_APIS.getDocumentInfo()
+    const titleEle = document.getElementById('docTitle') as HTMLInputElement
+    titleEle.value = documentName
+    setTitle(documentName)
   }, [])
 
   return (

@@ -5,6 +5,14 @@ import commonData from './commonData'
 import { APP_CONFIG } from './app.config'
 import AuthService from '../service/rest/AuthService'
 
+interface DocumentInfoProps {
+  documentName: string
+  ext: string
+  locale: string
+  revision: string
+  size: string
+}
+
 export const AUTH_APIS = {
   login: (provider?: string, returnUrl?: string) => {
     window.location.href = `${
@@ -63,27 +71,45 @@ export const AUTH_APIS = {
   },
   // callback, URL 쿼리 -> 파라미터
   getParamsFromAuthUrlQueryForCode: (qs: string): any =>
-    new Promise(resolve => {
-      const _qs = qs.split('+').join(' ')
-      const re = /[?&]?([^=]+)=([^&]*)/g
+    new Promise(async (resolve, reject) => {
       let params = {
-        error: '',
-        code: ''
+        code: '',
+        documentName: '',
+        ext: '',
+        locale: '',
+        revision: '',
+        size: ''
       }
-      let tokens
+      let parser = document.createElement('a')
+      parser.href = qs
+      let query = parser.search.substring(1)
+      let vars = query.split('&')
 
-      while ((tokens = re.exec(_qs))) {
+      for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split('=')
         // @ts-ignore
-        params['code'] = decodeURIComponent(tokens[2])
+        params[pair[0]] = decodeURIComponent(pair[1])
       }
 
-      if (params.code) resolve(JSON.parse(window.atob(params.code)))
-      else
-        resolve({
-          error: '',
-          authorization_token: '',
-          refresh_token: '',
-          expired_at: 0
+      /*console.log(params)
+      console.log(params.code)
+      console.log(window.atob(params.code))*/
+
+      AUTH_APIS.setDocumentInfo(params)
+        .then(() => {
+          if (params.code) resolve(JSON.parse(window.atob(params.code)))
+          else
+            resolve({
+              error: '',
+              authorization_token: '',
+              refresh_token: '',
+              expired_at: 0
+            })
+        })
+        .catch(() => {
+          let errMsg =
+            'Polaris Office로 부터 문서 정보가 올바르게 전달되지 않았습니다.'
+          reject(errMsg)
         })
     }),
   // URL 쿼리 -> 파라미터
@@ -105,6 +131,7 @@ export const AUTH_APIS = {
     }
     return params
   },
+  // PO로부터 문서 GET한 값, 세션 토큰에 저장 합니다.
   getMyInfo(): UserInfo {
     let userInfo = sessionStorage.getItem('ps_ui')
     let refreshToken = sessionStorage.getItem('ps_rt') || ''
@@ -115,6 +142,39 @@ export const AUTH_APIS = {
     }
     return new UserInfo(userInfoWithJson)
   },
+  // 계정 관련 토큰 로컬스토리지 저장
+  setDocumentInfo: ({
+    documentName,
+    ext,
+    locale,
+    revision,
+    size
+  }: DocumentInfoProps) =>
+    new Promise((resolve, reject) => {
+      const data = {
+        documentName,
+        ext,
+        locale,
+        revision,
+        size
+      }
+
+      if (data.documentName && data.ext) {
+        sessionStorage.setItem('ps_di', JSON.stringify(data))
+        resolve()
+      } else {
+        reject()
+      }
+    }),
+
+  // PO로부터 문서 전달 받아 세션 토큰에 저장된 값을 GET 합니다.
+  getDocumentInfo: () => {
+    console.log(sessionStorage.getItem('ps_di'))
+    if (sessionStorage.getItem('ps_di'))
+      return JSON.parse(sessionStorage.getItem('ps_di')!)
+    else return {}
+  },
+
   // 계정 관련 토큰 로컬스토리지 저장
   setTokens: (at: string, rt: string, ea: any, ru: string) =>
     new Promise(resolve => {
