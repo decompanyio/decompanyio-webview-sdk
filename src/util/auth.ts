@@ -169,7 +169,8 @@ export const AUTH_APIS = {
 
   // PO로부터 문서 전달 받아 세션 토큰에 저장된 값을 GET 합니다.
   getDocumentInfo: () => {
-    console.log(sessionStorage.getItem('ps_di'))
+    //console.log(sessionStorage.getItem('ps_di'))
+
     if (sessionStorage.getItem('ps_di'))
       return JSON.parse(sessionStorage.getItem('ps_di')!)
     else return {}

@@ -33,6 +33,10 @@ export const repos = {
     // TODO 작업 필요!
     if (errMsg) {
       alert('문서정보를 불러오지 못하였습니다.')
+
+      const closeEle = document.getElementById('closeWebView') as HTMLElement
+      closeEle.click()
+
       return Promise.resolve(false)
     }
 
