@@ -31,7 +31,10 @@ export const repos = {
     )
 
     // TODO 작업 필요!
-    if (errMsg) return Promise.resolve(false)
+    if (errMsg) {
+      alert('문서정보를 불러오지 못하였습니다.')
+      return Promise.resolve(false)
+    }
 
     // 로그인 체크
     if (AUTH_APIS.isLogin())
