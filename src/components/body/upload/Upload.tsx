@@ -76,7 +76,6 @@ export default function({ history, userInfo }: any) {
         clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
-        setTempResult(title + ' upload success!')
       })
       .catch((err: any) => {
         setTempResult(title + ' upload fail!')
