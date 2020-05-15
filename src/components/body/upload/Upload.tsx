@@ -52,7 +52,7 @@ export default function({ history, userInfo }: any) {
     let data = {
       fileInfo: {
         file: {
-          name: documentName + ext,
+          name: `${documentName}.${ext}`,
           size,
           ext,
           locale,
