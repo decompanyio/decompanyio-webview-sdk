@@ -102,6 +102,9 @@ export const repos = {
         data: {
           filename: fileInfo.file.name,
           size: fileInfo.file.size,
+          ext: fileInfo.file.ext,
+          locale: fileInfo.file.locale,
+          revision: fileInfo.file.revision,
           username: user.username,
           sub: user.id,
           title: title,
