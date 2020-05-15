@@ -28,9 +28,11 @@ export const repos = {
     } catch (e) {
       await Promise.reject(e)
     }
+
     //console.log(decodeURI(document.location.href))
     //console.log(decodedUri)
     //console.log(unescape(document.location.href))
+
     // PO로 부터 문서 정보 GET 했는지 확인 합니다.
     const {
       authorization_token,

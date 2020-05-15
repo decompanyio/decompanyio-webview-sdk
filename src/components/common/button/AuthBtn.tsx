@@ -9,7 +9,7 @@ export default function({ provider }: AuthBtnProps) {
   return (
     <div
       className="ab_container mb-3"
-      onClick={() => AUTH_APIS.login(provider)}
+      onClick={() => AUTH_APIS.login(provider, document.location.href)}
     >
       <div className="ab_wrapper" />
       <div className={'ab_iconContainer ab_iconContainer_' + provider}>

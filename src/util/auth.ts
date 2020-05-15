@@ -161,7 +161,7 @@ export const AUTH_APIS = {
       /*console.log(documentName)
       console.log(unescape(documentName))*/
 
-      // TODO documentName decode 필
+      // TODO documentName decode 필요?
       const data = {
         documentName: documentName,
         ext,
