@@ -21,23 +21,29 @@ export const repos = {
     // instance = this
   },
   async init() {
+    let decodedUri = ''
+
+    try {
+      decodedUri = unescape(document.location.href)
+    } catch (e) {
+      await Promise.reject(e)
+    }
+    //console.log(decodeURI(document.location.href))
+    console.log(decodedUri)
+    //console.log(unescape(document.location.href))
     // PO로 부터 문서 정보 GET 했는지 확인 합니다.
     const {
       authorization_token,
       refresh_token,
       errMsg
-    } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(
-      decodeURIComponent(document.location.href)
-    )
+    } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(decodedUri)
 
     // TODO 작업 필요!
     if (errMsg) {
-      alert('문서정보를 불러오지 못하였습니다.')
-
       const closeEle = document.getElementById('closeWebView') as HTMLElement
       closeEle.click()
 
-      return Promise.resolve(false)
+      return Promise.reject('The document information could not be loaded.')
     }
 
     // 로그인 체크
