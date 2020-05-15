@@ -253,8 +253,24 @@
 
 
 /*************************************
+                 APP
+**************************************/
+
+.app_error {
+    position: absolute;
+    font-size: 1rem;
+    font-weight: 400;
+    color: white;
+    background: red;
+    z-index: 6;
+    padding: 0 1rem;
+}
+
+
+/*************************************
            COMMON ANIMATION
 **************************************/
+
 .mock-gradient-animation {
     background: linear-gradient(310deg, #ffffff, #d5d5d5);
     background-size: 800% 800%;

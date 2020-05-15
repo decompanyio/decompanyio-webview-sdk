@@ -93,7 +93,7 @@ export default function({ callMethods }: any) {
           <LoadingModal />
         )}
 
-        {err && <div>{err}</div>}
+        {err && <div className="app_error">ERROR :: {err}</div>}
 
         <ReactTooltip />
 

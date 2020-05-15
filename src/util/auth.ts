@@ -71,7 +71,7 @@ export const AUTH_APIS = {
   },
   // callback, URL 쿼리 -> 파라미터
   getParamsFromAuthUrlQueryForCode: (qs: string): any =>
-    new Promise(async (resolve, reject) => {
+    new Promise(async resolve => {
       let params = {
         code: '',
         documentName: '',
@@ -88,10 +88,10 @@ export const AUTH_APIS = {
       for (let i = 0; i < vars.length; i++) {
         let pair = vars[i].split('=')
         // @ts-ignore
-        params[pair[0]] = decodeURIComponent(pair[1])
+        params[pair[0]] = pair[1]
       }
 
-      /*console.log(params)
+      /* console.log(params)
       console.log(params.code)
       console.log(window.atob(params.code))*/
 
@@ -100,18 +100,19 @@ export const AUTH_APIS = {
           if (params.code) resolve(JSON.parse(window.atob(params.code)))
           else
             resolve({
-              error: '',
+              errMsg: '',
               authorization_token: '',
               refresh_token: '',
               expired_at: 0
             })
         })
         .catch(() => {
-          let errMsg =
-            'Polaris Office로 부터 문서 정보가 올바르게 전달되지 않았습니다.'
-          reject(errMsg)
+          let errMsg = 'The document information could not be loaded.'
+
+          resolve({ errMsg })
         })
     }),
+
   // URL 쿼리 -> 파라미터
   getParamsFromAuthUrlQuery: (qs: string): GetQueryParams => {
     const _qs = qs.split('+').join(' ')
@@ -131,6 +132,7 @@ export const AUTH_APIS = {
     }
     return params
   },
+
   // PO로부터 문서 GET한 값, 세션 토큰에 저장 합니다.
   getMyInfo(): UserInfo {
     let userInfo = sessionStorage.getItem('ps_ui')
@@ -142,6 +144,7 @@ export const AUTH_APIS = {
     }
     return new UserInfo(userInfoWithJson)
   },
+
   // 계정 관련 토큰 로컬스토리지 저장
   setDocumentInfo: ({
     documentName,
@@ -151,8 +154,16 @@ export const AUTH_APIS = {
     size
   }: DocumentInfoProps) =>
     new Promise((resolve, reject) => {
+      let r = /\\u([\d\w]{4})/gi
+      documentName = documentName.replace(r, function(_match, grp) {
+        return String.fromCharCode(parseInt(grp, 16))
+      })
+      /*console.log(documentName)
+      console.log(unescape(documentName))*/
+
+      // TODO documentName decode 필
       const data = {
-        documentName,
+        documentName: documentName,
         ext,
         locale,
         revision,

@@ -29,7 +29,7 @@ export const repos = {
       await Promise.reject(e)
     }
     //console.log(decodeURI(document.location.href))
-    console.log(decodedUri)
+    //console.log(decodedUri)
     //console.log(unescape(document.location.href))
     // PO로 부터 문서 정보 GET 했는지 확인 합니다.
     const {
@@ -43,7 +43,7 @@ export const repos = {
       const closeEle = document.getElementById('closeWebView') as HTMLElement
       closeEle.click()
 
-      return Promise.reject('The document information could not be loaded.')
+      return Promise.reject(errMsg)
     }
 
     // 로그인 체크
