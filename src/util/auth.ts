@@ -88,10 +88,12 @@ export const AUTH_APIS = {
       for (let i = 0; i < vars.length; i++) {
         let pair = vars[i].split('=')
         // @ts-ignore
-        params[pair[0]] = pair[1]
+        params[pair[0]] =
+          pair[0] === 'documentName' ? decodeURIComponent(pair[1]) : pair[1]
       }
 
-      /* console.log(params)
+      /*console.log(qs)
+      console.log(params)
       console.log(params.code)
       console.log(window.atob(params.code))*/
 
@@ -128,7 +130,7 @@ export const AUTH_APIS = {
 
     while ((tokens = re.exec(_qs))) {
       // @ts-ignore
-      params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2])
+      params[tokens[1]] = tokens[2]
     }
     return params
   },

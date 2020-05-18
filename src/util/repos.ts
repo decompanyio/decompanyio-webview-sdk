@@ -24,7 +24,7 @@ export const repos = {
     let decodedUri = ''
 
     try {
-      decodedUri = unescape(document.location.href)
+      decodedUri = decodeURIComponent(document.location.href)
     } catch (e) {
       await Promise.reject(e)
     }
