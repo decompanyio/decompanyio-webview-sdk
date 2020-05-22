@@ -119,9 +119,9 @@ export const repos = {
         }
       }
 
-      return DocService.POST.registerDocument(params)
-        .then((res): Register => new Register(res))
-        .catch(err => err)
+      return DocService.POST.registerDocument(params).then(
+        (res): Register => new Register(res)
+      )
     }
   },
   Custom: {
