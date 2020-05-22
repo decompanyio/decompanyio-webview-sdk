@@ -79,7 +79,11 @@ export default function({ history, userInfo }: any) {
         document.getElementById('getUploadUrl')!.click()
       })
       .catch((err: any) => {
-        setErr('An error occurred when uploading the document.')
+        setErr(
+          typeof err === 'string'
+            ? err
+            : 'An error occurred when uploading the document.'
+        )
         console.error(err)
       })
   }
