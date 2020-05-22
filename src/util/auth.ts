@@ -99,13 +99,11 @@ export const AUTH_APIS = {
 
       AUTH_APIS.setDocumentInfo(params)
         .then(() => {
-          if (params.code) resolve(JSON.parse(window.atob(params.code)))
+          if (params.code) resolve(window.atob(params.code))
           else
             resolve({
               errMsg: '',
-              authorization_token: '',
-              refresh_token: '',
-              expired_at: 0
+              refresh_token: ''
             })
         })
         .catch(() => {
@@ -172,7 +170,7 @@ export const AUTH_APIS = {
         size
       }
 
-      if (data.documentName && data.ext) {
+      if (data.documentName && data.documentName !== 'undefined' && data.ext) {
         sessionStorage.setItem('ps_di', JSON.stringify(data))
         resolve()
       } else {
@@ -182,8 +180,6 @@ export const AUTH_APIS = {
 
   // PO로부터 문서 전달 받아 세션 토큰에 저장된 값을 GET 합니다.
   getDocumentInfo: () => {
-    //console.log(sessionStorage.getItem('ps_di'))
-
     if (sessionStorage.getItem('ps_di'))
       return JSON.parse(sessionStorage.getItem('ps_di')!)
     else return {}

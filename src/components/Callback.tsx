@@ -10,7 +10,7 @@ export default function({ history }: any): ReactElement {
     if (typeof window !== 'undefined') {
       let url = new URL(document.location.href)
       let returnUrl = url.searchParams.get('return_url') || ''
-      console.log(AUTH_APIS.getDocumentInfo())
+
       const {
         documentName,
         ext,

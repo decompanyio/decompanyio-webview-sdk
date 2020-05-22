@@ -35,7 +35,6 @@ export const repos = {
 
     // PO로 부터 문서 정보 GET 했는지 확인 합니다.
     const {
-      authorization_token,
       refresh_token,
       errMsg
     } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(decodedUri)
@@ -53,7 +52,7 @@ export const repos = {
       await AUTH_APIS.refreshLogin(AUTH_APIS.getTokens().refresh_token)
     else {
       // PO 에게 auth token 을 URL parameters 로 전달 받았을 시, refresh login 을 시도 합니다.
-      if (authorization_token && refresh_token) {
+      if (refresh_token) {
         await AUTH_APIS.refreshLogin(refresh_token)
         history.push('/')
       } else {

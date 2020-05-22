@@ -6,6 +6,7 @@ import UploadProgressModal from '../../common/modal/UploadProgressModal'
 import { AUTH_APIS } from '../../../util/auth'
 import { repos } from '../../../util/repos'
 import { commonNative } from '../../../util/commonNative'
+import common from '../../../util/common'
 
 export default function({ history, userInfo }: any) {
   const [titleError, setTitleError] = useState('')
@@ -104,6 +105,7 @@ export default function({ history, userInfo }: any) {
 
   return (
     <div className="u_container">
+      <div className="u_version">{common.getVersion()}</div>
       <div className="common_modal_title">
         <a
           className="u_logo"
