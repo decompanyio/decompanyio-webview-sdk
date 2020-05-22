@@ -53,7 +53,9 @@ export const repos = {
     else {
       // PO 에게 auth token 을 URL parameters 로 전달 받았을 시, refresh login 을 시도 합니다.
       if (refresh_token) {
-        await AUTH_APIS.refreshLogin(refresh_token)
+        await AUTH_APIS.refreshLogin(refresh_token).catch(err =>
+          Promise.reject(err)
+        )
         history.push('/')
       } else {
         AUTH_APIS.clearSession()

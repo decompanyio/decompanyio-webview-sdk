@@ -14,7 +14,7 @@ export default function({ history, userInfo }: any) {
   const [desc, setDesc] = useState('')
   const [percentage] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [tempResult, setTempResult] = useState('')
+  const [err, setErr] = useState('')
 
   // 제목 유효성 체크
   const validateTitle = (value: string) => {
@@ -79,8 +79,7 @@ export default function({ history, userInfo }: any) {
         document.getElementById('getUploadUrl')!.click()
       })
       .catch((err: any) => {
-        setTempResult(title + ' upload fail!')
-        console.log('=> 문서 등록 실패 시 예외 처리 필요 합니다.')
+        setErr('An error occurred when uploading the document.')
         console.error(err)
       })
   }
@@ -167,7 +166,7 @@ export default function({ history, userInfo }: any) {
 
       <UploadProgressModal percentage={percentage} />
 
-      <div>{tempResult}</div>
+      {err && <div className="app_error">ERROR :: {err}</div>}
     </div>
   )
 }

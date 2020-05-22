@@ -45,7 +45,7 @@ export const AUTH_APIS = {
           .catch(err => {
             console.error(err)
             AUTH_APIS.clearSession()
-            reject()
+            reject('Invalid Token')
           })
       })
     }),
@@ -92,11 +92,6 @@ export const AUTH_APIS = {
           pair[0] === 'documentName' ? decodeURIComponent(pair[1]) : pair[1]
       }
 
-      /*console.log(qs)
-      console.log(params)
-      console.log(params.code)
-      console.log(window.atob(params.code))*/
-
       AUTH_APIS.setDocumentInfo(params)
         .then(() => {
           if (params.code) resolve(window.atob(params.code))
@@ -107,7 +102,7 @@ export const AUTH_APIS = {
             })
         })
         .catch(() => {
-          let errMsg = 'The document information could not be loaded.'
+          let errMsg = 'Incorrect document information.'
 
           resolve({ errMsg })
         })
@@ -158,10 +153,7 @@ export const AUTH_APIS = {
       documentName = documentName.replace(r, function(_match, grp) {
         return String.fromCharCode(parseInt(grp, 16))
       })
-      /*console.log(documentName)
-      console.log(unescape(documentName))*/
 
-      // TODO documentName decode 필요?
       const data = {
         documentName: documentName,
         ext,
