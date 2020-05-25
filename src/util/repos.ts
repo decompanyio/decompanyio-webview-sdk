@@ -41,7 +41,7 @@ export const repos = {
 
     // TODO 작업 필요!
     if (errMsg) {
-      const closeEle = document.getElementById('closeWebView') as HTMLElement
+      const closeEle = document.getElementById('closeSDK') as HTMLElement
       closeEle.click()
 
       return Promise.reject(errMsg)

@@ -39,7 +39,7 @@ export default function({ history, userInfo }: any) {
   const handleSignOutBtnClick = () => AUTH_APIS.logout()
 
   const handleCloseBtnClick = () =>
-    document.getElementById('closeWebView')!.click()
+    document.getElementById('closeSDK')!.click()
 
   const handleUpload = (): void => {
     const {
