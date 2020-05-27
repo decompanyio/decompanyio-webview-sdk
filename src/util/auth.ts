@@ -92,11 +92,15 @@ export const AUTH_APIS = {
           pair[0] === 'documentName' ? decodeURIComponent(pair[1]) : pair[1]
       }
 
+      //console.log(params.code)
+      //console.log(window.atob(params.code))
+
       AUTH_APIS.setDocumentInfo(params)
         .then(() => {
-          if (params.code) resolve(window.atob(params.code))
+          if (params.code)
+            return resolve({ refresh_token: window.atob(params.code) })
           else
-            resolve({
+            return resolve({
               errMsg: '',
               refresh_token: ''
             })
@@ -104,7 +108,7 @@ export const AUTH_APIS = {
         .catch(() => {
           let errMsg = 'Incorrect document information.'
 
-          resolve({ errMsg })
+          return resolve({ errMsg })
         })
     }),
 

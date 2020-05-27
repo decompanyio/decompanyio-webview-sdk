@@ -39,6 +39,8 @@ export const repos = {
       errMsg
     } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(decodedUri)
 
+    console.log(refresh_token)
+
     // TODO 작업 필요!
     if (errMsg) {
       const closeEle = document.getElementById('closeSDK') as HTMLElement
