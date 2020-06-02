@@ -13,6 +13,7 @@ import Callback from './Callback'
 import Login from './body/auth/Login'
 import Native from './Native'
 import { commonNative } from '../util/commonNative'
+import { APP_CONFIG } from '../util/app.config'
 
 // @ts-ignore
 export default function({ callMethods }: any) {
@@ -42,6 +43,9 @@ export default function({ callMethods }: any) {
   }
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_VERSION)
+    console.log(process.env.REACT_APP_ENV_SUB)
+    console.log(APP_CONFIG.env)
     // 외부에서 리액트 내부 함수를 호출하게 해줍니다.
     callMethods(commonNative)
 

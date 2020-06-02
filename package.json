@@ -34,7 +34,7 @@
     "typescript": "3.3.3333"
   },
   "scripts": {
-    "start": "cp ./.env.local ./.env && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "build:dev": "cp ./.env.dev ./.env && react-scripts build",
     "build:staging": "cp ./.env.staging ./.env && react-scripts build",
