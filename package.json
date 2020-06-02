@@ -1,6 +1,6 @@
 {
   "name": "decompanyio-webview-sdk",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
@@ -16,6 +16,7 @@
     "@typescript-eslint/parser": "^1.4.2",
     "axios": "^0.19.2",
     "better-react-spinkit": "^2.0.4",
+    "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",
     "eslint": "5.12.0",
     "history": "^4.10.1",

@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import '@babel/polyfill'
 import 'react-app-polyfill/ie11'
 import 'react-app-polyfill/ie9'
@@ -8,6 +9,8 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
+
+dotenv.config()
 
 declare global {
   interface Window {

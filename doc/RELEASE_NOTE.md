@@ -1,5 +1,8 @@
 # Release Note
 
+## 1.1.5
+- Add and apply dotenv
+
 ## 1.0.0
 - 계정 연동 작업
 - Add document delete API
