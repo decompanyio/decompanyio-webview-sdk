@@ -18,6 +18,7 @@ import { commonNative } from '../util/commonNative'
 export default function({ callMethods }: any) {
   const [init, setInit] = useState(false)
   const [userInfo, setUserInfo] = useState(new UserInfo(null))
+  const [err, setErr] = useState('')
 
   const pathName = () =>
     history.location.pathname.split('/')[1].toLocaleLowerCase()
@@ -51,6 +52,7 @@ export default function({ callMethods }: any) {
         .then(() => {
           setInit(true)
         })
+        .catch(err => setErr(err))
   }, [])
 
   useEffect(() => {
@@ -90,6 +92,9 @@ export default function({ callMethods }: any) {
         ) : (
           <LoadingModal />
         )}
+
+        {err && <div className="app_error">ERROR :: {err}</div>}
+
         <ReactTooltip />
 
         <Native />

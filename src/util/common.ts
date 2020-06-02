@@ -95,5 +95,10 @@ export default {
       (sec < 10 ? '0' : '') +
       sec
     )
+  },
+
+  // GET Version of this Project
+  getVersion(): string {
+    return 'v ' + process.env.REACT_APP_VERSION
   }
 }

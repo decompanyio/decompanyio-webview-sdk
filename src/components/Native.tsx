@@ -26,9 +26,9 @@ export default function() {
         onClick={() => handleClickElementForNative('deleteToken')}
       />
       <div
-        id="closeWebView"
+        id="closeSDK"
         className="common_triggerDivForNative"
-        onClick={() => handleClickElementForNative('closeWebView')}
+        onClick={() => handleClickElementForNative('closeSDK')}
       />
     </div>
   )

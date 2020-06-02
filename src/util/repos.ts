@@ -21,20 +21,43 @@ export const repos = {
     // instance = this
   },
   async init() {
+    let decodedUri = ''
+
+    try {
+      decodedUri = decodeURIComponent(document.location.href)
+    } catch (e) {
+      await Promise.reject(e)
+    }
+
+    //console.log(decodeURI(document.location.href))
+    //console.log(decodedUri)
+    //console.log(unescape(document.location.href))
+
+    // PO로 부터 문서 정보 GET 했는지 확인 합니다.
+    const {
+      refresh_token,
+      errMsg
+    } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(decodedUri)
+
+    console.log(refresh_token)
+
+    // TODO 작업 필요!
+    if (errMsg) {
+      const closeEle = document.getElementById('closeSDK') as HTMLElement
+      closeEle.click()
+
+      return Promise.reject(errMsg)
+    }
+
     // 로그인 체크
     if (AUTH_APIS.isLogin())
       await AUTH_APIS.refreshLogin(AUTH_APIS.getTokens().refresh_token)
     else {
-      const {
-        authorization_token,
-        refresh_token
-      } = await AUTH_APIS.getParamsFromAuthUrlQueryForCode(
-        document.location.href
-      )
-
       // PO 에게 auth token 을 URL parameters 로 전달 받았을 시, refresh login 을 시도 합니다.
-      if (authorization_token && refresh_token) {
-        await AUTH_APIS.refreshLogin(refresh_token)
+      if (refresh_token) {
+        await AUTH_APIS.refreshLogin(refresh_token).catch(err =>
+          Promise.reject(err)
+        )
         history.push('/')
       } else {
         AUTH_APIS.clearSession()
@@ -82,6 +105,9 @@ export const repos = {
         data: {
           filename: fileInfo.file.name,
           size: fileInfo.file.size,
+          ext: fileInfo.file.ext,
+          locale: fileInfo.file.locale,
+          revision: fileInfo.file.revision,
           username: user.username,
           sub: user.id,
           title: title,
@@ -95,9 +121,9 @@ export const repos = {
         }
       }
 
-      return DocService.POST.registerDocument(params)
-        .then((res): Register => new Register(res))
-        .catch(err => err)
+      return DocService.POST.registerDocument(params).then(
+        (res): Register => new Register(res)
+      )
     }
   },
   Custom: {

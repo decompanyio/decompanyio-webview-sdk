@@ -43,7 +43,9 @@ export default {
         }
 
         if (
-          (response.data.success && response.data.success === true) ||
+          (response.data.success &&
+            response.data.success === true &&
+            !response.data.message) ||
           tempUrl === 'refresh'
         ) {
           success(response.data)

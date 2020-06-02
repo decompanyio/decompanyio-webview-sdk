@@ -6,6 +6,7 @@ import UploadProgressModal from '../../common/modal/UploadProgressModal'
 import { AUTH_APIS } from '../../../util/auth'
 import { repos } from '../../../util/repos'
 import { commonNative } from '../../../util/commonNative'
+import common from '../../../util/common'
 
 export default function({ history, userInfo }: any) {
   const [titleError, setTitleError] = useState('')
@@ -13,7 +14,7 @@ export default function({ history, userInfo }: any) {
   const [desc, setDesc] = useState('')
   const [percentage] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [tempResult, setTempResult] = useState('')
+  const [err, setErr] = useState('')
 
   // 제목 유효성 체크
   const validateTitle = (value: string) => {
@@ -38,15 +39,25 @@ export default function({ history, userInfo }: any) {
   const handleSignOutBtnClick = () => AUTH_APIS.logout()
 
   const handleCloseBtnClick = () =>
-    document.getElementById('closeWebView')!.click()
+    document.getElementById('closeSDK')!.click()
 
   const handleUpload = (): void => {
+    const {
+      documentName,
+      ext,
+      locale,
+      revision,
+      size
+    } = AUTH_APIS.getDocumentInfo()
+
     let data = {
       fileInfo: {
         file: {
-          // TODO PO 측에서 정보를 받아야 합니다.
-          name: 'test.ppt',
-          size: 1000
+          name: `${documentName}.${ext}`,
+          size,
+          ext,
+          locale,
+          revision
         }
       },
       user: userInfo,
@@ -66,11 +77,13 @@ export default function({ history, userInfo }: any) {
         clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
-        setTempResult(title + ' upload success!')
       })
       .catch((err: any) => {
-        setTempResult(title + ' upload fail!')
-        console.log('=> 문서 등록 실패 시 예외 처리 필요 합니다.')
+        setErr(
+          typeof err === 'string'
+            ? err
+            : 'An error occurred when uploading the document.'
+        )
         console.error(err)
       })
   }
@@ -86,10 +99,16 @@ export default function({ history, userInfo }: any) {
     if (!AUTH_APIS.isLogin()) {
       history.push('/login')
     }
+
+    const { documentName } = AUTH_APIS.getDocumentInfo()
+    const titleEle = document.getElementById('docTitle') as HTMLInputElement
+    titleEle.value = documentName
+    setTitle(documentName)
   }, [])
 
   return (
     <div className="u_container">
+      <div className="u_version">{common.getVersion()}</div>
       <div className="common_modal_title">
         <a
           className="u_logo"
@@ -151,7 +170,7 @@ export default function({ history, userInfo }: any) {
 
       <UploadProgressModal percentage={percentage} />
 
-      <div>{tempResult}</div>
+      {err && <div className="app_error">ERROR :: {err}</div>}
     </div>
   )
 }

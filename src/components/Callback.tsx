@@ -11,15 +11,30 @@ export default function({ history }: any): ReactElement {
       let url = new URL(document.location.href)
       let returnUrl = url.searchParams.get('return_url') || ''
 
+      const {
+        documentName,
+        ext,
+        locale,
+        revision,
+        size
+      } = AUTH_APIS.getDocumentInfo()
+
       if (returnUrl && returnUrl === 'silent') {
         // console.log('This page is made for Silent Login.')
       } else {
-        if (AUTH_APIS.isLogin()) history.push('/upload')
+        if (AUTH_APIS.isLogin())
+          history.push(
+            `/upload?documentName=${documentName}&ext=${ext}&locale=${locale}&revision=${revision}&size=${size}`
+          )
 
         AUTH_APIS.handleAuthentication(window.location)
           .then(() => {
             console.log('login success')
-            window.location.assign(APP_CONFIG.domain().mainHost + '/upload')
+            window.location.assign(
+              `${
+                APP_CONFIG.domain().mainHost
+              }/upload?documentName=${documentName}&ext=${ext}&locale=${locale}&revision=${revision}&size=${size}`
+            )
           })
           .catch((err): void => {
             console.log('err: ', err)
