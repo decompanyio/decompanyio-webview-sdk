@@ -14,19 +14,17 @@ interface DocumentInfoProps {
 }
 
 export const AUTH_APIS = {
-  login: (provider?: string, returnUrl?: string) => {
-    window.location.href = `${
-      APP_CONFIG.domain().auth
-    }/authentication/signin/${provider ||
-      commonData.defaultLoginPlatform}?redirectUrl=${
-      APP_CONFIG.domain().mainHost
-    }/callback${returnUrl ? '&returnUrl=' + returnUrl : ''}`
+  login: (returnUrl?: string) => {
+    window.location.href = `${APP_CONFIG.domain().auth}/authentication/signin/${
+      commonData.defaultLoginPlatform
+    }?redirectUrl=${APP_CONFIG.domain().mainHost}/callback${
+      returnUrl ? '&returnUrl=' + returnUrl : ''
+    }`
   },
-  silentLogin: (email: string, provider?: string) => {
-    window.location.href = `${
-      APP_CONFIG.domain().auth
-    }/authentication/signin/${provider ||
-      commonData.defaultLoginPlatform}?prompt=none&login_hint=${email}&redirectUrl=${
+  silentLogin: (email: string) => {
+    window.location.href = `${APP_CONFIG.domain().auth}/authentication/signin/${
+      commonData.defaultLoginPlatform
+    }?prompt=none&login_hint=${email}&redirectUrl=${
       APP_CONFIG.domain().mainHost
     }/callback&returnUrl=silent`
   },
