@@ -367,7 +367,7 @@
     font-weight: 400;
     padding: 10px;
     min-height: 120px !important;
-    height: calc(100vh - 235px);
+    height: calc(100vh - 270px);
     outline: none;
 }
 
@@ -415,7 +415,7 @@
 
 .u_note {
     color: #888888;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     margin-top: 1rem;
     font-weight: 400;
 }
@@ -433,7 +433,6 @@
 
 .u_noteSub {
     margin-top: 5px;
-    font-size: 0.8rem;
     margin-left: 40px;
 }
 
