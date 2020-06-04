@@ -367,7 +367,7 @@
     font-weight: 400;
     padding: 10px;
     min-height: 120px !important;
-    height: calc(100vh - 270px);
+    height: calc(100vh - 255px);
     outline: none;
 }
 

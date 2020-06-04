@@ -3,7 +3,7 @@ import { AUTH_APIS } from './auth'
 export const commonNative = {
   signedUrl: '',
   uploadComplete: {
-    result: 0, // 0: success   1: fail   -1: default
+    result: -1, // 0: success   1: fail   -1: default
     code: -1 // 0: unknown
   },
   progress: 0,

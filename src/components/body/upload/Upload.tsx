@@ -74,6 +74,7 @@ export default function({ userInfo }: UploadProps) {
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
         handleProgress()
+        handleCompleteUpload()
       })
       .catch((err: any) => {
         setErr(
@@ -100,8 +101,6 @@ export default function({ userInfo }: UploadProps) {
   }
 
   const handleProgress = () => {
-    handleCompleteUpload()
-
     let interval = setInterval(() => {
       setPercentage(commonNative.progress)
 
