@@ -102,12 +102,15 @@ export default function({ userInfo }: UploadProps) {
 
   const handleProgress = () => {
     let interval = setInterval(() => {
-      setPercentage(commonNative.progress)
+      let _progress = commonNative.progress
+      let _uploadComplete = commonNative.uploadComplete.result
+      if (percentage !== _progress) setPercentage(commonNative.progress)
 
-      if (commonNative.progress === 100) {
+      if (_progress === 100 || _uploadComplete === 0 || _uploadComplete === 1) {
         clearInterval(interval)
+        setPercentage(_uploadComplete === 0 ? 0 : 100)
       }
-    }, 500)
+    }, 100)
   }
 
   const handleCompleteUpload = () => {
@@ -121,7 +124,7 @@ export default function({ userInfo }: UploadProps) {
         )
         clearInterval(interval)
       }
-    }, 500)
+    }, 1000)
   }
 
   // 제목 변경 관리
