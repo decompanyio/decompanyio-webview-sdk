@@ -38,7 +38,7 @@ export default function({ history }: any): ReactElement {
           })
           .catch((err): void => {
             console.log('err: ', err)
-            history.push('/login')
+            AUTH_APIS.login()
           })
       }
     }

@@ -1,3 +1,5 @@
+import commonData from './commonData'
+
 const strings = new Map([
   [
     'brand',
@@ -22,13 +24,6 @@ const strings = new Map([
     }
   ],
   // Modal
-  [
-    'upload-doc-subj',
-    {
-      KOR: '문서 업로드',
-      ENG: 'Document Upload'
-    }
-  ],
   [
     'common-modal-title',
     {
@@ -130,6 +125,123 @@ const strings = new Map([
     {
       KOR: '제목은 한 글자 보다 길어야 합니다.',
       ENG: 'Title must be longer than 1 character.'
+    }
+  ],
+  [
+    'upload-explain-1',
+    {
+      KOR: '문서를 업로드하면 자동적으로 ',
+      ENG:
+        'When you upload a document, it is automatically displayed to other users of '
+    }
+  ],
+  [
+    'upload-explain-2',
+    {
+      KOR: '폴라리스 쉐어',
+      ENG: ''
+    }
+  ],
+  [
+    'upload-explain-3',
+    {
+      KOR: '의 다른 이용자들에게 보여집니다.',
+      ENG: ''
+    }
+  ],
+  [
+    'upload-explain-4',
+    {
+      KOR: '',
+      ENG: 'Polaris Share.'
+    }
+  ],
+  [
+    'upload-explain-sub',
+    {
+      KOR: '자세한 내용을 확인하시려면, 위 링크를 클릭해주세요',
+      ENG: 'For more details, please click the link above'
+    }
+  ],
+  [
+    'upload-limit-private-doc-subj',
+    {
+      KOR: '비공개 문서 보유 한도 초과',
+      ENG: 'Exceeded private document retention limit'
+    }
+  ],
+  [
+    'upload-limit-private-doc-contents',
+    {
+      KOR:
+        '이후에 문서를 업로드하시려면, 보유하신 비공개 문서를 Public(공개) 상태로 변경해 주시기 바랍니다.',
+      ENG:
+        'To upload your document later, please change it from Private to Public.'
+    }
+  ],
+  [
+    'upload-link-to-main',
+    {
+      KOR: '변경하러 가기',
+      ENG: 'Go to change'
+    }
+  ],
+  [
+    'upload-cancel',
+    {
+      KOR: '업로드 취소',
+      ENG: 'Cancel upload'
+    }
+  ],
+  [
+    'upload-complete',
+    {
+      KOR: '문서 업로드 완료',
+      ENG: 'Upload document complete'
+    }
+  ],
+  [
+    'upload-doc-desc-1-a',
+    {
+      KOR: '현재 고객님의 비공개 문서는 ',
+      ENG: 'You currently have '
+    }
+  ],
+  [
+    'upload-doc-desc-1-b',
+    {
+      KOR: `개이며, 최대 ${commonData.privateDocumentLimit}개까지만 업로드할 수 있습니다.`,
+      ENG: ` private documents, and you can only upload up to ${commonData.privateDocumentLimit} of them.`
+    }
+  ],
+  [
+    'upload-doc-desc-2-a',
+    {
+      KOR: `현재 ${commonData.privateDocumentLimit}개의 비공개 문서를 보유중 입니다. 이후에 문서를 업로드하시려면, 보유하신 비공개 문서를 Public(공개) 상태로 변경해 주시기 바랍니다.`,
+      ENG: `You currently have ${commonData.privateDocumentLimit} private documents. To upload your document later, please change it from Private to Public.`
+    }
+  ],
+  [
+    'upload-doc-desc-3-a',
+    {
+      KOR:
+        '현재 업로드된 문서는 Private(비공개) 상태입니다. 문서를 공개하려고 하신다면, Public(공개) 상태로 변경해 주시기 바랍니다.',
+      ENG:
+        'The uploaded document is set to Private. To allow public access, please change the setting to Public.'
+    }
+  ],
+  [
+    '',
+    {
+      KOR: '',
+      ENG: ''
+    }
+  ],
+  [
+    '',
+    {
+      KOR: '',
+      ENG: ''
     }
   ],
   [

@@ -49,7 +49,6 @@
     }
 }
 
-
 .common_modal_title > h3 {
     padding-right: 60px;
     font-size: 25px;
@@ -251,7 +250,6 @@
     background: white !important;
 }
 
-
 /*************************************
                  APP
 **************************************/
@@ -265,7 +263,6 @@
     z-index: 6;
     padding: 0 1rem;
 }
-
 
 /*************************************
            COMMON ANIMATION
@@ -315,7 +312,6 @@
     }
 }
 
-
 /*************************************
            LOADING MODAL
 **************************************/
@@ -341,7 +337,6 @@
     left: calc(50% - 28px);
     top: calc(50% - 26px);
 }
-
 
 /*************************************
                UPLOAD
@@ -372,7 +367,7 @@
     font-weight: 400;
     padding: 10px;
     min-height: 120px !important;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 235px);
     outline: none;
 }
 
@@ -395,7 +390,6 @@
     text-align: center;
     flex: 0 0 auto;
     margin-top: 1rem !important;
-    margin-bottom: 0.5rem !important;
     position: relative;
 }
 
@@ -406,13 +400,7 @@
 }
 
 .u_logo {
-    width: 250px;
-    background-image: url('https://res.share.decompany.io/static/image/logo.png');
-    background-repeat: no-repeat;
-    background-position-x: -25px;
-    background-position-y: -8px;
     position: relative;
-    height: 50px;
     cursor: pointer;
     display: inline-block;
 }
@@ -421,10 +409,33 @@
     color: #afafaf;
     font-size: 12px;
     position: absolute;
-    top: 5px;
-    right: 10px;
+    top: 17px;
+    left: 250px;
 }
 
+.u_note {
+    color: #888888;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    font-weight: 400;
+}
+
+.u_note > span {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.u_note > a {
+    font-weight: bold;
+    color: #3681fe;
+    text-decoration: underline;
+}
+
+.u_noteSub {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    margin-left: 40px;
+}
 
 /*************************************
          UPLOAD PROGRESS MODAL
@@ -432,23 +443,22 @@
 
 .upm_progressWrapper {
     width: 100%;
-    position: fixed;
+    position: absolute;
     height: 100%;
     top: 0;
     left: 0;
-    background: black;
-    opacity: 0.3;
-    display: none;
+    background: white;
+    z-index: 1;
 }
 
 .upm_progress {
-    position: fixed;
+    position: absolute;
     left: calc(50% - 50px);
     top: calc(50% - 50px);
     width: 100px;
     height: 100px;
-    display: none;
     pointer-events: none;
+    z-index: 2;
 }
 
 .upm_progressSecond {
@@ -467,7 +477,7 @@
 }
 
 .upm_percent {
-    color: white;
+    color: #3681fe;
     font-size: 20px;
     position: absolute;
     z-index: 4;
@@ -475,6 +485,30 @@
     text-align: center;
     width: 100%;
     font-weight: 500;
+}
+
+.upm_container {
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.upm_closeContainer {
+    position: absolute;
+    left: calc(50% - 50px);
+    bottom: calc(50% - 210px);
+    width: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.upm_closeText {
+    font-size: 0.9rem;
+    z-index: 2;
+    font-weight: 400;
+    color: red;
 }
 
 /*************************************
@@ -589,7 +623,6 @@
     background: #4286f4;
 }
 
-
 /*************************************
              NO DATA
 **************************************/
@@ -599,4 +632,106 @@
     text-align: center;
     font-weight: bold;
     color: #9c9c9c;
+}
+
+/*************************************
+      LIMIT PRIVATE DOCUMENT MODAL
+**************************************/
+
+.lpd_wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.lpd_subj {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3681fe;
+}
+
+.lpd_contents {
+    font-weight: 400;
+}
+
+.lpd_btnContainer {
+    float: right;
+    margin-top: 2rem;
+    display: flex;
+}
+
+.lpd_btnContainer > div {
+    display: inline-block;
+}
+
+.lpd_dummy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+.lpd_subjContainer {
+    z-index: 1;
+}
+
+/*************************************
+      UPLOAD COMPLETE MODAL
+**************************************/
+
+.ucm_wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.ucm_subj {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3681fe;
+}
+
+.ucm_contentsSub {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    color: #5d5d5d;
+}
+
+.ucm_contents {
+    font-weight: 400;
+}
+
+.ucm_btnContainer {
+    float: right;
+    margin-top: 2rem;
+    display: flex;
+}
+
+.ucm_btnContainer > div {
+    display: inline-block;
+}
+
+.ucm_dummy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+}
+
+.ucm_subjContainer {
+    z-index: 1;
 }

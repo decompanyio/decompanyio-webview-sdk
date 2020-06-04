@@ -1,5 +1,11 @@
 # Release Note
 
+## 1.2.0
+- Apply new Auth system
+- Add check private document count modal
+- Add upload complete modal
+- Add Functions onUploadProgress, onUploadComplete
+
 ## 1.1.5
 - Add and apply dotenv
 

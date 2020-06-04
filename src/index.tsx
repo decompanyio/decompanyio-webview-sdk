@@ -12,19 +12,9 @@ import * as serviceWorker from './serviceWorker'
 
 dotenv.config()
 
-declare global {
-  interface Window {
-    ourComponent: any
-  }
-}
-
 ReactDOM.render(
   <BrowserRouter>
-    <App
-      callMethods={(methods: any) => {
-        window.ourComponent = methods
-      }}
-    />
+    <App />
   </BrowserRouter>,
   document.getElementById('root')
 )

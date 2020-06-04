@@ -15,15 +15,19 @@ interface DocumentInfoProps {
 
 export const AUTH_APIS = {
   login: (returnUrl?: string) => {
-    window.location.href = `${APP_CONFIG.domain().auth}/authentication/signin/${
-      commonData.defaultLoginPlatform
+    window.location.href = `${APP_CONFIG.domain().auth}/authentication${
+      APP_CONFIG.env === 'production'
+        ? '/signin' + commonData.defaultLoginPlatform
+        : ''
     }?redirectUrl=${APP_CONFIG.domain().mainHost}/callback${
       returnUrl ? '&returnUrl=' + returnUrl : ''
     }`
   },
   silentLogin: (email: string) => {
-    window.location.href = `${APP_CONFIG.domain().auth}/authentication/signin/${
-      commonData.defaultLoginPlatform
+    window.location.href = `${APP_CONFIG.domain().auth}/authentication${
+      APP_CONFIG.env === 'production'
+        ? '/signin' + commonData.defaultLoginPlatform
+        : ''
     }?prompt=none&login_hint=${email}&redirectUrl=${
       APP_CONFIG.domain().mainHost
     }/callback&returnUrl=silent`
@@ -50,7 +54,9 @@ export const AUTH_APIS = {
   logout: (): void => {
     AUTH_APIS.clearSession()
     document.getElementById('deleteToken')!.click()
-    window.location.href = '/'
+    window.location.href = `${
+      APP_CONFIG.domain().auth
+    }/authentication/signout?returnUrl=${APP_CONFIG.domain().mainHost}`
   },
   isAuthenticated: (): boolean => {
     if (typeof window === 'undefined') return false
@@ -166,6 +172,8 @@ export const AUTH_APIS = {
 
       if (data.documentName && data.documentName !== 'undefined' && data.ext) {
         sessionStorage.setItem('ps_di', JSON.stringify(data))
+        resolve()
+      } else if((!data.documentName || data.documentName === 'undefined') && AUTH_APIS.getDocumentInfo()) {
         resolve()
       } else {
         reject()
