@@ -27,10 +27,10 @@ export const commonNative = {
   },
 
   // PO 측에서 문서 업로드 완료/실패시, 결과값을 전달해 줍니다..
-  onUploadComplete: (result: number, code: number) => {
+  onUploadComplete: (result: number, code?: number) => {
     commonNative.uploadComplete = {
       result,
-      code
+      code: code || -1
     }
   }
 }
