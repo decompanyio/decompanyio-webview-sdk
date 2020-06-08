@@ -28,6 +28,16 @@
       function getUploadUrl() {
         return window.ourComponent.signedUrl
       }
+
+      // UPLOAD PROGRESS 호출 함수
+      function onUploadProgress(ratio) {
+        return window.ourComponent.onUploadProgress(ratio)
+      }
+
+      // UPLOAD PROGRESS 호출 함수
+      function onUploadComplete(result, code) {
+        return window.ourComponent.onUploadComplete(result, code)
+      }
     </script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>

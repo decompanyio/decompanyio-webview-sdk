@@ -102,6 +102,9 @@ export default {
   // My page 리스트 개수
   myPageListSize: 10,
 
+  // 비공개 문서 보유 개수
+  privateDocumentLimit: 10,
+
   style: {
     md: {
       max: {

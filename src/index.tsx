@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import '@babel/polyfill'
 import 'react-app-polyfill/ie11'
 import 'react-app-polyfill/ie9'
@@ -9,19 +10,11 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 
-declare global {
-  interface Window {
-    ourComponent: any
-  }
-}
+dotenv.config()
 
 ReactDOM.render(
   <BrowserRouter>
-    <App
-      callMethods={(methods: any) => {
-        window.ourComponent = methods
-      }}
-    />
+    <App />
   </BrowserRouter>,
   document.getElementById('root')
 )

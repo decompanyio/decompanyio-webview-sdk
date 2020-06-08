@@ -4,42 +4,37 @@ import { FadingCircle } from 'better-react-spinkit'
 import { psString } from '../../../util/localization'
 import UploadProgressModal from '../../common/modal/UploadProgressModal'
 import { AUTH_APIS } from '../../../util/auth'
+import common from '../../../util/common'
+import UploadNote from './UploadNote'
+import UserInfo from '../../../service/model/UserInfo'
 import { repos } from '../../../util/repos'
 import { commonNative } from '../../../util/commonNative'
-import common from '../../../util/common'
+import UploadCloseBtn from './UploadCloseBtn'
+import UploadSignoutBtn from './UploadSignoutBtn'
+import LimitPrivateDocumentModal from '../../common/modal/LimitPrivateDocumentModal'
+import UploadCompleteModal from '../../common/modal/UploadCompleteModal'
 
-export default function({ history, userInfo }: any) {
+interface UploadProps {
+  userInfo: UserInfo
+}
+
+export default function({ userInfo }: UploadProps) {
   const [titleError, setTitleError] = useState('')
   const [title, setTitle] = useState('')
   const [desc, setDesc] = useState('')
-  const [percentage] = useState(0)
-  const [loading, setLoading] = useState(false)
+  const [percentage, setPercentage] = useState(0)
   const [err, setErr] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [uploadComplete, setUploadComplete] = useState(false)
+  const [latestPrivateDocumentCount, setLatestPrivateDocumentCount] = useState(
+    0
+  )
 
   // 제목 유효성 체크
   const validateTitle = (value: string) => {
     setTitleError(value.length > 0 ? '' : psString('upload-doc-error-1'))
     return value.length > 0
   }
-
-  const clearInputValue = () => {
-    const titleEle = document.getElementById('docTitle') as HTMLInputElement
-    const descEle = document.getElementById('docDesc') as HTMLInputElement
-    titleEle.value = ''
-    descEle.value = ''
-  }
-
-  // 제목 변경 관리
-  const handleTitleChange = (e: any) => {
-    if (validateTitle(e.target.value)) setTitle(e.target.value)
-  }
-
-  const handleDescChange = (e: any) => setDesc(e.target.value)
-
-  const handleSignOutBtnClick = () => AUTH_APIS.logout()
-
-  const handleCloseBtnClick = () =>
-    document.getElementById('closeSDK')!.click()
 
   const handleUpload = (): void => {
     const {
@@ -74,9 +69,12 @@ export default function({ history, userInfo }: any) {
     repos.Document.registerDocument(data)
       .then(res => {
         setLoading(false)
+        setLatestPrivateDocumentCount(res.privateDocumentCount)
         clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
+        handleProgress()
+        handleCompleteUpload()
       })
       .catch((err: any) => {
         setErr(
@@ -95,11 +93,48 @@ export default function({ history, userInfo }: any) {
     }
   }
 
-  useEffect(() => {
-    if (!AUTH_APIS.isLogin()) {
-      history.push('/login')
-    }
+  const clearInputValue = () => {
+    const titleEle = document.getElementById('docTitle') as HTMLInputElement
+    const descEle = document.getElementById('docDesc') as HTMLInputElement
+    titleEle.value = ''
+    descEle.value = ''
+  }
 
+  const handleProgress = () => {
+    let interval = setInterval(() => {
+      let _progress = commonNative.progress
+      let _uploadComplete = commonNative.uploadComplete.result
+      if (percentage !== _progress) setPercentage(commonNative.progress)
+
+      if (_progress === 100 || _uploadComplete === 0 || _uploadComplete === 1) {
+        clearInterval(interval)
+        setPercentage(_uploadComplete === 0 ? 0 : 100)
+      }
+    }, 100)
+  }
+
+  const handleCompleteUpload = () => {
+    let interval = setInterval(() => {
+      if (commonNative.uploadComplete.result === 0) {
+        setUploadComplete(true)
+        clearInterval(interval)
+      } else if (commonNative.uploadComplete.result === 1) {
+        setErr(
+          'PO document upload error ::: ' + commonNative.uploadComplete.code
+        )
+        clearInterval(interval)
+      }
+    }, 1000)
+  }
+
+  // 제목 변경 관리
+  const handleTitleChange = (e: any) => {
+    if (validateTitle(e.target.value)) setTitle(e.target.value)
+  }
+
+  const handleDescChange = (e: any) => setDesc(e.target.value)
+
+  useEffect(() => {
     const { documentName } = AUTH_APIS.getDocumentInfo()
     const titleEle = document.getElementById('docTitle') as HTMLInputElement
     titleEle.value = documentName
@@ -108,15 +143,19 @@ export default function({ history, userInfo }: any) {
 
   return (
     <div className="u_container">
-      <div className="u_version">{common.getVersion()}</div>
       <div className="common_modal_title">
         <a
-          className="u_logo"
           href="https://polarishare.com"
           target="_blank"
           rel="noopener noreferrer nofollow"
-        />
-        <h3>{psString('upload-doc-subj')}</h3>
+        >
+          <img
+            className="u_logo"
+            src="https://s3.ap-northeast-2.amazonaws.com/polarishare.io/assets/img/logo/logo_blue.png"
+            alt="polaris share logo"
+          />
+        </a>
+        <div className="u_version">{common.getVersion()}</div>
       </div>
 
       <input
@@ -137,24 +176,13 @@ export default function({ history, userInfo }: any) {
         onChange={e => handleDescChange(e)}
       />
 
+      <UploadNote />
+
       <div className="u_btnWrapper d-flex">
-        <div
-          onClick={() => handleSignOutBtnClick()}
-          className={
-            'common_signOutBtn  u_signOutBtnWrapper ' +
-            (loading ? 'common_disabledBtn' : '')
-          }
-        >
-          {psString('common-logout')}
-        </div>
-        <div
-          onClick={() => handleCloseBtnClick()}
-          className={
-            'common_cancelBtn ' + (loading ? 'common_disabledBtn' : '')
-          }
-        >
-          {psString('common-modal-cancel')}
-        </div>
+        <UploadSignoutBtn loading={loading} />
+
+        <UploadCloseBtn loading={loading} />
+
         <div
           onClick={() => handleUploadBtnClick()}
           className={'common_okBtn ' + (loading ? 'common_disabledBtn' : '')}
@@ -169,6 +197,15 @@ export default function({ history, userInfo }: any) {
       </div>
 
       <UploadProgressModal percentage={percentage} />
+
+      <LimitPrivateDocumentModal
+        privateDocumentCount={userInfo.privateDocumentCount}
+      />
+
+      <UploadCompleteModal
+        uploadComplete={uploadComplete}
+        privateDocumentCount={latestPrivateDocumentCount}
+      />
 
       {err && <div className="app_error">ERROR :: {err}</div>}
     </div>

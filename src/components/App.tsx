@@ -10,12 +10,17 @@ import LoadingModal from './common/modal/LoadingModal'
 import { AUTH_APIS } from '../util/auth'
 import UserInfo from '../service/model/UserInfo'
 import Callback from './Callback'
-import Login from './body/auth/Login'
 import Native from './Native'
 import { commonNative } from '../util/commonNative'
 
+declare global {
+  interface Window {
+    ourComponent: any
+  }
+}
+
 // @ts-ignore
-export default function({ callMethods }: any) {
+export default function() {
   const [init, setInit] = useState(false)
   const [userInfo, setUserInfo] = useState(new UserInfo(null))
   const [err, setErr] = useState('')
@@ -36,14 +41,12 @@ export default function({ callMethods }: any) {
 
         return Promise.resolve()
       })
-    } else {
-      return Promise.resolve()
-    }
+    } else return Promise.reject(AUTH_APIS.login())
   }
 
   useEffect(() => {
     // 외부에서 리액트 내부 함수를 호출하게 해줍니다.
-    callMethods(commonNative)
+    window.ourComponent = commonNative
 
     if (pathName() !== 'callback')
       repos
@@ -62,10 +65,7 @@ export default function({ callMethods }: any) {
 
   const getMainComponent = () => {
     if (pathName() === 'callback') return <Callback history={history} />
-    if (init && !AUTH_APIS.isLogin()) {
-      history.push('/')
-      return <Login />
-    }
+    if (init && !AUTH_APIS.isLogin()) AUTH_APIS.login()
 
     return (
       <div className="App">
