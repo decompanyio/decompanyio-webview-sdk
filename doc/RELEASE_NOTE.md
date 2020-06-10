@@ -1,5 +1,9 @@
 # Release Note
 
+## 1.2.2
+- edit css
+- test upload progress
+
 ## 1.2.0
 - Apply new Auth system
 - Add check private document count modal

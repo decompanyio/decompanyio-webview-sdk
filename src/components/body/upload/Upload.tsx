@@ -144,6 +144,8 @@ export default function({ userInfo }: UploadProps) {
   return (
     <div className="u_container">
       <div className="common_modal_title">
+
+        {uploadComplete? 1 : 0}
         <a
           href="https://polarishare.com"
           target="_blank"

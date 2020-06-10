@@ -24,6 +24,7 @@ export const commonNative = {
   // PO 측에서 문서 업로드 시, progress percentage 전송 위한 함수 입니다.
   onUploadProgress: (ratio: number) => {
     commonNative.progress = ratio
+    return true
   },
 
   // PO 측에서 문서 업로드 완료/실패시, 결과값을 전달해 줍니다..
@@ -32,5 +33,6 @@ export const commonNative = {
       result,
       code: code || -1
     }
+    return true
   }
 }
