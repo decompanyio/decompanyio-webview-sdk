@@ -173,7 +173,10 @@ export const AUTH_APIS = {
       if (data.documentName && data.documentName !== 'undefined' && data.ext) {
         sessionStorage.setItem('ps_di', JSON.stringify(data))
         resolve()
-      } else if((!data.documentName || data.documentName === 'undefined') && AUTH_APIS.getDocumentInfo()) {
+      } else if (
+        (!data.documentName || data.documentName === 'undefined') &&
+        AUTH_APIS.getDocumentInfo()
+      ) {
         resolve()
       } else {
         reject()

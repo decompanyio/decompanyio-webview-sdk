@@ -22,16 +22,16 @@ export const commonNative = {
   },
 
   // PO 측에서 문서 업로드 시, progress percentage 전송 위한 함수 입니다.
-  onUploadProgress: (ratio: number) => {
-    commonNative.progress = ratio
+  onUploadProgress: (ratio: string) => {
+    commonNative.progress = Number(ratio)
     return true
   },
 
   // PO 측에서 문서 업로드 완료/실패시, 결과값을 전달해 줍니다..
-  onUploadComplete: (result: number, code?: number) => {
+  onUploadComplete: (result: string, code?: string) => {
     commonNative.uploadComplete = {
-      result,
-      code: code || -1
+      result: Number(result),
+      code: Number(code) || -1
     }
     return true
   }

@@ -10,7 +10,7 @@ interface UploadProgressModalProps {
 export default function({ percentage }: UploadProgressModalProps) {
   const handleCloseBtnClick = () => document.getElementById('closeSDK')!.click()
 
-  if (percentage === 0 || percentage >= 100) return <div />
+  if (percentage === 0) return <div />
 
   return (
     <div className="upm_container">

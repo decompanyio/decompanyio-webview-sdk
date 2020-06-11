@@ -1,5 +1,9 @@
 # Release Note
 
+## 1.2.3
+- Add auth link
+- Bugs fix
+
 ## 1.2.2
 - edit css
 - test upload progress

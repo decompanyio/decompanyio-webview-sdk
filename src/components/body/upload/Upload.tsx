@@ -13,6 +13,7 @@ import UploadCloseBtn from './UploadCloseBtn'
 import UploadSignoutBtn from './UploadSignoutBtn'
 import LimitPrivateDocumentModal from '../../common/modal/LimitPrivateDocumentModal'
 import UploadCompleteModal from '../../common/modal/UploadCompleteModal'
+import { APP_CONFIG } from '../../../util/app.config'
 
 interface UploadProps {
   userInfo: UserInfo
@@ -106,7 +107,7 @@ export default function({ userInfo }: UploadProps) {
       let _uploadComplete = commonNative.uploadComplete.result
       if (percentage !== _progress) setPercentage(commonNative.progress)
 
-      if (_progress === 100 || _uploadComplete === 0 || _uploadComplete === 1) {
+      if (_progress === 100) {
         clearInterval(interval)
         setPercentage(_uploadComplete === 0 ? 0 : 100)
       }
@@ -144,10 +145,12 @@ export default function({ userInfo }: UploadProps) {
   return (
     <div className="u_container">
       <div className="common_modal_title">
-
-        {uploadComplete? 1 : 0}
         <a
-          href="https://polarishare.com"
+          href={
+            APP_CONFIG.domain().auth +
+            '/external/' +
+            AUTH_APIS.getTokens().authorization_token
+          }
           target="_blank"
           rel="noopener noreferrer nofollow"
         >

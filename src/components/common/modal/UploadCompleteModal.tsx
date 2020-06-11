@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import { psString } from '../../../util/localization'
 import UploadCloseBtn from '../../body/upload/UploadCloseBtn'
 import commonData from '../../../util/commonData'
+import { AUTH_APIS } from '../../../util/auth'
+import { APP_CONFIG } from '../../../util/app.config'
 
 interface UploadCompleteModalProps {
   uploadComplete: boolean
@@ -37,7 +39,11 @@ export default function({
           <UploadCloseBtn />
 
           <a
-            href="https://polarishare.com/"
+            href={
+              APP_CONFIG.domain().auth +
+              '/external/' +
+              AUTH_APIS.getTokens().authorization_token
+            }
             target="_blank"
             rel="noopener noreferrer"
             title="Link to Polaris Share"
