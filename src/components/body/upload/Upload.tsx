@@ -105,11 +105,11 @@ export default function({ userInfo }: UploadProps) {
     let interval = setInterval(() => {
       let _progress = commonNative.progress
       let _uploadComplete = commonNative.uploadComplete.result
-      if (percentage !== _progress) setPercentage(commonNative.progress)
+      if (percentage !== _progress && _progress !== 0) setPercentage(_progress)
 
       if (_progress === 100) {
         clearInterval(interval)
-        setPercentage(_uploadComplete === 0 ? 100 : 0)
+        if (_uploadComplete === 0) setPercentage(100)
       }
     }, 100)
   }
