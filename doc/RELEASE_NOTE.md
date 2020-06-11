@@ -1,9 +1,12 @@
 # Release Note
 
+## 1.2.4
+- edit open main link code
+
 ## 1.2.3
 - Add auth link
 - Bugs fix
-- apply request from po
+- apply request from PO
 
 ## 1.2.2
 - edit css

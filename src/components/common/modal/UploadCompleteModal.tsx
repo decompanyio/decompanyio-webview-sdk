@@ -14,6 +14,14 @@ export default function({
   uploadComplete,
   privateDocumentCount
 }: UploadCompleteModalProps): ReactElement {
+  const linkToMain = async () => {
+    let authToken = await AUTH_APIS.refreshLogin(
+      AUTH_APIS.getTokens().refresh_token
+    ).then(res => res)
+
+    window.open(APP_CONFIG.domain().auth + '/external/' + authToken)
+  }
+
   if (!uploadComplete) return <div />
 
   return (
@@ -38,20 +46,9 @@ export default function({
         <div className="ucm_btnContainer">
           <UploadCloseBtn />
 
-          <a
-            href={
-              APP_CONFIG.domain().auth +
-              '/external/' +
-              AUTH_APIS.getTokens().authorization_token
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Link to Polaris Share"
-          >
-            <div className="common_okBtn">
-              {psString('upload-link-to-main')}
-            </div>
-          </a>
+          <div className="common_okBtn" onClick={() => linkToMain()}>
+            {psString('upload-link-to-main')}
+          </div>
         </div>
       </div>
     </div>

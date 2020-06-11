@@ -109,7 +109,7 @@ export default function({ userInfo }: UploadProps) {
 
       if (_progress === 100) {
         clearInterval(interval)
-        setPercentage(_uploadComplete === 0 ? 0 : 100)
+        setPercentage(_uploadComplete === 0 ? 100 : 0)
       }
     }, 100)
   }
