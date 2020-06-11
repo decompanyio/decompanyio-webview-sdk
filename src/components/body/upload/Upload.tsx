@@ -69,7 +69,6 @@ export default function({ userInfo }: UploadProps) {
     // 문서 등록 API
     repos.Document.registerDocument(data)
       .then(res => {
-        setLoading(false)
         setLatestPrivateDocumentCount(res.privateDocumentCount)
         clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
