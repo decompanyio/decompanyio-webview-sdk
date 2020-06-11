@@ -3,7 +3,6 @@ import { psString } from '../../../util/localization'
 import UploadCloseBtn from '../../body/upload/UploadCloseBtn'
 import commonData from '../../../util/commonData'
 import { AUTH_APIS } from '../../../util/auth'
-import { APP_CONFIG } from '../../../util/app.config'
 
 interface UploadCompleteModalProps {
   uploadComplete: boolean
@@ -14,14 +13,6 @@ export default function({
   uploadComplete,
   privateDocumentCount
 }: UploadCompleteModalProps): ReactElement {
-  const linkToMain = async () => {
-    let authToken = await AUTH_APIS.refreshLogin(
-      AUTH_APIS.getTokens().refresh_token
-    ).then(res => res)
-
-    window.open(APP_CONFIG.domain().auth + '/external/' + authToken)
-  }
-
   if (!uploadComplete) return <div />
 
   return (
@@ -46,7 +37,7 @@ export default function({
         <div className="ucm_btnContainer">
           <UploadCloseBtn />
 
-          <div className="common_okBtn" onClick={() => linkToMain()}>
+          <div className="common_okBtn" onClick={() => AUTH_APIS.linkToMain()}>
             {psString('upload-link-to-main')}
           </div>
         </div>
