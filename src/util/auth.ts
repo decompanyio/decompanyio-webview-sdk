@@ -264,5 +264,12 @@ export const AUTH_APIS = {
         console.log('session is not init...')
         AUTH_APIS.logout()
       }
-    })
+    }),
+  linkToMain: async () => {
+    let authToken = await AUTH_APIS.refreshLogin(
+      AUTH_APIS.getTokens().refresh_token
+    ).then(res => res)
+
+    window.open(APP_CONFIG.domain().auth + '/external/' + authToken)
+  }
 }
