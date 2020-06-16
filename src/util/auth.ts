@@ -271,5 +271,8 @@ export const AUTH_APIS = {
     ).then(res => res)
 
     window.open(APP_CONFIG.domain().auth + '/external/' + authToken)
+    console.log(
+      'url ::: ' + APP_CONFIG.domain().auth + '/external/' + authToken
+    )
   }
 }

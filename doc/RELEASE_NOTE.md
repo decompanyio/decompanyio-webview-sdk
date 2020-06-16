@@ -1,5 +1,8 @@
 # Release Note
 
+## 1.2.5
+- auth error fix
+
 ## 1.2.4
 - edit open main link code
 
