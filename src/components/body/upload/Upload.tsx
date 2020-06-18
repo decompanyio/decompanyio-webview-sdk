@@ -37,6 +37,11 @@ export default function({ userInfo }: UploadProps) {
     return value.length > 0
   }
 
+  const onOpenWindow = () => {
+    commonNative.setWindowOpenUrl(APP_CONFIG.domain().ps)
+    document.getElementById('openWindow')!.click()
+  }
+
   const handleUpload = (): void => {
     const {
       documentName,
@@ -143,22 +148,12 @@ export default function({ userInfo }: UploadProps) {
 
   return (
     <div className="u_container">
-      <div className="common_modal_title">
-        <a
-          href={
-            APP_CONFIG.domain().auth +
-            '/external/' +
-            AUTH_APIS.getTokens().authorization_token
-          }
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          <img
-            className="u_logo"
-            src="https://s3.ap-northeast-2.amazonaws.com/polarishare.io/assets/img/logo/logo_blue.png"
-            alt="polaris share logo"
-          />
-        </a>
+      <div className="common_modal_title" onClick={() => onOpenWindow()}>
+        <img
+          className="u_logo"
+          src="https://s3.ap-northeast-2.amazonaws.com/polarishare.io/assets/img/logo/logo_blue.png"
+          alt="polaris share logo"
+        />
         <div className="u_version">{common.getVersion()}</div>
       </div>
 

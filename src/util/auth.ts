@@ -4,6 +4,7 @@ import UserInfo from '../service/model/UserInfo'
 import commonData from './commonData'
 import { APP_CONFIG } from './app.config'
 import AuthService from '../service/rest/AuthService'
+import { commonNative } from './commonNative'
 
 interface DocumentInfoProps {
   documentName: string
@@ -269,10 +270,9 @@ export const AUTH_APIS = {
     let authToken = await AUTH_APIS.refreshLogin(
       AUTH_APIS.getTokens().refresh_token
     ).then(res => res)
-
-    window.open(APP_CONFIG.domain().auth + '/external/' + authToken)
-    console.log(
-      'url ::: ' + APP_CONFIG.domain().auth + '/external/' + authToken
+    commonNative.setWindowOpenUrl(
+      APP_CONFIG.domain().auth + '/external/' + authToken
     )
+    document.getElementById('openWindow')!.click()
   }
 }

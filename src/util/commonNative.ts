@@ -2,6 +2,7 @@ import { AUTH_APIS } from './auth'
 
 export const commonNative = {
   signedUrl: '',
+  windowOpenUrl: '',
   uploadComplete: {
     result: -1, // 0: success   1: fail   -1: default
     code: -1 // 0: unknown
@@ -9,6 +10,9 @@ export const commonNative = {
   progress: 0,
   setSignedUrl: (_signedUrl: string) => {
     commonNative.signedUrl = _signedUrl
+  },
+  setWindowOpenUrl: (_windowOpenUrl: string) => {
+    commonNative.windowOpenUrl = _windowOpenUrl
   },
 
   // 로그인 확인 시, PO 측에 인증 토큰을 보내야 합니다.

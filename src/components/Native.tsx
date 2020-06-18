@@ -30,6 +30,11 @@ export default function() {
         className="common_triggerDivForNative"
         onClick={() => handleClickElementForNative('closeSDK')}
       />
+      <div
+        id="openWindow"
+        className="common_triggerDivForNative"
+        onClick={() => handleClickElementForNative('openWindow')}
+      />
     </div>
   )
 }

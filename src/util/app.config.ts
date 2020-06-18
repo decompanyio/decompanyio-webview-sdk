@@ -22,7 +22,8 @@ export const APP_CONFIG = {
       embed: 'https://embed.share.decompany.io/',
       graphql: 'https://api.share.decompany.io/graphql/',
       search: 'https://api.share.decompany.io/search',
-      auth: 'https://auth.share.decompany.io/dev'
+      auth: 'https://auth.share.decompany.io/dev',
+      ps: 'https://share.decompany.io'
     }
   },
   dev: {
@@ -36,7 +37,8 @@ export const APP_CONFIG = {
       embed: 'https://embed.share.decompany.io/',
       graphql: 'https://api.share.decompany.io/graphql/',
       search: 'https://api.share.decompany.io/search',
-      auth: 'https://auth.share.decompany.io/dev'
+      auth: 'https://auth.share.decompany.io/dev',
+      ps: 'https://share.decompany.io'
     }
   },
   production: {
@@ -50,7 +52,8 @@ export const APP_CONFIG = {
       embed: 'https://embed.polarishare.com/',
       graphql: 'https://api.polarishare.com/graphql/',
       search: 'https://api.polarishare.com/search',
-      auth: 'https://auth.polarishare.com/asem'
+      auth: 'https://auth.polarishare.com/asem',
+      ps: 'https://polarishare.com'
     }
   }
 }
