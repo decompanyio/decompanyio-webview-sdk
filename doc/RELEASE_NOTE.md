@@ -1,5 +1,9 @@
 # Release Note
 
+## 2020.06.18-a
+- edit word cancel to close on complete modal
+- apply disabled option on upload page when complete upload  
+
 ## 1.2.5
 - auth error fix
 

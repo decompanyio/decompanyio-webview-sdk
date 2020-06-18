@@ -13,7 +13,7 @@ export default function({ loading }: UploadCloseBtnProps) {
       onClick={() => handleCloseBtnClick()}
       className={'common_cancelBtn ' + (loading ? 'common_disabledBtn' : '')}
     >
-      {psString('common-modal-close')}
+      {psString('common-modal-cancel')}
     </div>
   )
 }

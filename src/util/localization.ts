@@ -71,6 +71,13 @@ const strings = new Map([
     }
   ],
   [
+    'common-modal-close',
+    {
+      KOR: '닫기',
+      ENG: 'Close'
+    }
+  ],
+  [
     'common-modal-upload',
     {
       KOR: '업로드',
@@ -139,20 +146,20 @@ const strings = new Map([
     'upload-explain-2',
     {
       KOR: '폴라리스 쉐어',
-      ENG: ''
+      ENG: ' '
     }
   ],
   [
     'upload-explain-3',
     {
       KOR: '의 다른 이용자들에게 보여집니다.',
-      ENG: ''
+      ENG: ' '
     }
   ],
   [
     'upload-explain-4',
     {
-      KOR: '',
+      KOR: ' ',
       ENG: 'Polaris Share.'
     }
   ],

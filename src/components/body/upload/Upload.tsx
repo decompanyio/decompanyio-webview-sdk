@@ -9,11 +9,11 @@ import UploadNote from './UploadNote'
 import UserInfo from '../../../service/model/UserInfo'
 import { repos } from '../../../util/repos'
 import { commonNative } from '../../../util/commonNative'
-import UploadCloseBtn from './UploadCloseBtn'
 import UploadSignoutBtn from './UploadSignoutBtn'
 import LimitPrivateDocumentModal from '../../common/modal/LimitPrivateDocumentModal'
 import UploadCompleteModal from '../../common/modal/UploadCompleteModal'
 import { APP_CONFIG } from '../../../util/app.config'
+import UploadCancelBtn from './UploadCancelBtn'
 
 interface UploadProps {
   userInfo: UserInfo
@@ -75,7 +75,6 @@ export default function({ userInfo }: UploadProps) {
     repos.Document.registerDocument(data)
       .then(res => {
         setLatestPrivateDocumentCount(res.privateDocumentCount)
-        clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
         handleProgress()
@@ -94,15 +93,16 @@ export default function({ userInfo }: UploadProps) {
   const handleUploadBtnClick = (): void => {
     if (validateTitle(title)) {
       setLoading(true)
+      disabledInputValue()
       handleUpload()
     }
   }
 
-  const clearInputValue = () => {
+  const disabledInputValue = () => {
     const titleEle = document.getElementById('docTitle') as HTMLInputElement
     const descEle = document.getElementById('docDesc') as HTMLInputElement
-    titleEle.value = ''
-    descEle.value = ''
+    titleEle.disabled = true
+    descEle.disabled = true
   }
 
   const handleProgress = () => {
@@ -180,7 +180,7 @@ export default function({ userInfo }: UploadProps) {
       <div className="u_btnWrapper d-flex">
         <UploadSignoutBtn loading={loading} />
 
-        <UploadCloseBtn loading={loading} />
+        <UploadCancelBtn loading={loading} />
 
         <div
           onClick={() => handleUploadBtnClick()}
