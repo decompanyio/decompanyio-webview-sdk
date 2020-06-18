@@ -425,10 +425,11 @@
     margin-right: 5px;
 }
 
-.u_note > a {
+.u_note > .u_link {
     font-weight: bold;
     color: #3681fe;
     text-decoration: underline;
+    display: inline-block;
 }
 
 .u_noteSub {
