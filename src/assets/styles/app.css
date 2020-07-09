@@ -780,7 +780,25 @@
 .ma_container > img {
     position: absolute;
 }
+.ma_avatar {
+    border-radius: 2rem;
+    cursor: pointer;
+    position: relative !important;
+    width: 31px;
+    height: 31px;
+    transition: 0.2s all ease-in-out;
+}
 
+.ma_avatar_big {
+    border-radius: 67%;
+    cursor: pointer;
+    position: relative !important;
+    margin-right: 10px;
+    width: 89px;
+    height: 89px;
+    border: none;
+    transition: 0.2s all ease-in-out;
+}
 
 /*************************************
            UPLOAD PROFILE

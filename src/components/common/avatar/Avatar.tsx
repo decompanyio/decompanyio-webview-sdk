@@ -62,11 +62,11 @@ export default function({
         <img
           src={picture}
           alt="profile"
-          className={'lazy ' + imgStyle}
+          className={'lazy '}
           style={imgStyle}
           onError={e => {
             let element = e.target as HTMLImageElement
-            element.srcset = '/assets/image/icon/i_profile-default.png'
+            element.srcset = '/static/image/icon/i_profile-default.png'
           }}
         />
       ) : (
