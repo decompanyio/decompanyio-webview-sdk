@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { psString } from '../../../util/localization'
 import UploadCloseBtn from '../../body/upload/UploadCloseBtn'
 import commonData from '../../../util/commonData'
+import { AUTH_APIS } from '../../../util/auth'
 
 interface UploadCompleteModalProps {
   uploadComplete: boolean
@@ -36,16 +37,9 @@ export default function({
         <div className="ucm_btnContainer">
           <UploadCloseBtn />
 
-          <a
-            href="https://polarishare.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Link to Polaris Share"
-          >
-            <div className="common_okBtn">
-              {psString('upload-link-to-main')}
-            </div>
-          </a>
+          <div className="common_okBtn" onClick={() => AUTH_APIS.linkToMain()}>
+            {psString('upload-link-to-main')}
+          </div>
         </div>
       </div>
     </div>

@@ -9,10 +9,12 @@ import UploadNote from './UploadNote'
 import UserInfo from '../../../service/model/UserInfo'
 import { repos } from '../../../util/repos'
 import { commonNative } from '../../../util/commonNative'
-import UploadCloseBtn from './UploadCloseBtn'
 import UploadSignoutBtn from './UploadSignoutBtn'
 import LimitPrivateDocumentModal from '../../common/modal/LimitPrivateDocumentModal'
 import UploadCompleteModal from '../../common/modal/UploadCompleteModal'
+import { APP_CONFIG } from '../../../util/app.config'
+import UploadCancelBtn from './UploadCancelBtn'
+import UploadProfile from './UploadProfile'
 
 interface UploadProps {
   userInfo: UserInfo
@@ -34,6 +36,11 @@ export default function({ userInfo }: UploadProps) {
   const validateTitle = (value: string) => {
     setTitleError(value.length > 0 ? '' : psString('upload-doc-error-1'))
     return value.length > 0
+  }
+
+  const onOpenWindow = () => {
+    commonNative.setWindowOpenUrl(APP_CONFIG.domain().ps)
+    document.getElementById('openWindow')!.click()
   }
 
   const handleUpload = (): void => {
@@ -68,9 +75,7 @@ export default function({ userInfo }: UploadProps) {
     // 문서 등록 API
     repos.Document.registerDocument(data)
       .then(res => {
-        setLoading(false)
         setLatestPrivateDocumentCount(res.privateDocumentCount)
-        clearInputValue()
         commonNative.setSignedUrl(res.signedUrl)
         document.getElementById('getUploadUrl')!.click()
         handleProgress()
@@ -89,26 +94,27 @@ export default function({ userInfo }: UploadProps) {
   const handleUploadBtnClick = (): void => {
     if (validateTitle(title)) {
       setLoading(true)
+      disabledInputValue()
       handleUpload()
     }
   }
 
-  const clearInputValue = () => {
+  const disabledInputValue = () => {
     const titleEle = document.getElementById('docTitle') as HTMLInputElement
     const descEle = document.getElementById('docDesc') as HTMLInputElement
-    titleEle.value = ''
-    descEle.value = ''
+    titleEle.disabled = true
+    descEle.disabled = true
   }
 
   const handleProgress = () => {
     let interval = setInterval(() => {
       let _progress = commonNative.progress
       let _uploadComplete = commonNative.uploadComplete.result
-      if (percentage !== _progress) setPercentage(commonNative.progress)
+      if (percentage !== _progress && _progress !== 0) setPercentage(_progress)
 
-      if (_progress === 100 || _uploadComplete === 0 || _uploadComplete === 1) {
+      if (_progress === 100) {
         clearInterval(interval)
-        setPercentage(_uploadComplete === 0 ? 0 : 100)
+        if (_uploadComplete === 0) setPercentage(100)
       }
     }, 100)
   }
@@ -143,56 +149,57 @@ export default function({ userInfo }: UploadProps) {
 
   return (
     <div className="u_container">
-      <div className="common_modal_title">
-        <a
-          href="https://polarishare.com"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          <img
-            className="u_logo"
-            src="https://s3.ap-northeast-2.amazonaws.com/polarishare.io/assets/img/logo/logo_blue.png"
-            alt="polaris share logo"
-          />
-        </a>
+      <div className="common_modal_title" onClick={() => onOpenWindow()}>
+        <img
+          className="u_logo"
+          src="https://s3.ap-northeast-2.amazonaws.com/polarishare.io/assets/img/logo/logo_blue.png"
+          alt="polaris share logo"
+        />
         <div className="u_version">{common.getVersion()}</div>
       </div>
 
-      <input
-        type="text"
-        placeholder={psString('common-modal-title')}
-        id="docTitle"
-        className={
-          'common_input ' + (titleError.length > 0 ? 'common_inputWarning' : '')
-        }
-        onChange={e => handleTitleChange(e)}
-      />
-      <span>{titleError}</span>
+      <UploadProfile userInfo={userInfo} />
 
-      <textarea
-        id="docDesc"
-        placeholder={psString('common-modal-description')}
-        className="u_textarea mt-4"
-        onChange={e => handleDescChange(e)}
-      />
+      <div className="u_contentsContainer">
+        <input
+          type="text"
+          placeholder={psString('common-modal-title')}
+          id="docTitle"
+          className={
+            'common_input ' +
+            (titleError.length > 0 ? 'common_inputWarning' : '')
+          }
+          onChange={e => handleTitleChange(e)}
+        />
+        <span>{titleError}</span>
 
-      <UploadNote />
+        <textarea
+          id="docDesc"
+          placeholder={psString('common-modal-description')}
+          className="u_textarea mt-4"
+          onChange={e => handleDescChange(e)}
+        />
 
-      <div className="u_btnWrapper d-flex">
-        <UploadSignoutBtn loading={loading} />
+        <UploadNote />
+      </div>
 
-        <UploadCloseBtn loading={loading} />
+      <div className="u_footer">
+        <div className="u_btnWrapper d-flex">
+          <UploadSignoutBtn loading={loading} />
 
-        <div
-          onClick={() => handleUploadBtnClick()}
-          className={'common_okBtn ' + (loading ? 'common_disabledBtn' : '')}
-        >
-          {loading && (
-            <div className="common_loadingWrapper">
-              <FadingCircle color="#3681fe" size={17} />
-            </div>
-          )}
-          {psString('common-modal-upload')}
+          <UploadCancelBtn loading={loading} />
+
+          <div
+            onClick={() => handleUploadBtnClick()}
+            className={'common_okBtn ' + (loading ? 'common_disabledBtn' : '')}
+          >
+            {loading && (
+              <div className="common_loadingWrapper">
+                <FadingCircle color="#3681fe" size={17} />
+              </div>
+            )}
+            {psString('common-modal-upload')}
+          </div>
         </div>
       </div>
 

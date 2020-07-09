@@ -4,6 +4,7 @@ import UserInfo from '../service/model/UserInfo'
 import commonData from './commonData'
 import { APP_CONFIG } from './app.config'
 import AuthService from '../service/rest/AuthService'
+import { commonNative } from './commonNative'
 
 interface DocumentInfoProps {
   documentName: string
@@ -46,7 +47,7 @@ export const AUTH_APIS = {
           )
           .catch(err => {
             console.error(err)
-            AUTH_APIS.clearSession()
+            AUTH_APIS.logout()
             reject('Invalid Token')
           })
       })
@@ -141,10 +142,13 @@ export const AUTH_APIS = {
     let userInfo = sessionStorage.getItem('ps_ui')
     let refreshToken = sessionStorage.getItem('ps_rt') || ''
     let userInfoWithJson = userInfo ? JSON.parse(userInfo) : ''
+
     if (!userInfoWithJson && AUTH_APIS.isLogin()) {
       AUTH_APIS.refreshLogin(refreshToken)
+
       return new UserInfo(null)
     }
+
     return new UserInfo(userInfoWithJson)
   },
 
@@ -173,7 +177,10 @@ export const AUTH_APIS = {
       if (data.documentName && data.documentName !== 'undefined' && data.ext) {
         sessionStorage.setItem('ps_di', JSON.stringify(data))
         resolve()
-      } else if((!data.documentName || data.documentName === 'undefined') && AUTH_APIS.getDocumentInfo()) {
+      } else if (
+        (!data.documentName || data.documentName === 'undefined') &&
+        AUTH_APIS.getDocumentInfo()
+      ) {
         resolve()
       } else {
         reject()
@@ -189,7 +196,7 @@ export const AUTH_APIS = {
 
   // 계정 관련 토큰 로컬스토리지 저장
   setTokens: (at: string, rt: string, ea: any, ru: string) =>
-    new Promise(resolve => {
+    new Promise((resolve, reject) => {
       if (at) sessionStorage.setItem('ps_at', at)
       if (rt) sessionStorage.setItem('ps_rt', rt)
       if (ea) sessionStorage.setItem('ps_ea', AUTH_APIS.getExpiredAt(ea))
@@ -201,7 +208,7 @@ export const AUTH_APIS = {
           resolve(res)
         })
         .catch((err: any) => {
-          console.log(err)
+          reject(err)
         })
     }),
   getTokens: (): GetTokenProps => ({
@@ -237,12 +244,21 @@ export const AUTH_APIS = {
 
         // console.log('쿼리 token : ', at)
 
-        AUTH_APIS.setTokens(at, rt, ea, ru).then((userInfo: any) =>
-          AUTH_APIS.syncAuthAndRest(userInfo, at).then(() => {
-            console.log(at, rt, ea, ru)
-            resolve(userInfo.email)
+        AUTH_APIS.setTokens(at, rt, ea, ru)
+          .then((userInfo: any) =>
+            AUTH_APIS.syncAuthAndRest(userInfo, at).then(() => {
+              console.log('at', at)
+              console.log('rt', rt)
+              console.log('ea', ea)
+              console.log('ru', ru)
+              resolve(userInfo.email)
+            })
+          )
+          .catch(err => {
+            console.error(err)
+            AUTH_APIS.clearSession()
+            reject('Invalid Token')
           })
-        )
       }
     }),
   syncAuthAndRest: (ui: any, at: string) =>
@@ -261,5 +277,14 @@ export const AUTH_APIS = {
         console.log('session is not init...')
         AUTH_APIS.logout()
       }
-    })
+    }),
+  linkToMain: async () => {
+    let authToken = await AUTH_APIS.refreshLogin(
+      AUTH_APIS.getTokens().refresh_token
+    ).then(res => res)
+    commonNative.setWindowOpenUrl(
+      APP_CONFIG.domain().auth + '/external/' + authToken
+    )
+    document.getElementById('openWindow')!.click()
+  }
 }

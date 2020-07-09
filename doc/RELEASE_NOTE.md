@@ -1,5 +1,27 @@
 # Release Note
 
+## 2020.07.09-a
+- Add profile component
+
+## 2020.06.18-a
+- edit word cancel to close on complete modal
+- apply disabled option on upload page when complete upload  
+
+## 1.2.5
+- auth error fix
+
+## 1.2.4
+- edit open main link code
+
+## 1.2.3
+- Add auth link
+- Bugs fix
+- apply request from PO
+
+## 1.2.2
+- edit css
+- test upload progress
+
 ## 1.2.0
 - Apply new Auth system
 - Add check private document count modal

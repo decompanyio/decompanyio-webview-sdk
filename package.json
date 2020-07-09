@@ -1,6 +1,6 @@
 {
   "name": "decompanyio-webview-sdk",
-  "version": "1.2.0",
+  "version": "2020.07.09-c",
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.8.7",

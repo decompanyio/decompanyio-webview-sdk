@@ -28,8 +28,8 @@ export default function({ history }: any): ReactElement {
           )
 
         AUTH_APIS.handleAuthentication(window.location)
-          .then(() => {
-            console.log('login success')
+          .then(email => {
+            console.log('login success', email)
             window.location.assign(
               `${
                 APP_CONFIG.domain().mainHost
