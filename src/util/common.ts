@@ -100,5 +100,45 @@ export default {
   // GET Version of this Project
   getVersion(): string {
     return 'v ' + process.env.REACT_APP_VERSION
-  }
+  },
+
+  getImgInfoOnPromise(picture: string) {
+    return new Promise(resolve => {
+      let img = new Image()
+      img.src = picture
+      img.onload = () => resolve(Boolean(img.height > img.width))
+    })
+  },
+
+  lazyLoading() {
+    let lazyImages = [].slice.call(document.querySelectorAll('img.lazy'))
+
+    if ('IntersectionObserver' in window) {
+      let lazyImageObserver = new IntersectionObserver(function(
+        entries,
+        _observer
+      ) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            let lazyImage = entry.target
+            // @ts-ignore
+            lazyImage.src = lazyImage.dataset.src
+            // @ts-ignore
+            lazyImage.srcset = lazyImage.dataset.srcset
+            lazyImage.classList.remove('lazy')
+            lazyImageObserver.unobserve(lazyImage)
+          }
+        })
+      })
+
+      lazyImages.forEach(lazyImage => {
+        lazyImageObserver.observe(lazyImage)
+      })
+    } else {
+      const script = document.createElement('script')
+      script.src =
+        'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver'
+      document.getElementsByTagName('head')[0].appendChild(script)
+    }
+  },
 }

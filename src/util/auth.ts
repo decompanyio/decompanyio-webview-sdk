@@ -247,7 +247,10 @@ export const AUTH_APIS = {
         AUTH_APIS.setTokens(at, rt, ea, ru)
           .then((userInfo: any) =>
             AUTH_APIS.syncAuthAndRest(userInfo, at).then(() => {
-              console.log(at, rt, ea, ru)
+              console.log('at', at)
+              console.log('rt', rt)
+              console.log('ea', ea)
+              console.log('ru', ru)
               resolve(userInfo.email)
             })
           )

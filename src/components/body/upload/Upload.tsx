@@ -14,6 +14,7 @@ import LimitPrivateDocumentModal from '../../common/modal/LimitPrivateDocumentMo
 import UploadCompleteModal from '../../common/modal/UploadCompleteModal'
 import { APP_CONFIG } from '../../../util/app.config'
 import UploadCancelBtn from './UploadCancelBtn'
+import UploadProfile from './UploadProfile'
 
 interface UploadProps {
   userInfo: UserInfo
@@ -157,41 +158,48 @@ export default function({ userInfo }: UploadProps) {
         <div className="u_version">{common.getVersion()}</div>
       </div>
 
-      <input
-        type="text"
-        placeholder={psString('common-modal-title')}
-        id="docTitle"
-        className={
-          'common_input ' + (titleError.length > 0 ? 'common_inputWarning' : '')
-        }
-        onChange={e => handleTitleChange(e)}
-      />
-      <span>{titleError}</span>
+      <UploadProfile userInfo={userInfo} />
 
-      <textarea
-        id="docDesc"
-        placeholder={psString('common-modal-description')}
-        className="u_textarea mt-4"
-        onChange={e => handleDescChange(e)}
-      />
+      <div className="u_contentsContainer">
+        <input
+          type="text"
+          placeholder={psString('common-modal-title')}
+          id="docTitle"
+          className={
+            'common_input ' +
+            (titleError.length > 0 ? 'common_inputWarning' : '')
+          }
+          onChange={e => handleTitleChange(e)}
+        />
+        <span>{titleError}</span>
 
-      <UploadNote />
+        <textarea
+          id="docDesc"
+          placeholder={psString('common-modal-description')}
+          className="u_textarea mt-4"
+          onChange={e => handleDescChange(e)}
+        />
 
-      <div className="u_btnWrapper d-flex">
-        <UploadSignoutBtn loading={loading} />
+        <UploadNote />
+      </div>
 
-        <UploadCancelBtn loading={loading} />
+      <div className="u_footer">
+        <div className="u_btnWrapper d-flex">
+          <UploadSignoutBtn loading={loading} />
 
-        <div
-          onClick={() => handleUploadBtnClick()}
-          className={'common_okBtn ' + (loading ? 'common_disabledBtn' : '')}
-        >
-          {loading && (
-            <div className="common_loadingWrapper">
-              <FadingCircle color="#3681fe" size={17} />
-            </div>
-          )}
-          {psString('common-modal-upload')}
+          <UploadCancelBtn loading={loading} />
+
+          <div
+            onClick={() => handleUploadBtnClick()}
+            className={'common_okBtn ' + (loading ? 'common_disabledBtn' : '')}
+          >
+            {loading && (
+              <div className="common_loadingWrapper">
+                <FadingCircle color="#3681fe" size={17} />
+              </div>
+            )}
+            {psString('common-modal-upload')}
+          </div>
         </div>
       </div>
 

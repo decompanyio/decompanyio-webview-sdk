@@ -341,6 +341,7 @@
 /*************************************
                UPLOAD
 **************************************/
+
 .u_container {
     max-width: 800px;
     width: 100%;
@@ -348,6 +349,10 @@
     left: 0;
     padding: 0 20px;
     margin: auto;
+}
+
+.u_contentsContainer {
+    margin-top: 2rem;
 }
 
 .u_container > .common_modal_title {
@@ -366,8 +371,7 @@
     font-size: 1rem;
     font-weight: 400;
     padding: 10px;
-    min-height: 120px !important;
-    height: calc(100vh - 255px);
+    min-height: 350px !important;
     outline: none;
 }
 
@@ -436,6 +440,14 @@
 .u_noteSub {
     margin-top: 5px;
     margin-left: 40px;
+}
+
+.u_footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    padding: 1rem;
+    bottom: 0;
 }
 
 /*************************************
@@ -740,4 +752,45 @@
 
 .ucm_subjContainer {
     z-index: 1;
+}
+
+
+/*************************************
+             AVATAR
+**************************************/
+
+.ma_container {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 60px;
+    cursor: pointer;
+    border: 1px solid #dadada;
+}
+
+.ma_container:hover {
+    border-color: #0d73f8;
+}
+
+.ma_container:after {
+    background: none !important;
+}
+
+.ma_container > img {
+    position: absolute;
+}
+
+
+/*************************************
+           UPLOAD PROFILE
+**************************************/
+
+.up_container {
+    display: flex;
+    align-items: center;
+}
+
+.up_container div:last-child {
+    margin-left: .7rem;
+    cursor: pointer;
 }

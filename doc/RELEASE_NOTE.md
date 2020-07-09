@@ -1,5 +1,8 @@
 # Release Note
 
+## 2020.07.09-a
+- Add profile component
+
 ## 2020.06.18-a
 - edit word cancel to close on complete modal
 - apply disabled option on upload page when complete upload  
