@@ -24,7 +24,6 @@ export default {
     let _header = {}
 
     if (type !== 'GET') _header = { 'Content-Type': 'application/json' }
-    else _header = { 'Cache-Control': 'no-cache' }
     if (header) _header = Object.assign(header, _header)
 
     let tempUrl = url.split('/')[5]
