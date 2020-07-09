@@ -50,8 +50,6 @@ export default function({
         top: '-' + yLocation + 'px'
       })
     })
-
-    common.lazyLoading()
   }, [])
 
   return (
@@ -62,15 +60,13 @@ export default function({
     >
       {picture.length > 0 ? (
         <img
-          src={'/static/image/icon/i_profile-default.png'}
-          data-src={picture}
-          data-srcset={picture + ' 1x'}
+          src={picture}
           alt="profile"
           className={'lazy ' + imgStyle}
           style={imgStyle}
           onError={e => {
             let element = e.target as HTMLImageElement
-            element.srcset = '/static/image/icon/i_profile-default.png'
+            element.srcset = '/assets/image/icon/i_profile-default.png'
           }}
         />
       ) : (
