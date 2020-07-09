@@ -352,7 +352,7 @@
 }
 
 .u_contentsContainer {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .u_container > .common_modal_title {
@@ -371,7 +371,7 @@
     font-size: 1rem;
     font-weight: 400;
     padding: 10px;
-    min-height: 350px !important;
+    min-height: 300px !important;
     outline: none;
 }
 
