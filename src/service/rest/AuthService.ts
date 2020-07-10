@@ -32,7 +32,7 @@ export default {
     userInfo: (data: any) =>
       new Promise((resolve, reject) => {
         AxiosService._requestWithUrlPramForAuth(
-          userInfoUrl,
+          userInfoUrl + '?_=' + new Date().getTime(),
           'GET',
           data,
           (data: any) => resolve(data),
