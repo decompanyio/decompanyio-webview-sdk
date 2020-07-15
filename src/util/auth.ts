@@ -1,7 +1,6 @@
 import repos from './repos'
 import { GetQueryParams, GetTokenProps } from './types'
 import UserInfo from '../service/model/UserInfo'
-import commonData from './commonData'
 import { APP_CONFIG } from './app.config'
 import AuthService from '../service/rest/AuthService'
 import { commonNative } from './commonNative'
