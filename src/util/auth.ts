@@ -23,11 +23,9 @@ export const AUTH_APIS = {
     }`
   },
   silentLogin: (email: string) => {
-    window.location.href = `${APP_CONFIG.domain().auth}/authentication${
-      APP_CONFIG.env === 'production'
-        ? '/signin' + commonData.defaultLoginPlatform
-        : ''
-    }?prompt=none&login_hint=${email}&redirectUrl=${
+    window.location.href = `${
+      APP_CONFIG.domain().auth
+    }/authentication?prompt=none&login_hint=${email}&redirectUrl=${
       APP_CONFIG.domain().mainHost
     }/callback&returnUrl=silent`
   },
