@@ -16,11 +16,9 @@ interface DocumentInfoProps {
 
 export const AUTH_APIS = {
   login: (returnUrl?: string) => {
-    window.location.href = `${APP_CONFIG.domain().auth}/authentication${
-      APP_CONFIG.env === 'production'
-        ? '/signin/' + commonData.defaultLoginPlatform
-        : ''
-    }?redirectUrl=${APP_CONFIG.domain().mainHost}/callback${
+    window.location.href = `${
+      APP_CONFIG.domain().auth
+    }/authentication?redirectUrl=${APP_CONFIG.domain().mainHost}/callback${
       returnUrl ? '&returnUrl=' + returnUrl : ''
     }`
   },
