@@ -42,7 +42,7 @@ export default {
     accountInfo: (data: any) =>
       new Promise((resolve, reject) => {
         AxiosService._requestGetWithHeader(
-          accountGetUrl,
+          accountGetUrl + '?_=' + new Date().getTime(),
           'GET',
           data,
           (data: any) => resolve(data),
