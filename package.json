@@ -14,7 +14,7 @@
     "@types/react-tooltip": "^3.11.0",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "better-react-spinkit": "^2.0.4",
     "dotenv": "^8.2.0",
     "es6-promise": "^4.2.8",
